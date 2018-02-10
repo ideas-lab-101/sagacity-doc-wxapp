@@ -10,6 +10,7 @@ Page({
     likes: {},
     is_add: true,
     add_text: "已加入",
+    isControlsShow:false
   },
 
   /**
@@ -60,8 +61,17 @@ Page({
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
-  onReady: function () {
-  
+  onReady() {
+      this.livePlayerContext = wx.createLivePlayerContext('live-player')
+  },
+  play() {
+      this.livePlayerContext.play()
+  },
+  pause() {
+      this.livePlayerContext.stop()
+  },
+  fullscreen() {
+      this.livePlayerContext.requestFullScreen()
   },
 
   /**
@@ -178,8 +188,16 @@ Page({
   statechange(e) {
     console.log('live-player code:', e.detail.code)
   },
+  fullscreenchange(e){
+      console.log('live-player code:', e.detail.code)
+  },
   error(e) {
     console.error('live-player error:', e.detail.errMsg)
+  },
+  toggleContrls(){
+      console.log(!this.data.isControlsShow)
+      this.setData({
+          isControlsShow: !this.data.isControlsShow
+      })
   }
-  
 })
