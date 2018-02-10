@@ -1,0 +1,46 @@
+<view>
+  <view class="section tc" wx:if="{{course.is_live == 1}}">
+    <live-player class='top-video' src="{{course.source_url}}" 
+        mode="live" autoplay="false" min-cache="5" />
+  </view>
+  <view class="section tc" wx:if="{{course.is_live == 0}}">
+    <video class='top-video' src="{{course.source_url}}" 
+        autoplay="false" binderror="videoErrorCallback" />
+  </view>
+  <view class='info-top'>
+    <view class='info-main'>
+      <view class="info-title">{{course.title}}</view>
+      <view class="info-source">{{course.source}}</view>
+    </view>
+    <view class="">
+        <view class="top-btn-group">
+          <button size="mini" class="btn" type="warn" bindtap="do_pay" data-id="{{course.id}}">付费</button>
+          <button size="mini" class="btn" disabled="{{is_add}}" bindtap="add_my_course" data-id="{{course.id}}">{{add_text}}</button>
+          <button size="mini" class="btn" open-type="share">分享课程</button>
+        </view>
+    </view>
+  </view>        
+  <view class="desc-main">
+    <view class="border-b"></view>
+    <view class="info-desc">{{course.desc}}</view>
+  </view>
+  <view class="zan-main">
+      <view class="zan-top">
+        <text class="text-16" style="color:#333333;">点赞</text>
+        <view class="icon-btn" data-type="course" data-id="{{course.id}}" catchtap="course_like">
+          <text class="c-iconfont text-30 icon-aui-icon-laud"></text>
+          <text class="text-12">{{likes.length}}</text>
+        </view>
+      </view>
+      <view class="zan-body" wx:if="{{likes.length>0}}">
+        <scroll-view class="zan-user-list-sv" scroll-x="true">
+          <view class="zan-user-list">
+            <view class="user-info" wx:for="{{likes}}" wx:key="{{item}}">
+              <image class="user-avatar" src="{{item.avatar_url}}"></image>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="text-12 zan-empty" wx:else>随手一赞，带你去浪</view>
+  </view>
+</view>
