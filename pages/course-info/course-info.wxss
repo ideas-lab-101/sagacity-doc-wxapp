@@ -1,34 +1,36 @@
 @import '../wenda/wenda.wxss';
 
 .top-video {
-    position: relative;
+    display: flex;
+    align-items: flex-end;
     width: 100%;
     height: 260px;
     margin-top: 1px;
     margin-bottom: 1px;
 }
 
+.event-catcher {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
 .controls {
     position: absolute;
     left: 0;
-    bottom: 0;
     right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30px;
     padding: 10px;
-    transform: opacity 1s;
+    background-color: rgba(0, 0, 0, .6);
 }
 
 .controls .img {
     width: 28px;
     height: 28px;
-}
-
-.controls .play, .controls .pause {
-    float: left;
-    margin-right: 10px;
-}
-
-.controls .fullscreen {
-    float: right;
 }
 
 .info-top {

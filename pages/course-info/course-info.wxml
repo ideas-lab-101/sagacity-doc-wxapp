@@ -1,17 +1,22 @@
 <view>
     <view class="section tc" wx:if="{{course.is_live == 1}}">
-        <live-player class='top-video' id='live-player' src="{{course.source_url}}" mode="live" autoplay="false" min-cache="5" background-mute='true' bindstatechange="statechange" bindfullscreenchange="fullscreenchange" bindtap="toggleContrls">
-        <cover-view class="controls" hidden='{{!isControlsShow}}'>
-            <cover-view class="play" bindtap="play">
-                <cover-image class="img" src="/assets/images/icon_play.png" />
+        <live-player class='top-video' id='live-player' src="{{course.source_url}}" mode="live" autoplay="false" min-cache="5" background-mute='true' bindstatechange="statechange" bindfullscreenchange="fullscreenchange">
+            <cover-view class="event-catcher" bindtap="toggleContrls">
+                <cover-view class="controls" hidden='{{!liveStatus.isControlsShow}}'>
+                    <cover-view class="play" bindtap="play" hidden="{{liveStatus.isPlaying}}">
+                        <cover-image class="img" src="/assets/images/play-o.png" />
+                    </cover-view>
+                    <cover-view class="pause" bindtap="pause" hidden="{{!liveStatus.isPlaying}}">
+                        <cover-image class="img" src="/assets/images/pause-o.png" />
+                    </cover-view>
+                    <cover-view class="fullscreen" bindtap="fullscreen" hidden="{{liveStatus.isFullscreen}}">
+                        <cover-image class="img" src="/assets/images/fullscreen-o.png" />
+                    </cover-view>
+                    <cover-view class="exit-fullscreen" bindtap="exitFullscreen" hidden="{{!liveStatus.isFullscreen}}">
+                        <cover-image class="img" src="/assets/images/exit-fullscreen-o.png" />
+                    </cover-view>
+                </cover-view>
             </cover-view>
-            <cover-view class="pause" bindtap="pause">
-                <cover-image class="img" src="/assets/images/icon_pause.png" />
-            </cover-view>
-            <cover-view class="fullscreen" bindtap="fullscreen">
-                <cover-image class="img" src="/assets/images/icon_fullscreen.png" />
-            </cover-view>
-        </cover-view>
         </live-player>
     </view>
     <view class="section tc" wx:if="{{course.is_live == 0}}">
