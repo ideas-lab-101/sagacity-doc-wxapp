@@ -2,8 +2,8 @@
 const Towxml = require('/towxml/main');
 const User = require('/utils/user');
 const Pages = require('/utils/pages');
-// const HOST = "https://docs.ideas-lab.cn";
-const HOST = "http://docs.ideas-lab.cn";
+const HOST = "https://docs.ideas-lab.cn";
+// const HOST = "http://test.ideas-lab.cn";
 
 App({
   onLaunch: function () {
