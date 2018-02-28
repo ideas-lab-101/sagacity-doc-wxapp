@@ -156,6 +156,9 @@ Page({
             this.onGetShareCode()
             break;
           case 2:
+            wx.showToast({
+              title: '即将开放',
+            })
             break;  
         }
       }

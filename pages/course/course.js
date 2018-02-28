@@ -59,7 +59,7 @@ Page({
       }
     })
   },
-  go_info: function (event) {
+  go_course: function (event) {
     let id = event.currentTarget.dataset.id;
     console.log(id)
 

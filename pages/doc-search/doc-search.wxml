@@ -41,7 +41,7 @@
       <scroll-view scroll-x="true">
         <view class="doc-list">
           <view class="so-doc-item" wx:for="{{doc_list}}" wx:key="{{item}}" data-id="{{item.id}}" bindtap="go_info">
-            <image class="so-doc-img" mode="aspectFill" src="{{item.cover_url}}"></image>
+            <image class="so-doc-img" mode="aspectFill" src="{{item.cover}}"></image>
             <view class="sd-doc-title"><text class="sd-doc-title-text">{{item.title}}</text></view>
           </view>
         </view>

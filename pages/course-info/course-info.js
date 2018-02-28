@@ -7,6 +7,7 @@ Page({
     data: {
         course_id: 0,
         course: {},
+        related_course: {},
         likes: {},
         is_add: true,
         add_text: "已加入",
@@ -53,7 +54,8 @@ Page({
                 })
                 this.setData({
                     course: res.data.course,
-                    likes: res.data.likes
+                    likes: res.data.likes,
+                    related_course: res.data.relatedCourses
                 })
                 wx.stopPullDownRefresh()
             }, complete: () => {
@@ -94,7 +96,13 @@ Page({
             'liveStatus.isFullscreen': false
         })
     },
-
+    go_course(event){
+      let id = event.currentTarget.dataset.id;
+      //停止当前课程
+      wx.redirectTo({
+        url: '../course-info/course-info?course_id=' + id
+      })
+    },
     /**
      * 生命周期函数--监听页面显示
      */
@@ -116,7 +124,9 @@ Page({
 
     },
     do_pay: function (event) {
-
+      wx.showToast({
+        title: '即将开放',
+      })
     },
     add_my_course: function (event) {
         let course_id = event.currentTarget.dataset.id;

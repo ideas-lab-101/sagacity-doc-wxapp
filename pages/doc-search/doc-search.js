@@ -50,6 +50,10 @@ Page({
     })
     wx.request({
       url: getApp().api.get_v2_search,
+      method: 'post',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
       data: {
         key: this.data.key,
         page: this.data.page
@@ -146,6 +150,10 @@ Page({
     }
     wx.request({
       url: getApp().api.get_v2_search_tip,
+      method: 'post',
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
       data: {
         key: key
       },
@@ -157,17 +165,21 @@ Page({
     })
   },
   cancel() {
-    this.setData({
-      doc_list: {},
-      data: {},
-      search_tip: {},
-      is_search: false,
-      key: null,
-      is_load: false,
-      more: false,
-      no_more: false,
-      page: 1,
-    })
+    if (this.data.key != null){ 
+      this.setData({
+        doc_list: {},
+        data: {},
+        search_tip: {},
+        is_search: false,
+        key: null,
+        is_load: false,
+        more: false,
+        no_more: false,
+        page: 1,
+      })
+    }else{
+      wx.navigateBack()
+    }
   },
   go_info: function (event) {
     let id = event.currentTarget.dataset.id;

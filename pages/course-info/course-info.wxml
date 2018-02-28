@@ -58,4 +58,28 @@
         </view>
         <view class="text-12 zan-empty" wx:else>随手一赞，带你去浪</view>
     </view>
+    <view class="zan-main">
+    <view class="zan-top">
+      <text class="text-16" style="color:#333333;">相关课程</text>
+    </view>
+    <view class="list">
+      <view class="item view-bg" wx:for="{{related_course}}" wx:key="{{item}}">
+        <view class="item-main border-b" hover-class="view-hover-class" bindtap="go_course" data-id="{{item.id}}">
+          <view class="item-l">
+            <image mode="aspectFill" class="list-image" src="{{item.cover}}"></image>
+          </view>
+          <view class="item-r">
+            <text class="list-title">{{item.title}}</text>
+            <text class="list-desc">{{item.desc}}</text>
+            <view class="list-info">
+              <text wx:if="{{item.view_count > 0}}">{{item.view_count}}点击</text>
+              <text wx:else></text>
+              <text wx:if="{{item.is_live == 0}}">录播</text>
+              <text wx:if="{{item.is_live == 1}}">直播</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>  
+  </view>
 </view>

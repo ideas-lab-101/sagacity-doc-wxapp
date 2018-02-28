@@ -49,9 +49,9 @@ App({
     get_v2_doc_menu: HOST + "/wxss/doc/getDocMenu",
     get_v2_page: HOST + "/wxss/doc/getPageDetail",
     get_v2_my_doc: HOST + "/api/v2/get-my-doc",
-    get_v2_search: HOST + "/api/v2/search",
+    get_v2_search: HOST + "/wxss/doc/search",
     get_v2_search_index: HOST + "/wxss/doc/getHotSearch",
-    get_v2_search_tip: HOST + "/api/v2/title-tip",
+    get_v2_search_tip: HOST + "/wxss/doc/tipSearch",
 
     /**
      * V3版本接口

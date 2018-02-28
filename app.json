@@ -38,16 +38,16 @@
         "selectedIconPath": "/assets/images/homepage_fill.png"
       },
       {
-        "pagePath": "pages/wenda/wenda",
-        "text": "问答",
-        "iconPath": "/assets/images/feedback.png",
-        "selectedIconPath": "/assets/images/feedback_fill.png"
+        "pagePath": "pages/doc-class/doc-class",
+        "text": "文档库",
+        "iconPath": "/assets/images/manage.png",
+        "selectedIconPath": "/assets/images/manage_fill.png"
       },
       {
         "pagePath": "pages/course/course",
         "text": "课程",
-        "iconPath": "/assets/images/manage.png",
-        "selectedIconPath": "/assets/images/manage_fill.png"
+        "iconPath": "/assets/images/course.png",
+        "selectedIconPath": "/assets/images/course_fill.png"
       },
       {
         "pagePath": "pages/user/user",

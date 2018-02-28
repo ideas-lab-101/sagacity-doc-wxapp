@@ -3,7 +3,7 @@
     <image mode="aspectFill" class="top-image" src=""></image>
   </view>
   <view class="list">
-    <view class="item view-bg" wx:for="{{data}}" wx:key="{{item}}" bindtap="go_info" data-id="{{item.id}}">
+    <view class="item view-bg" wx:for="{{data}}" wx:key="{{item}}" bindtap="go_course" data-id="{{item.id}}">
       <view class="item-main border-b" hover-class="view-hover-class">
         <view class="item-l">
           <image mode="aspectFill" class="list-image" src="{{item.cover}}"></image>
