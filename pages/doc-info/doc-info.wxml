@@ -1,10 +1,10 @@
-<block wx:if="{{show_page}}">
+<!-- <block wx:if="{{show_page}}"> -->
   <view class="">
     <view class="book-detail-x">
       <image src="{{doc.cover_url}}" class="book-cover-blur"></image>
       <view class="info-top">
         <view class="top-main">
-          <image class="info-pic" src="{{doc.cover}}"></image>
+          <image mode="aspectFill" class="info-pic" src="{{doc.cover}}"></image>
           <view class="main-r">
             <text class="info-title">{{doc.title}}</text>
             <text class="info-username">作者：{{doc.Caption}}</text>
@@ -15,7 +15,7 @@
         <view class="">
           <view class="top-btn-group">
             <button size="mini" class="btn" type="warn" bindtap="go_menu" data-id="{{doc.id}}">阅读文档</button>
-            <button size="mini" class="btn" disabled="{{is_add}}" bindtap="add_my_doc" data-id="{{doc.id}}">{{add_text}}</button>
+            <button size="mini" class="btn" bindtap="do_pay" data-id="{{doc.id}}">打赏</button>
             <button size="mini" class="btn" open-type="share">分享文档</button>
           </view>
         </view>
@@ -46,10 +46,36 @@
       </view>
       <view class="text-12 zan-empty" wx:else>随手一赞，带你去浪</view>
     </view>
-
-    <view class="iconfont ask-btn" bindtap="show_menu">操作</view>
+    <view class="iconfont ask-btn" bindtap="show_menu" style='z-index:999'>更多</view>
   </view>
   <view class="zan-main">
+      <view class="zan-top">
+        <text class="text-16" style="color:#333333;">类似文档</text>
+      </view>
+  </view>  
+  <view class="list">
+    <view class="item view-bg" wx:for="{{related_doc}}" wx:key="{{item}}">
+      <view class="item-main border-b" hover-class="view-hover-class" bindtap="go_doc" data-id="{{item.id}}">
+        <view class="item-l">
+          <image mode="aspectFill" class="list-image" src="{{item.cover}}"></image>
+        </view>
+        <view class="item-r">
+          <text class="list-title">{{item.title}}</text>
+          <text class="list-desc">{{item.desc}}</text>
+          <view class="list-info">
+            <text wx:if="{{item.view_count > 0}}">{{item.view_count}}点击</text>
+            <text wx:else></text>
+            <text wx:if="{{item.is_end == 0}}">已完成</text>
+            <text wx:if="{{item.is_end == 1}}">更新中</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="no_data" wx:if="{{related_doc.length==0}}">
+      <view class="no_data_text">/(ㄒoㄒ)/~~ 没有了 ~~/(ㄒoㄒ)/</view>
+  </view>
+  <!-- <view class="zan-main">
     <view class="zan-top">
       <text class="text-16" style="color:#333333;">问答</text>
       <view class="icon-btn">
@@ -117,4 +143,4 @@
   <view class="no_data view-bg" wx:if="{{no_data}}">
     <view class="no_data_text">暂无问答</view>
   </view>
-</block>
+</block> -->

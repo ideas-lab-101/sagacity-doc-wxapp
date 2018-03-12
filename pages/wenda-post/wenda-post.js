@@ -165,10 +165,8 @@ Page({
         console.log(res)
         var tempFilePaths = res.tempFilePaths
 
-
         tempFilePaths.map(a => {
           this.data.pics.add(a)
-
         })
 
         var pics_array = new Array()

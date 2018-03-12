@@ -235,6 +235,7 @@ Page({
     if (typeof (list_menu[page_index - 1]) == 'undefined') {
       wx.showToast({
         title: '没有上一篇了',
+        icon: 'none',
       })
       return
     }
@@ -263,6 +264,7 @@ Page({
     if (typeof (list_menu[page_index + 1]) == 'undefined') {
       wx.showToast({
         title: '没有下一篇了',
+        icon: 'none',
       })
       return
     }
@@ -282,20 +284,23 @@ Page({
   //更多
   show_more() {
     wx.showActionSheet({
-      itemList: ['收藏', '报错/举报', '文档主页'],
+      itemList: ['加入书签', '报错/举报'],
       success: (res) => {
         switch (res.tapIndex) {
+          case 99:
+            wx.showToast({
+              title: '文档-邮箱功能！',
+            })
+            // wx.navigateTo({
+            //   url: '../wenda-post/wenda-post?source=page&source_id=' + this.data.page_id
+            // })  
+            break;
           case 0:
             this.collect()
             break;
           case 1:
             wx.navigateTo({
               url: '../doc-back/doc-back?page_id=' + this.data.page_id
-            })
-            break;
-          case 2:
-            wx.redirectTo({
-              url: '../doc-info/doc-info?doc_id=' + this.data.info.doc_id
             })
             break;
         }
@@ -329,6 +334,7 @@ Page({
           } else {
             wx.showToast({
               title: res.data.msg,
+              icon: 'none',
             })
           }
         }, complete: () => {

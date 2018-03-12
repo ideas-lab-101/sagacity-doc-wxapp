@@ -5,5 +5,9 @@
 .radio-group{
   display: flex;
   justify-content: space-between;
-  padding: 20rpx;
+  padding: 30rpx;
+}
+
+.content{
+  background: #fff;
 }

@@ -89,12 +89,22 @@ Page({
         this.get_data()
       }
       wx.scanCode({
-        onlyFromCamera: true,
+        onlyFromCamera: false,
         success: res => {
           let data = res.result
-          var obj = JSON.parse(data);
-          if (obj.type == 'login') {
-            this.scan_login(obj.key)
+          try{
+            var obj = JSON.parse(data);
+            if (obj.type == 'login') {
+              this.scan_login(obj.key)
+            } else {
+              wx.showToast({
+                title: '错误的二维码！',
+              })
+            }
+          }catch(e){
+            wx.showToast({
+              title: '错误的二维码！',
+            })
           }
         },
         fail: function (res) {
@@ -116,19 +126,21 @@ Page({
           })
           wx.request({
             url: getApp().api.v3_scan_code_login,
+            method: 'post',
             header: {
-              'Authorization': 'Bearer ' + getApp().user.ckLogin()
+              'content-type': 'application/x-www-form-urlencoded'
             },
             data: {
+              token: this.data.token,
               key: key
             }, success: res => {
-              if (res.data.status_code == 200) {
+              if (res.data.code == 1) {
                 wx.showToast({
-                  title: '登录成功',
+                  title: res.data.msg,
                 })
               } else {
                 wx.showToast({
-                  title: res.data.message,
+                  title: res.data.msg,
                 })
               }
             }, complete: res => {

@@ -5,9 +5,10 @@ Page({
     doc_id: 0,
     doc: {},
     likes: {},
+    related_doc: {},
     my_doc: [],
-    is_add: true,
-    add_text: "已加入",
+    // is_add: true,
+    // add_text: "已加入",
     show_page: false,
     question: {},
     page: 1,
@@ -49,10 +50,10 @@ Page({
       },
       success: (res) => {
         if (!res.data.doc.is_follow) {
-          this.setData({
-            is_add: false,
-            add_text: "加入档库"
-          })
+          // this.setData({
+          //   is_add: false,
+          //   add_text: "加入档库"
+          // })
         }
         wx.setNavigationBarTitle({
           title: res.data.doc.title
@@ -61,7 +62,8 @@ Page({
           this.setData({
             doc: res.data.doc,
             likes: res.data.likes,
-            question: res.data.questions.list,
+            related_doc: res.data.relatedDocs,
+            // question: res.data.questions.list,
             show_page: true
           })
         } else {
@@ -73,7 +75,7 @@ Page({
             question: o_data
           })
         }
-        getApp().set_page_more(this, res.data.questions)
+        // getApp().set_page_more(this, res.data.questions)
         wx.stopPullDownRefresh()
       }, complete: () => {
         wx.hideLoading()
@@ -86,8 +88,19 @@ Page({
       url: '../doc-menu/doc-menu?doc_id=' + doc_id
     })
   },
+  go_doc: function ( event){
+    let id = event.currentTarget.dataset.id;
+    wx.redirectTo({
+      url: '../doc-info/doc-info?doc_id=' + id
+    })
+  },
+  do_pay: function(event) {
+    wx.navigateTo({
+      url: '../pay/pay?type=doc&id=' + this.data.doc.id
+      + '&title=' + this.data.doc.title + '&cover=' + this.data.doc.cover,
+    })
+  },
   add_my_doc: function (event) {
-    let doc_id = event.currentTarget.dataset.id;
     getApp().user.isLogin(token => {
       wx.showNavigationBarLoading()
       wx.request({
@@ -98,14 +111,14 @@ Page({
         },
         data: {
           token: token,
-          data_id: doc_id,
+          data_id: this.data.doc_id,
           type: 'doc'
         }, success: res => {
           if (res.data.code == 1) {
-            this.setData({
-              is_add: true,
-              add_text: "已加入"
-            })
+            // this.setData({
+            //   is_add: true,
+            //   add_text: "已加入"
+            // })
             wx.showToast({
               title: res.data.msg
             })
@@ -117,6 +130,7 @@ Page({
           }else{
             wx.showToast({
               title: res.data.msg,
+              icon: 'none',
             })
           }
         }, complete: res => {
@@ -144,21 +158,27 @@ Page({
   },
   show_menu() {
     wx.showActionSheet({
-      itemList: ['提问', '生成封面', '打赏'],
+      itemList: ['首页', '生成封面', '收藏'],
       success: (res) => {
         switch (res.tapIndex) {
+          case 99:
+            wx.showToast({
+              title: '文档-邮箱功能！',
+            })
+          //   wx.navigateTo({
+          //     url: '../wenda-post/wenda-post?source=doc&source_id='+this.data.doc_id,
+          //   })
+            break;
           case 0:
-            wx.navigateTo({
-              url: '../wenda-post/wenda-post?source=doc&source_id='+this.data.doc_id,
+            wx.switchTab({
+              url: '../index/index',
             })
             break;
           case 1:
             this.onGetShareCode()
             break;
           case 2:
-            wx.showToast({
-              title: '即将开放',
-            })
+            this.add_my_doc()
             break;  
         }
       }
@@ -166,7 +186,7 @@ Page({
   },
   onShareAppMessage: function () {
     return {
-      title: "魔灯文档-分享精彩"
+      title: "魔灯文档-分享知识"
     }
   },
   onGetShareCode: function() {
@@ -176,7 +196,8 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
-        doc_id: this.data.doc_id
+        type: 'd',
+        data_id: this.data.doc_id
       },
       success: res => {
         if (res.data.code == 1) {

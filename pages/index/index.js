@@ -32,11 +32,16 @@ Page({
       title: '加载中',
     })
     var scene = decodeURIComponent(options.scene)
-    if (scene !== 'undefined') {
+    if (scene !== 'undefined' && scene.indexOf('d_') >= 0) {
       wx.navigateTo({
-        url: `/pages/doc-info/doc-info?doc_id=${scene}`,
+        url: `/pages/doc-info/doc-info?doc_id=${scene.slice(2)}`,
+      })
+    } else if (scene !== 'undefined' && scene.indexOf('v_') >= 0) {
+      wx.navigateTo({
+        url: `/pages/video-info/video-info?video_id=${scene.slice(2)}`,
       })
     }
+    //加载首页
     this.get_data()
   },
   get_data() {

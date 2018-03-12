@@ -1,12 +1,14 @@
 .h2w {
-
+  font-family: "STHeitiTC-Light", "Microsoft YaHei Light", "Hiragino Sans GB", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size:32rpx;
   line-height: 1.8;
   word-wrap: break-word;
+  word-wrap:break-word;
   word-break:break-all;
 }
 .h2w__main {
   margin:0 40rpx;
-  padding:40rpx 0;
+  padding-top:40rpx;
 }
 
 /**标题**/
@@ -22,29 +24,29 @@
 .h2w__h1 {
     border-bottom-style:double;
     border-bottom-width:6rpx;
-    font-size:150%;
+    font-size:42rpx;
     padding-bottom:10rpx;
     margin-bottom:20rpx;
 }
 .h2w__h2 {
     border-bottom-style:solid;
     border-bottom-width:1rpx;
-    font-size:140%;
+    font-size:40rpx;
     padding-bottom:8rpx;
     margin-bottom:18rpx;
 }
 .h2w__h3 {
-    font-size:135%;
+    font-size:38rpx;
     padding-bottom:6rpx;
     margin-bottom:12rpx;
 }
 .h2w__h4 {
-    font-size:130%;
+    font-size:36rpx;
     padding-bottom:4rpx;
     margin-bottom:12rpx;
 }
 .h2w__h5 {
-    font-size:125%;
+    font-size:34rpx;
     padding-bottom:2rpx;
     margin-bottom:12rpx;
 }
@@ -55,23 +57,23 @@
 
 /**表格**/
 .h2w__table {
-    width:750rpx;
+    width:100%;
     border-collapse:collapse;
     border-spacing:0;
-    margin:0 -40rpx 40rpx -40rpx;
+    display:table;
+    margin-bottom:40rpx;
 }
 .h2w__table .h2w__tr:nth-child(2n){
     background-color:red;
 }
 .h2w__colgroup {
-    display:table-column-group；
+    display:table-column-group;
 }
 .h2w__col {
     display:table-column;
 }
 .h2w__thead {
     display:table-header-group;
-    min-width: 750rpx;
 }
 .h2w__tbody {
     display:table-row-group;
@@ -81,16 +83,14 @@
 }
 .h2w__tr {
     display:table-row;
-    min-width: 750rpx;
 }
 .h2w__th,
 .h2w__td {
     padding:8rpx 16rpx;
-    font-size:85%;
+    font-size:28rpx;
     border-width:1rpx;
     border-style:solid;
     display:table-cell;
-    white-space:nowrap; 
 }
 .h2w__th {
     font-weight:bold;
@@ -98,25 +98,24 @@
 
 /**代码块**/
 .h2w__pre {
+    /*white-space:nowrap;*/
     padding:20rpx;
-    font-size:85%;
+    font-size:28rpx;
     word-break:normal;
+    border-width:1rpx;
+    border-style:solid;
+    margin-bottom:40rpx;
     white-space:pre;
-    width: 710rpx;
-    margin:0 -40rpx 40rpx -40rpx;
-}
-.h2w__blockquote .h2w__pre{
-  width: 720rpx;
-  margin:0 -120rpx 40rpx -80rpx;
+    overflow-x:auto;
 }
 .h2w__pre .h2w__code {
     padding:0;
     border:0;
-    font-size:78%;
-    display: inline-block;
+    font-size:100%;
 }
 .h2w__pre,
 .h2w__code {
+    font-family:"SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace, "STHeitiTC-Light", "Microsoft YaHei Light", -apple-system, system-ui, BlinkMacSystemFont;
 }
 
 .h2w__code {
@@ -241,9 +240,9 @@
 /**链接**/
 .h2w__a {
     margin:0 8rpx;
-    /*border-bottom-width:1rpx;
+    border-bottom-width:1rpx;
     border-bottom-style:solid;
-    line-height:1;*/
+    line-height:1;
 }
 
 .h2w__hr {

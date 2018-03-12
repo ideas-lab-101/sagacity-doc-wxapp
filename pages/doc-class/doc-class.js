@@ -41,7 +41,7 @@ Page({
   },
   go_search(){
     wx.navigateTo({
-      url: '../doc-search/doc-search',
+      url: '../system-search/system-search',
     })
   },
   /**

@@ -2,8 +2,17 @@
   <view class="top-mian" wx:if="{{false}}">
     <image mode="aspectFill" class="top-image" src=""></image>
   </view>
+  <view class="class-main">
+      <navigator class="class-title" url="../video-class/video-class">
+        <text>分类标签</text>
+        <text class="c-iconfont icon-aui-icon-more"></text>
+      </navigator>
+      <view class="class-list">
+        <view hover-class="view-hover-class-tg" class="class-list-item" wx:for="{{class_tag}}" wx:key="{{item}}" bindtap="class_video" data-name="{{item.title}}" data-id="{{item.id}}"><text decode="true">{{item.title}}</text></view>
+      </view>
+    </view>
   <view class="list">
-    <view class="item view-bg" wx:for="{{data}}" wx:key="{{item}}" bindtap="go_course" data-id="{{item.id}}">
+    <view class="item view-bg" wx:for="{{data}}" wx:key="{{item}}" bindtap="go_video" data-id="{{item.id}}">
       <view class="item-main border-b" hover-class="view-hover-class">
         <view class="item-l">
           <image mode="aspectFill" class="list-image" src="{{item.cover}}"></image>
@@ -25,7 +34,7 @@
     <view class="no_more" wx:if="{{no_more}}">{{more_data}}</view>
     <view class="no_data" wx:if="{{no_data}}">
       <image class="no_data_icon" src="../../assets/images/no_data.png"></image>
-      <view class="no_data_text">抱歉，当前暂未发布新课程！</view>
+      <view class="no_data_text">抱歉，暂未发布新视频！</view>
     </view>
   </view>
 </view>

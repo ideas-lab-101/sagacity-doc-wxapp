@@ -7,7 +7,7 @@
     "pages/doc-class/doc-class",
     "pages/my-doc/my-doc",
     "pages/doc-class-list/doc-class-list",
-    "pages/doc-search/doc-search",
+    "pages/system-search/system-search",
     "pages/article/article",
     "pages/wenda/wenda",
     "pages/article-page/article-page",
@@ -16,13 +16,16 @@
     "pages/wenda-post/wenda-post",
     "pages/wenda-reply-post/wenda-reply-post",
     "pages/doc-back/doc-back",
-    "pages/course-info/course-info",
-    "pages/course/course"
+    "pages/video-info/video-info",
+    "pages/video-class/video-class",
+    "pages/video-class-list/video-class-list",
+    "pages/video/video",
+    "pages/pay/pay"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "魔灯文档",
+    "navigationBarTitleText": "魔灯知库",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#f7f7f7"
   },
@@ -44,8 +47,8 @@
         "selectedIconPath": "/assets/images/manage_fill.png"
       },
       {
-        "pagePath": "pages/course/course",
-        "text": "课程",
+        "pagePath": "pages/video/video",
+        "text": "视频",
         "iconPath": "/assets/images/course.png",
         "selectedIconPath": "/assets/images/course_fill.png"
       },

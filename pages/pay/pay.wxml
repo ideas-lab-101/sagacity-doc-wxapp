@@ -1,0 +1,13 @@
+<view class="container">
+    <view class="info">
+        <view class="info_title">{{title}}</view>
+        <image mode="aspectFill" src="{{cover}}" class="info_img"></image>
+    </view>
+    <view class="title">您的打赏，是对创作者的最好鼓励。</view>
+    <view class="item_container">
+        <view class="item" bindtap='selectItem' wx:for="{{pay_item}}" data-id="{{item.cost}}">
+            <view class="price" data-index="{{index}}">{{item.title}}</view>
+            <view class="desc" data-index="{{index}}">{{item.desc}}</view>
+        </view>
+    </view>
+</view>

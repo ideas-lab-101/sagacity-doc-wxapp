@@ -42,7 +42,7 @@
 
 /**内连元素**/
 .h2w-light .h2w__a {
-    color:#666666; border-color:#b9d9b8;
+    color:#1aad16; border-color:#b9d9b8;
 }
 
 .h2w-light .h2w__hr {

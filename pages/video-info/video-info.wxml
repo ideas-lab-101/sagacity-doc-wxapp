@@ -1,6 +1,6 @@
 <view>
-    <view class="section tc" wx:if="{{course.is_live == 1}}">
-        <live-player class='top-video' id='live-player' src="{{course.source_url}}" mode="live" autoplay="false" min-cache="5" background-mute='true' bindstatechange="statechange" bindfullscreenchange="fullscreenchange">
+    <view class="section tc" wx:if="{{video.is_live == 1}}">
+        <live-player class='top-video' id='live-player' src="{{video.source_url}}" mode="live" autoplay="false" min-cache="5" background-mute='true' bindstatechange="statechange" bindfullscreenchange="fullscreenchange">
             <cover-view class="event-catcher" bindtap="toggleContrls">
                 <cover-view class="controls" hidden='{{!liveStatus.isControlsShow}}'>
                     <cover-view class="play" bindtap="play" hidden="{{liveStatus.isPlaying}}">
@@ -19,30 +19,30 @@
             </cover-view>
         </live-player>
     </view>
-    <view class="section tc" wx:if="{{course.is_live == 0}}">
-        <video class='top-video' src="{{course.source_url}}" autoplay="false" binderror="videoErrorCallback" />
+    <view class="section tc" wx:if="{{video.is_live == 0}}">
+        <video class='top-video' src="{{video.source_url}}" autoplay="false" binderror="videoErrorCallback" />
     </view>
     <view class='info-top'>
         <view class='info-main'>
-            <view class="info-title">{{course.title}}</view>
-            <view class="info-source">{{course.source}}</view>
+            <view class="info-title">{{video.title}}</view>
+            <view class="info-source">{{video.source}}</view>
         </view>
         <view class="">
             <view class="top-btn-group">
-                <button size="mini" class="btn" type="warn" bindtap="do_pay" data-id="{{course.id}}">付费</button>
-                <button size="mini" class="btn" disabled="{{is_add}}" bindtap="add_my_course" data-id="{{course.id}}">{{add_text}}</button>
-                <button size="mini" class="btn" open-type="share">分享课程</button>
+                <button size="mini" class="btn" type="warn" disabled="{{is_follow}}" bindtap="add_my_video" data-id="{{video.id}}">{{add_text}}</button>
+                <button size="mini" class="btn" bindtap="do_pay" data-id="{{video.id}}">打赏</button>
+                <button size="mini" class="btn" open-type="share">分享视频</button>
             </view>
         </view>
     </view>
     <view class="desc-main">
         <view class="border-b"></view>
-        <view class="info-desc">{{course.desc}}</view>
+        <view class="info-desc">{{video.desc}}</view>
     </view>
     <view class="zan-main">
         <view class="zan-top">
             <text class="text-16" style="color:#333333;">点赞</text>
-            <view class="icon-btn" data-type="course" data-id="{{course.id}}" catchtap="course_like">
+            <view class="icon-btn" data-type="course" data-id="{{video.id}}" catchtap="video_like">
                 <text class="c-iconfont text-30 icon-aui-icon-laud"></text>
                 <text class="text-12">{{likes.length}}</text>
             </view>
@@ -58,13 +58,15 @@
         </view>
         <view class="text-12 zan-empty" wx:else>随手一赞，带你去浪</view>
     </view>
+    <view class="iconfont ask-btn" bindtap="show_menu" style='z-index:999'>更多</view>
     <view class="zan-main">
-    <view class="zan-top">
-      <text class="text-16" style="color:#333333;">相关课程</text>
-    </view>
+      <view class="zan-top">
+        <text class="text-16" style="color:#333333;">相关视频</text>
+      </view>
+    </view>  
     <view class="list">
-      <view class="item view-bg" wx:for="{{related_course}}" wx:key="{{item}}">
-        <view class="item-main border-b" hover-class="view-hover-class" bindtap="go_course" data-id="{{item.id}}">
+      <view class="item view-bg" wx:for="{{related_video}}" wx:key="{{item}}">
+        <view class="item-main border-b" hover-class="view-hover-class" bindtap="go_video" data-id="{{item.id}}">
           <view class="item-l">
             <image mode="aspectFill" class="list-image" src="{{item.cover}}"></image>
           </view>
@@ -80,6 +82,8 @@
           </view>
         </view>
       </view>
-    </view>  
-  </view>
+    </view>
+    <view class="no_data" wx:if="{{related_course.length==0}}">
+      <view class="no_data_text">/(ㄒoㄒ)/~~ 没有了 ~~/(ㄒoㄒ)/</view>
+    </view>
 </view>

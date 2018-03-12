@@ -38,18 +38,19 @@ Page({
         title: '提交中',
       })
       wx.request({
-        url: getApp().api.v3_doc_back,
+        url: getApp().api.v3_doc_feedback,
         method: 'post',
         header: {
-          'Authorization': 'Bearer ' + getApp().user.ckLogin()
+          'content-type': 'application/x-www-form-urlencoded'
         },
         data: {
-          'id': this.data.id,
-          'content': content,
-          'type': this.data.d_type
+          token: token,
+          id: this.data.id,
+          content: content,
+          type: this.data.d_type
         }, success: res => {
           wx.showToast({
-            title: res.data.message
+            title: res.data.msg
           })
           setTimeout(() => {
             wx.navigateBack()

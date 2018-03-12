@@ -1,8 +1,8 @@
 {
-  "enablePullDownRefresh": true,
   "backgroundTextStyle": "dark",
-  "backgroundColor": "#f7f7f7",
   "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTitleText": "搜索",
   "navigationBarTextStyle": "black",
-  "navigationBarTitleText": "课程"
+  "backgroundColor": "#f7f7f7",
+  "enablePullDownRefresh": false
 }

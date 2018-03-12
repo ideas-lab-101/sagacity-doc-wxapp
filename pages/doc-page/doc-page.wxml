@@ -48,9 +48,9 @@
           <text>日间</text>
         </block>
       </view>
-      <navigator class="bar-item" url="../wenda-post/wenda-post?source=page&source_id={{page_id}}">
-        <text class="c-iconfont icon-tiwen"></text>
-        <text>提问</text>
+      <navigator class="bar-item" url="../doc-info/doc-info?doc_id={{info.doc_id}}">
+        <text class="c-iconfont icon-home"></text>
+        <text>文档页</text>
       </navigator>
       <view class="bar-item" catchtap="show_more">
         <text class="c-iconfont icon-mingpiandibudaohanggengduo"></text>

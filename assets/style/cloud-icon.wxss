@@ -29,6 +29,10 @@
   content: "\e7bf";
 }
 
+.icon-home:before {
+    content: "\e611";
+}
+
 .icon-yejian::before {
   content: "\e6c5";
 }

@@ -12,6 +12,8 @@ swiper {
 .top-grid-menu {
   background: #fff;
   margin-bottom: 20rpx;
+  margin-top: 1rpx;
+  border-top: 1rpx #f0f0f0 solid;
   display: flex;
   flex-wrap:wrap; 
 }

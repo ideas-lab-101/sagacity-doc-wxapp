@@ -4,6 +4,7 @@ const User = require('/utils/user');
 const Pages = require('/utils/pages');
 const HOST = "https://docs.ideas-lab.cn";
 // const HOST = "http://test.ideas-lab.cn";
+// const HOST = "http://127.0.0.1:8080";
 
 App({
   onLaunch: function () {
@@ -57,11 +58,10 @@ App({
      * V3版本接口
      */
     get_v3_index: HOST + "/wxss/doc/index",
-
     get_v3_2_doc_info: HOST + "/wxss/doc/getDocInfo",
     get_v3_doc_page: HOST + "/api/v3/doc-page",
 
-    v3_doc_back: HOST +"/api/v3/doc-back",//文档反馈
+    v3_doc_feedback: HOST +"/wxss/doc/docFeedback",//文档反馈
 
     get_v3_doc_page_menu: HOST + "/api/v3/doc-page-menu",
     get_v3_article_index: HOST + "/api/v3/article-index",
@@ -71,10 +71,11 @@ App({
     get_share_code: HOST + '/wxss/system/getWXSSCode',
     v3_user_favor: HOST + "/wxss/user/userFavor",
     v3_user_like: HOST + "/wxss/user/userLike",
+    v3_user_follow: HOST + "/wxss/user/userFollow",
     v3_user_favor_cancel: HOST + "/wxss/user/userFavorCancel",
 
     login: HOST + "/wxss/system/accountLogin",
-    v3_scan_code_login: HOST + "/api/v3/scan-login",
+    v3_scan_code_login: HOST + "/wxss/system/scanLogin",
 
     //问答
     v3_wenda_index: HOST + "/wxss/question/index",
@@ -84,7 +85,19 @@ App({
     v3_wenda_reply_post: HOST + "/wxss/question/replyPost",
 
     //课程
-    get_v3_course: HOST + "/wxss/course/getCourseList",
-    get_v3_course_page: HOST + "/wxss/course/getCourseInfo"
+    get_video_class: HOST + "/wxss/video/getVideoClass",
+    get_v3_video: HOST + "/wxss/video/getVideoList",
+    get_v3_class_video: HOST + "/wxss/video/getClassVideoList",
+    get_v3_video_page: HOST + "/wxss/video/getVideoInfo",
+
+    //搜索的新接口，包括文档和视频
+    get_v3_search: HOST + "/wxss/system/search",
+    get_v3_search_index: HOST + "/wxss/system/getHotSearch",
+    get_v3_search_tip: HOST + "/wxss/system/tipSearch",
+
+    //支付相关接口
+    get_v2_pay_item: HOST + "/wxss/pay/getPayItem",
+    get_v2_gen_order: HOST + "/wxss/pay/genOrder",
+    wx_pay: HOST + "/wxss/pay/wxPay"
   }
 })

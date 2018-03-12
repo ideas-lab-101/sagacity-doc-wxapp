@@ -11,6 +11,7 @@ Page({
     more_data: "加载更多中..",
     no_more: false,
     no_data: false,
+    class_tag: {},
     more: false,
     ls_load: false
   },
@@ -19,6 +20,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (option) {
+    wx.request({
+      url: getApp().api.get_video_class,
+      data: {is_hot: 1},
+      success: (res) => {
+        this.setData({
+          class_tag: res.data.list
+        })
+      }
+    })
     wx.showLoading({
       title: '加载中',
     })
@@ -29,7 +39,7 @@ Page({
       is_load: true
     })
     wx.request({
-      url: getApp().api.get_v3_course,
+      url: getApp().api.get_v3_video,
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
@@ -59,12 +69,19 @@ Page({
       }
     })
   },
-  go_course: function (event) {
+  class_video: function (event) {
+    let id = event.currentTarget.dataset.id;
+    console.log(id)
+    wx.navigateTo({
+      url: '../video-class-list/video-class-list?class_id=' + id
+    })
+  },
+  go_video: function (event) {
     let id = event.currentTarget.dataset.id;
     console.log(id)
 
     wx.navigateTo({
-      url: '../course-info/course-info?course_id=' + id
+      url: '../video-info/video-info?video_id=' + id
     })
   },
   /**

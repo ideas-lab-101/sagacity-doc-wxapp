@@ -5,18 +5,17 @@
       <!-- <text>2017加入</text> -->
       <view class="userdata">
         <view class="dataone">
-          <text class="user-num">{{user_data.follow}}</text>
-          <text>关注</text>
+            <text class="user-num">{{user_data.docCount}}</text>
+            <text>文档</text>
         </view>
         <view class="dataone">
-          <text class="user-num">{{user_data.fans}}</text>
-          <text>粉丝</text>
+            <text class="user-num">{{user_data.courseCount}}</text>
+            <text>视频</text>
         </view>
-        <!-- <view class="edit">
-        <text>编辑个人资料</text>
-      </view> -->
+         <view class="edit">
+            <text>个人资料</text>
+          </view> 
       </view>
-
     </view>
     <view class="avatar">
       <image src="{{user.avatar_url}}" class="avatar-img"></image>
@@ -35,10 +34,10 @@
 
   <view class="user-tab">
     <view class="tab-item {{show_tab==1?'active':''}}" catchtap="set_tab" data-type="1">
-      <text>档库</text>
+      <text>文档</text>
     </view>
     <view class="tab-item {{show_tab==0?'active':''}}" catchtap="set_tab" data-type="0">
-      <text>收藏</text>
+      <text>书签</text>
     </view>
   </view>
 
@@ -46,7 +45,7 @@
     <view class="empty" wx:if="{{user_data.doc.length<=0}}">
       <view class="text-12"><text wx:if="{{is_login}}">没添加过任何文档</text><text wx:else>登录后查看我的文档</text></view>
       <navigator url="/pages/index/index" open-type="switchTab">
-        <button class="start-btn" type="default" size="mini" wx:if="{{is_login}}">开始学习</button>
+        <button class="start-btn" type="default" size="mini" wx:if="{{is_login}}">开启魔灯</button>
       </navigator>
     </view>
     <view class="" wx:else>
@@ -55,7 +54,7 @@
         <view class="doc-list-item" wx:for="{{user_data.doc}}" wx:key="item">
           <view class="pic-view">
             <navigator url="/pages/doc-info/doc-info?doc_id={{item.doc_id}}">
-              <image data-id="{{item.id}}" class="doc-list-pic" src="{{item.cover}}"></image>
+              <image data-id="{{item.id}}" mode="aspectFill" class="doc-list-pic" src="{{item.cover}}"></image>
             </navigator>
             <view class="pic-x-view" wx:if="{{edit_show}}">
               <button data-id="{{item.id}}" bindtap="del_my_doc" size="mini" plain="true" type="warn">删除</button>
@@ -73,9 +72,9 @@
 
   <block wx:if="{{show_tab==0}}">
     <view class="empty" wx:if="{{user_data.doc_page.length<=0}}">
-      <view class="text-12"><text wx:if="{{is_login}}">没收藏过任何文档</text><text wx:else>登录后查看我的收藏</text></view>
+      <view class="text-12"><text wx:if="{{is_login}}">没有任何书签</text><text wx:else>登录后查看我的书签</text></view>
       <navigator url="/pages/index/index" open-type="switchTab">
-        <button class="start-btn" type="default" size="mini" wx:if="{{is_login}}">开始学习</button>
+        <button class="start-btn" type="default" size="mini" wx:if="{{is_login}}">开启魔灯</button>
       </navigator>
     </view>
     <view class="" wx:else>

@@ -170,3 +170,58 @@ img{
   border-radius: 50%;
 }
 
+.item-main {
+  padding: 10rpx;
+  padding-bottom: 15rpx;
+  display: flex;
+  align-items: stretch;
+}
+
+.item-l {
+  width: 240rpx;
+}
+
+.item-r {
+  width: 480rpx;
+  padding-left: 15rpx;
+  padding-right: 5rpx;
+  position: relative;
+}
+
+.list-image {
+  width: 235rpx;
+  height: 130rpx;
+  border-radius: 10rpx;
+}
+
+.list-title {
+  font-size: 20rxp;
+  color: #333;
+  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+.list-desc {
+  font-size: 18rpx;
+  line-height: 1.4;
+  display: block;
+  margin-top: 5rpx;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+.list-info {
+  font-size: 16rpx;
+  position: absolute;
+  bottom: 0;
+  width: 450rpx;
+  left: 15rpx;
+  display: flex;
+  justify-content: space-between;
+}
+

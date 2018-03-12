@@ -49,7 +49,7 @@
     </view>
   </view>
 
-  <view class="bottom-text" wx:if="{{doc_class_list.length>0}}">到底了，去看看课程吧！</view>
+  <view class="bottom-text" wx:if="{{doc_class_list.length>0}}">到底了，去看看文档库吧！</view>
 
 
 

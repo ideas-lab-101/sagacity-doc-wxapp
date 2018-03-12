@@ -4,6 +4,33 @@
   height: 200rpx;
 }
 
+.class-main {
+  background: #fff;
+  padding: 20rpx 20rpx 0 20rpx;
+}
+
+.class-title {
+  font-size: 28rpx;
+  margin-top: 10rpx;
+}
+
+.class-list {
+  margin-top: 20rpx;
+}
+
+.class-list-item {
+  font-size: 24rpx;
+  padding: 15rpx 20rpx;
+  background: #f7f7f7;
+  margin: 0 20rpx 20rpx 0;
+  display: inline-block;
+  border-radius: 10rpx;
+  color: #333;
+}
+
+.list {
+  margin-top: 5rpx;
+}
 .item-main {
   padding: 20rpx;
   display: flex;
