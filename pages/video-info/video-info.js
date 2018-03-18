@@ -1,4 +1,5 @@
 // pages/course-info/course-info.js
+import { $wuxButton } from '../../components/wux'
 Page({
 
     /**
@@ -7,6 +8,7 @@ Page({
     data: {
         video_id: 0,
         video: {},
+        danmuList: {},
         related_video: {},
         likes: {},
         is_follow: true,
@@ -31,6 +33,7 @@ Page({
             title: '加载中',
         })
         this.get_data()
+        this.init_buttons()
     },
     get_data() {
         wx.request({
@@ -54,6 +57,7 @@ Page({
                 })
                 this.setData({
                     video: res.data.video,
+                    danmuList: res.data.danmus,
                     likes: res.data.likes,
                     related_video: res.data.relatedVideos
                 })
@@ -63,7 +67,38 @@ Page({
             }
         })
     },
+    init_buttons(position = 'bottomRight') {
+      const self = this
+      this.setData({
+        opened: !1,
+      })
 
+      this.button = $wuxButton.init('br', {
+        position: position,
+        buttons: [
+          {
+            label: '首页',
+            icon: "../../assets/images/btn_home.png",
+          },
+          {
+            label: '生成封面',
+            icon: "../../assets/images/btn_QR.png",
+          }
+        ],
+        buttonClicked(index, item) {
+          index === 0 && wx.switchTab({
+            url: '../video/video',
+          })
+          index === 1 && self.onGetShareCode()
+          return true
+        },
+        callback(vm, opened) {
+          vm.setData({
+            opened,
+          })
+        },
+      })
+    },
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
@@ -122,28 +157,6 @@ Page({
             wx.showToast({
               title: res.data.msg,
             })
-          }
-        }
-      })
-    },
-    show_menu() {
-      wx.showActionSheet({
-        itemList: ['首页','生成封面'],
-        success: (res) => {
-          switch (res.tapIndex) {
-            case 99:
-              wx.showToast({
-                title: '视频-离线下载！',
-              })
-              break;
-            case 0:
-              wx.switchTab({
-                url: '../index/index',
-              })
-              break;
-            case 1:
-              this.onGetShareCode()
-              break;
           }
         }
       })
@@ -213,7 +226,7 @@ Page({
 
     onShareAppMessage: function () {
         return {
-            title: '魔灯课程-分享知识'
+            title: '魔灯视频-分享精彩'
         }
     },
     video_like(event) {

@@ -99,11 +99,13 @@ Page({
             } else {
               wx.showToast({
                 title: '错误的二维码！',
+                icon: 'none',
               })
             }
           }catch(e){
             wx.showToast({
               title: '错误的二维码！',
+              icon: 'none',
             })
           }
         },
@@ -141,6 +143,7 @@ Page({
               } else {
                 wx.showToast({
                   title: res.data.msg,
+                  icon: 'none',
                 })
               }
             }, complete: res => {

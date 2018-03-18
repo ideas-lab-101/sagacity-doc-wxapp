@@ -7,11 +7,14 @@ Page({
   data: {
     page_id: {},
     article: {},
+    music: {},
     info: [],
     read_type: 'light',
     can_type: wx.canIUse('setNavigationBarColor'),
     font_size: 28,
+    isPlayingMusic: false,
     show_set_font: false,
+    show_back_music: false,
     show_menu: false,
     menu: [], //用以展现目录
     list_menu: [] //列表数据，用以实现上一页、下一页
@@ -45,7 +48,6 @@ Page({
     })
     this.get_data()
   },
-
   get_data() {
     wx.request({
       url: getApp().api.get_v2_page,
@@ -72,6 +74,7 @@ Page({
 
           })
           wx.hideLoading()
+          this.get_back_music()
           // if (this.data.menu.length <= 0) {
           //   this.get_menu()
           // }
@@ -156,7 +159,8 @@ Page({
   },
   onShareAppMessage: function () {
     return {
-      title: this.data.info.title
+      title: this.data.info.title,
+      path: "/pages/doc-page/doc-page?page_id="+this.data.page_id
     }
   },
   previewImage: function (event) {
@@ -168,7 +172,6 @@ Page({
   },
   sliderchange(event) {
     let value = event.detail.value
-
     wx.setStorageSync('font_size', value)
 
     this.setData({
@@ -178,6 +181,7 @@ Page({
   main_click() {
     this.setData({
       show_set_font: false,
+      show_back_music: false,
       show_menu: false,
     })
   },
@@ -185,6 +189,51 @@ Page({
     this.setData({
       show_set_font: !this.data.show_set_font
     })
+  },
+  get_back_music(){
+    wx.request({
+      url: getApp().api.get_back_music,
+      data: {
+        doc_id: this.data.info.doc_id
+      },
+      success: (res) => {
+        wx.stopBackgroundAudio() //停掉之前的歌曲
+        this.setData({
+          music: res.data.data,
+          isPlayingMusic: false
+        })
+      },
+      complete: () => {
+
+      }
+    })
+  },
+  on_music_tap() {
+    this.setData({
+      show_back_music: !this.data.show_back_music
+    })
+  },
+  music_controll() {
+    if (this.data.isPlayingMusic) {
+      wx.pauseBackgroundAudio();
+      //设置全局播放变量
+      getApp().globalData.g_isPlayingMusic = false;
+      this.setData({
+        isPlayingMusic: false
+      })
+    }
+    else {
+      wx.playBackgroundAudio({
+        dataUrl: this.data.music.resource_url,
+        title: this.data.music.title,
+        coverImgUrl: this.data.music.cover_url,
+      })
+      //设置全局播放变量
+      getApp().globalData.g_isPlayingMusic = true;
+      this.setData({
+        isPlayingMusic: true
+      })
+    }
   },
   show_menu() {
     if (this.data.menu.length <= 0) {
@@ -221,6 +270,7 @@ Page({
       title: '加载中',
     })
     this.get_data()
+    this.get_back_music()
   },
   // 上一页
   up_page() {
@@ -284,7 +334,7 @@ Page({
   //更多
   show_more() {
     wx.showActionSheet({
-      itemList: ['加入书签', '报错/举报'],
+      itemList: ['文档页',  '加入书签', '报错/举报'],
       success: (res) => {
         switch (res.tapIndex) {
           case 99:
@@ -296,9 +346,14 @@ Page({
             // })  
             break;
           case 0:
-            this.collect()
+            wx.navigateTo({
+              url: '../doc-info/doc-info?doc_id=' + this.data.info.doc_id
+             })
             break;
           case 1:
+            this.collect()
+            break;
+          case 2:
             wx.navigateTo({
               url: '../doc-back/doc-back?page_id=' + this.data.page_id
             })

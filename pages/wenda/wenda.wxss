@@ -1,4 +1,3 @@
-@import '/assets/style/iconfont.wxss';
 
 .q-item {
   display: flex;

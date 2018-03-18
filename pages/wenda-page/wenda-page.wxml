@@ -13,7 +13,7 @@
       <view class="d-left">
         <view class="d-info" data-type="qs" data-id="{{data.id}}" catchtap="wenda_like">
           <text class="q-num text-12">{{data.like_count}}</text>
-          <view class="c-iconfont text-20 icon-aui-icon-laud"></view>
+          <view class="c-iconfont text-20 icon-like"></view>
         </view>
       </view>
       <view class="border-b"></view>
@@ -62,7 +62,7 @@
         <view class="d-left">
           <view class="d-info" data-type="qsr" data-id="{{item.id}}" catchtap="wenda_like">
             <text class="q-num text-12">{{item.like_count}}</text>
-            <view class="c-iconfont text-20 icon-aui-icon-laud"></view>
+            <view class="c-iconfont text-20 icon-like"></view>
           </view>
           <view class="choose" wx:if="{{item.is_accept}}">
             <view class="iconfont icon-gouxuan"></view>

@@ -1,41 +1,59 @@
-
-let ArrayList = require("../../utils/arrayList.js");
+import { $wuxButton } from '../../components/wux'
 Page({
   data: {
     doc_id: 0,
     doc: {},
     likes: {},
     related_doc: {},
-    my_doc: [],
-    // is_add: true,
-    // add_text: "已加入",
-    show_page: false,
-    question: {},
-    page: 1,
     class_id: 0,
-    more_data: "加载更多中..",
-    no_more: false,
-    no_data: false,
-    more: false,
-    ls_load: false
   },
   onLoad: function (option) {
-
-    let old_my_doc = wx.getStorageSync("old_my_doc");
-    if (old_my_doc == '') {
-      old_my_doc = { arr: [] };
-    }
-    let list = new ArrayList(old_my_doc.arr);
-    list.setType("number")
     let id = option.doc_id
     this.setData({
-      doc_id: id,
-      my_doc: list
+      doc_id: id
     })
     wx.showLoading({
       title: '加载中',
     })
     this.get_data()
+    this.init_buttons()
+  },
+  init_buttons(position = 'bottomRight') {
+    const self = this
+    this.setData({
+      opened: !1,
+    })
+
+    this.button = $wuxButton.init('br', {
+      position: position,
+      buttons: [
+        {
+          label: '首页',
+          icon: "../../assets/images/btn_home.png",
+        },
+        {
+          label: '生成封面',
+          icon: "../../assets/images/btn_QR.png",
+        },
+        {
+          label: '收藏',
+          icon: "../../assets/images/btn_fav.png",
+        }
+      ],
+      buttonClicked(index, item) {
+        index === 0 && wx.switchTab({
+          url: '../index/index',
+        })
+        index === 1 && self.onGetShareCode()
+        index === 2 && self.add_my_doc()
+        return true
+      },
+      callback(vm, opened) {
+        vm.setData({
+          opened,
+        })
+      },
+    })
   },
   get_data() {
     wx.request({
@@ -45,37 +63,18 @@ Page({
       },
       data: {
         token: getApp().user.ckLogin(),
-        doc_id: this.data.doc_id,
-        page: this.data.page
+        doc_id: this.data.doc_id
       },
       success: (res) => {
-        if (!res.data.doc.is_follow) {
-          // this.setData({
-          //   is_add: false,
-          //   add_text: "加入档库"
-          // })
-        }
         wx.setNavigationBarTitle({
           title: res.data.doc.title
         })
-        if (this.data.page == 1) {
-          this.setData({
-            doc: res.data.doc,
-            likes: res.data.likes,
-            related_doc: res.data.relatedDocs,
-            // question: res.data.questions.list,
-            show_page: true
-          })
-        } else {
-          let o_data = this.data.question;
-          for (var index in res.data.questions.list) {
-            o_data.push(res.data.questions.list[index])
-          }
-          this.setData({
-            question: o_data
-          })
-        }
-        // getApp().set_page_more(this, res.data.questions)
+        this.setData({
+          doc: res.data.doc,
+          likes: res.data.likes,
+          related_doc: res.data.relatedDocs,
+          show_page: true
+        })
         wx.stopPullDownRefresh()
       }, complete: () => {
         wx.hideLoading()
@@ -140,49 +139,13 @@ Page({
     })
   },
   onPullDownRefresh: function () {
-    this.setData({
-      page: 1,
-      more: false,
-      no_more: false
-    })
     this.get_data()
   },
   onReachBottom: function () {
-    if (this.data.more && !this.data.ls_load) {
-      this.setData({
-        page: this.data.page + 1,
-        more_data: "正在加载更多.."
-      })
-      this.get_data()
-    }
+
   },
-  show_menu() {
-    wx.showActionSheet({
-      itemList: ['首页', '生成封面', '收藏'],
-      success: (res) => {
-        switch (res.tapIndex) {
-          case 99:
-            wx.showToast({
-              title: '文档-邮箱功能！',
-            })
-          //   wx.navigateTo({
-          //     url: '../wenda-post/wenda-post?source=doc&source_id='+this.data.doc_id,
-          //   })
-            break;
-          case 0:
-            wx.switchTab({
-              url: '../index/index',
-            })
-            break;
-          case 1:
-            this.onGetShareCode()
-            break;
-          case 2:
-            this.add_my_doc()
-            break;  
-        }
-      }
-    })
+  do_comment: function () {
+    console.log('comment');
   },
   onShareAppMessage: function () {
     return {

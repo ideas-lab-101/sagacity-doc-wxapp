@@ -1,3 +1,4 @@
+@import '/assets/style/iconfont.wxss';
 @import '../wenda/wenda.wxss';
 
 .top-video {
@@ -29,8 +30,8 @@
 }
 
 .controls .img {
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
 }
 
 .info-top {
@@ -67,20 +68,26 @@
 }
 
 .top-btn-group {
-    padding: 40rpx 0 30rpx 0;
-    display: flex;
-    justify-content: space-between;
+  padding: 40rpx 0 30rpx 0;
+  display: flex;
+  justify-content: space-around;
 }
 
-.top-btn-group .btn {
-    margin: 0;
-    width: 220rpx;
-    border-radius: 0;
-    line-height: 2.6;
+.func-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 9pt;
+  width: 120rpx;
+  padding: 15rpx 0rpx;
 }
 
-.top-btn-group .btn::after {
-    border-radius: 0;
+
+.func-item .icon {
+  width: 45rpx;
+  height: 45rpx;
+  margin-bottom: 5rpx;
 }
 
 .desc-main .border-b {
@@ -165,6 +172,27 @@
     border-radius: 50%;
 }
 
+.class-main {
+  background: #fff;
+  margin-top: 10rpx;
+}
+
+.class-title {
+  text-align: center;
+  line-height: 50rpx;
+  height: 50rpx;
+  padding:20rpx 32rpx;
+  font-size: 30rpx;
+  color: #666;
+  display: flex;
+  margin-bottom: 10rpx;
+  justify-content: space-between;
+}
+
+.list {
+  margin:0 22rpx;
+}
+
 .item-main {
   padding: 10rpx;
   padding-bottom: 15rpx;
@@ -214,7 +242,7 @@
   font-size: 16rpx;
   position: absolute;
   bottom: 0;
-  width: 450rpx;
+  width: 440rpx;
   left: 15rpx;
   display: flex;
   justify-content: space-between;

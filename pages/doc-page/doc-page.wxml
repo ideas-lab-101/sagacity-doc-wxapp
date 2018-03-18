@@ -8,58 +8,65 @@
   </view>
   <view class="page-footer">
 
-
     <view class="set-font" wx:if="{{show_set_font}}">
       <view class="set-f-l">
-        <text class="c-iconfont icon-zitijian"></text>
+        <text class="c-iconfont icon-font_size_down"></text>
       </view>
       <view class="set-f-body">
         <slider bindchange="sliderchange" min="20" max="60" value="{{font_size}}" selected-color="#ed424b" />
       </view>
       <view class="set-f-r">
-        <text class="c-iconfont icon-zitijia"></text>
+        <text class="c-iconfont icon-font_size_up"></text>
+      </view>
+    </view>
+    <view class="back-music" wx:if="{{show_back_music}}">
+      <view class="set-m-l">
+        <image src="{{music.cover_url}}" class="cover-img"></image>
+      </view>
+      <view class="set-m-body">
+        <text class="title">{{music.title}}</text>
+      </view>
+      <view class="set-m-r">
+        <text class="c-iconfont {{isPlayingMusic?'icon-pause' : 'icon-play'}}" bindtap="music_controll"></text>
       </view>
     </view>
     <view class="footer-bar">
       <view class="menu-box">
         <view class="go-btn" catchtap="up_page">
-          <text class="go-icon c-iconfont icon-aui-icon-left"></text>
+          <text class="go-icon c-iconfont icon-back"></text>
         </view>
         <view class="bar-item" catchtap="show_menu">
-          <text class=" c-iconfont icon-mulu"></text>
+          <text class=" c-iconfont icon-menu"></text>
           <text>目录</text>
         </view>
         <view class="go-btn" catchtap="next_page">
-          <text class="go-icon c-iconfont icon-aui-icon-right"></text>
+          <text class="go-icon c-iconfont icon-arrow-right"></text>
         </view>
 
       </view>
       <view class="bar-item" catchtap="set_font">
-        <text class="c-iconfont icon-icon-yxj-font"></text>
+        <text class="c-iconfont icon-fontsize"></text>
         <text>设置</text>
       </view>
       <view class="bar-item" bindtap="change_read_type">
         <block wx:if="{{read_type=='light'}}">
-          <text class="c-iconfont icon-yejian"></text>
+          <text class="c-iconfont icon-moon"></text>
           <text>夜间</text>
         </block>
         <block wx:else>
-          <text class="c-iconfont icon-day"></text>
+          <text class="c-iconfont icon-sun"></text>
           <text>日间</text>
         </block>
       </view>
-      <navigator class="bar-item" url="../doc-info/doc-info?doc_id={{info.doc_id}}">
-        <text class="c-iconfont icon-home"></text>
-        <text>文档页</text>
-      </navigator>
+      <view class="bar-item" bindtap="on_music_tap">
+        <text class="c-iconfont icon-music"></text>
+        <text>背景音</text>
+      </view>
       <view class="bar-item" catchtap="show_more">
-        <text class="c-iconfont icon-mingpiandibudaohanggengduo"></text>
+        <text class="c-iconfont icon-plus"></text>
         <text>更多</text>
       </view>
     </view>
-
-
-
 
     <scroll-view scroll-y="true" class="page-menu {{read_type}}" wx:if="{{show_menu}}" scroll-into-view="menu-{{info.id}}">
       <view class="">

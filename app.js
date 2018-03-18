@@ -13,6 +13,9 @@ App({
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
   },
+  globalData: {
+    g_isPlayingMusic: false
+  },
   towxml: new Towxml(),
   user: new User(),
   pages: new Pages(),
@@ -58,7 +61,7 @@ App({
      * V3版本接口
      */
     get_v3_index: HOST + "/wxss/doc/index",
-    get_v3_2_doc_info: HOST + "/wxss/doc/getDocInfo",
+    get_v3_2_doc_info: HOST + "/wxss/v2/doc/getDocInfo",
     get_v3_doc_page: HOST + "/api/v3/doc-page",
 
     v3_doc_feedback: HOST +"/wxss/doc/docFeedback",//文档反馈
@@ -84,7 +87,7 @@ App({
     v3_wenda_post: HOST + "/wxss/question/questionPost",
     v3_wenda_reply_post: HOST + "/wxss/question/replyPost",
 
-    //课程
+    //视频
     get_video_class: HOST + "/wxss/video/getVideoClass",
     get_v3_video: HOST + "/wxss/video/getVideoList",
     get_v3_class_video: HOST + "/wxss/video/getClassVideoList",
@@ -98,6 +101,9 @@ App({
     //支付相关接口
     get_v2_pay_item: HOST + "/wxss/pay/getPayItem",
     get_v2_gen_order: HOST + "/wxss/pay/genOrder",
-    wx_pay: HOST + "/wxss/pay/wxPay"
+    wx_pay: HOST + "/wxss/pay/wxPay",
+
+    //音乐相关
+    get_back_music: HOST + "/wxss/music/getBackMusic",
   }
 })

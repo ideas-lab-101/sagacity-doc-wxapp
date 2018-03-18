@@ -7,7 +7,7 @@
     <view class="class-list view-bg" wx:for="{{data}}" wx:key="{{item}}">
       <navigator class="class-title" url="../doc-class-list/doc-class-list?class_id={{item.id}}">
         <text>{{item.title}}</text>
-        <text class="c-iconfont icon-aui-icon-more"></text>
+        <text class="c-iconfont icon-ellipsis"></text>
       </navigator>
       <view class="class-son">
         <view class="class-son-item" wx:for="{{item.son}}" wx:key="{{item}}" hover-class="view-hover-class" data-id="{{item.id}}" bindtap="go_class_list">

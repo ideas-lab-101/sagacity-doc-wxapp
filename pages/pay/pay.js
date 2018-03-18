@@ -58,42 +58,41 @@ Page({
         const index = e.currentTarget.dataset.index || e.target.dataset.index
         const data = e.currentTarget.dataset.id || e.target.dataset.id //金额
         
-        wx.showLoading({
-          title: '加载中...',
-          mask: true
-        })
-        wx.request({
-          url: getApp().api.get_v2_gen_order,
-          method: 'POST',
-          header: {
-            'content-type': 'application/x-www-form-urlencoded'
-          },
-          data: {
-            token: getApp().user.ckLogin(),
-            id: this.data.id,
-            type: this.data.type,
-            cost: data
-          },
-          success: res => {
-            wx.hideLoading()
-            if (res.data.code == 1) {
-              //支付
-              this._pay(res.data.order, res.data.pay_id)
-            } else {
+        getApp().user.isLogin(token => {
+          wx.showNavigationBarLoading()
+          wx.request({
+            url: getApp().api.get_v2_gen_order,
+            method: 'POST',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded'
+            },
+            data: {
+              token: token,
+              id: this.data.id,
+              type: this.data.type,
+              cost: data
+            },
+            success: res => {
+              if (res.data.code == 1) {
+                //支付
+                this._pay(res.data.order, res.data.pay_id)
+              } else {
+                wx.showToast({
+                  title: res.data.msg,  //标题  
+                  icon: 'none'
+                })
+              }
+            },
+            fail: error => {
               wx.showToast({
-                title: res.data.msg,  //标题  
+                title: '失败',  //标题  
                 icon: 'none'
               })
-            }
-          },
-          fail: error => {
-            wx.hideLoading()
-            wx.showToast({
-              title: '失败',  //标题  
-              icon: 'none'
-            })
-          }
-        })
+            }, complete: res => {
+              wx.hideNavigationBarLoading()
+            }  
+          })
+        })  
     },
 
     _pay(order, pay_id) {

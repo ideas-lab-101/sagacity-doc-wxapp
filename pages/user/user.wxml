@@ -27,7 +27,7 @@
 
   <view class="func-grid">
     <view class="func-item" bindtap="scan_code">
-      <view class="iconfont icon-saoma"></view>
+      <view class="c-iconfont icon-scan"></view>
       <text>{{user_data.scan_code_title}}</text>
     </view>
   </view>

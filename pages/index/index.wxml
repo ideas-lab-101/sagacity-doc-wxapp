@@ -28,7 +28,7 @@
   <view class="class-doc" wx:for="{{doc_class_list}}" wx:key="{{item}}">
     <navigator class="class-title" url="../doc-class-list/doc-class-list?class_id={{item.id}}">
       <text>{{item.title}}</text>
-      <text class="c-iconfont icon-aui-icon-more"></text>
+      <text class="c-iconfont icon-ellipsis"></text>
     </navigator>
     <view class="class-doc-list">
       <block wx:for="{{item.doc}}" wx:key="{{item}}">

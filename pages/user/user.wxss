@@ -1,5 +1,5 @@
- @import '/assets/style/iconfont.wxss'; 
-  @import '../my-doc/my-doc.wxss'; 
+@import '../my-doc/my-doc.wxss'; 
+
 page{
   background: #ffffff;
 }
@@ -92,8 +92,8 @@ page{
   padding: 40rpx 0;
 }
 
-.func-item .iconfont {
-  font-size: 18pt;
+.func-item .c-iconfont {
+  font-size: 30pt;
   margin-bottom: 20rpx;
 }
 
@@ -106,7 +106,7 @@ page{
   /* justify-content: center; */
   
 }
-.scan .iconfont{
+.scan .c-iconfont{
   font-size: 18pt;
   margin-right: 40rpx;
 }

@@ -1,4 +1,5 @@
- @import '/assets/style/cloud-icon.wxss'; 
+@import '/assets/style/cloud-icon.wxss';
+@import '/components/wux.wxss';
 
 page {
   background: #f7f7f7;

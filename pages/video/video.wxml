@@ -5,7 +5,7 @@
   <view class="class-main">
       <navigator class="class-title" url="../video-class/video-class">
         <text>分类标签</text>
-        <text class="c-iconfont icon-aui-icon-more"></text>
+        <text class="c-iconfont icon-ellipsis"></text>
       </navigator>
       <view class="class-list">
         <view hover-class="view-hover-class-tg" class="class-list-item" wx:for="{{class_tag}}" wx:key="{{item}}" bindtap="class_video" data-name="{{item.title}}" data-id="{{item.id}}"><text decode="true">{{item.title}}</text></view>
