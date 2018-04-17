@@ -42,7 +42,7 @@
               </button>
               <button class="func-item" bindtap="do_comment" data-id="{{video.id}}">
                 <image class="icon" src="../../assets/images/btn_chat.png"></image>
-                <text>讨论</text>
+                <text>留言</text>
               </button>
               <button class="func-item" open-type="share">
                 <image class="icon" src="../../assets/images/btn_share.png"></image>

@@ -1,3 +1,6 @@
+<import src="../../components/button/button.wxml" />
+<template is="button" data="{{ ...$wux.button.br }}" />
+
 <import src="/towxml/entry.wxml" />
 <view class="">
   <view class="pbg {{read_type}}"></view>
@@ -7,7 +10,6 @@
     </view>
   </view>
   <view class="page-footer">
-
     <view class="set-font" wx:if="{{show_set_font}}">
       <view class="set-f-l">
         <text class="c-iconfont icon-font_size_down"></text>
@@ -21,51 +23,50 @@
     </view>
     <view class="back-music" wx:if="{{show_back_music}}">
       <view class="set-m-l">
-        <image src="{{music.cover_url}}" class="cover-img"></image>
-      </view>
-      <view class="set-m-body">
-        <text class="title">{{music.title}}</text>
+        <image src="{{music.cover_url}}" class="cover-img rotate"></image>
       </view>
       <view class="set-m-r">
         <text class="c-iconfont {{isPlayingMusic?'icon-pause' : 'icon-play'}}" bindtap="music_controll"></text>
+        <text class="c-iconfont icon-close" bindtap="on_music_tap"></text>
       </view>
     </view>
     <view class="footer-bar">
       <view class="menu-box">
-        <view class="go-btn" catchtap="up_page">
+        <button class="go-btn" hover-class='clicked' catchtap="up_page">
           <text class="go-icon c-iconfont icon-back"></text>
-        </view>
-        <view class="bar-item" catchtap="show_menu">
+        </button>
+        <button class="bar-item" hover-class='clicked' catchtap="show_menu">
           <text class=" c-iconfont icon-menu"></text>
           <text>目录</text>
-        </view>
-        <view class="go-btn" catchtap="next_page">
+        </button>
+        <button class="go-btn" hover-class='clicked' catchtap="next_page">
           <text class="go-icon c-iconfont icon-arrow-right"></text>
-        </view>
+        </button>
 
       </view>
-      <view class="bar-item" catchtap="set_font">
+      <button class="bar-item" hover-class='clicked' catchtap="set_font">
         <text class="c-iconfont icon-fontsize"></text>
         <text>设置</text>
-      </view>
-      <view class="bar-item" bindtap="change_read_type">
+      </button>
+      <button class="bar-item" hover-class='clicked' bindtap="change_read_type">
         <block wx:if="{{read_type=='light'}}">
           <text class="c-iconfont icon-moon"></text>
-          <text>夜间</text>
+          <text class="label">夜间</text>
         </block>
         <block wx:else>
           <text class="c-iconfont icon-sun"></text>
           <text>日间</text>
         </block>
-      </view>
-      <view class="bar-item" bindtap="on_music_tap">
-        <text class="c-iconfont icon-music"></text>
-        <text>背景音</text>
-      </view>
-      <view class="bar-item" catchtap="show_more">
+      </button>
+      <button class="bar-item" hover-class='clicked' open-type='share'>
+        <text class="c-iconfont icon-share1"></text>
+        <text>分享</text>
+      </button>
+      <!-- <button class="bar-item" hover-class='clicked' catchtap="show_more">
         <text class="c-iconfont icon-plus"></text>
         <text>更多</text>
-      </view>
+      </button> -->
+      <view class="more"> </view>
     </view>
 
     <scroll-view scroll-y="true" class="page-menu {{read_type}}" wx:if="{{show_menu}}" scroll-into-view="menu-{{info.id}}">

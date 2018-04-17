@@ -56,11 +56,3 @@
   display: flex;
   justify-content: space-between;
 }
-
-.no_more{
-  line-height: 90rpx;
-  text-align: center;
-  background: #f7f7f7;
-  font-size: 24rpx;
-  color: #999999;
-}

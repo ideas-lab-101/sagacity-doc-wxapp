@@ -62,7 +62,6 @@ Page({
         }
 
         getApp().set_page_more(this, res.data)
-
         wx.stopPullDownRefresh()
       }, complete: () => {
         wx.hideLoading()

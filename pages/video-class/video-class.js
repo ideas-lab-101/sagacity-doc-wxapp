@@ -22,6 +22,9 @@ Page({
   get_data() {
     wx.request({
       url: getApp().api.get_video_class,
+      data:{
+        token: getApp().user.ckLogin()
+      },
       success: (res) => {
         this.setData({
           data: res.data.list

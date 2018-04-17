@@ -31,6 +31,14 @@ text {
   background: #f7f7f7;
 }
 
+.no_more{
+  line-height: 90rpx;
+  text-align: center;
+  background: #f7f7f7;
+  font-size: 24rpx;
+  color: #999999;
+}
+
 .no_data {
   font-size: 24rpx;
   text-align: center;
@@ -40,8 +48,8 @@ text {
 }
 
 .no_data_icon {
-  width: 160rpx;
-  height: 160rpx;
+  width: 310rpx;
+  height: 100rpx;
   margin-bottom: 30rpx;
 }
 

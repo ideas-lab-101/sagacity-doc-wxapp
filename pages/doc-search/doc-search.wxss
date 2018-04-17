@@ -62,6 +62,10 @@
   border-radius: 10rpx;
   color: #333;
 }
+.hot-list-item.view-hover-class-tg {
+    background-color: #666;
+    color: #fff;
+}
 
 .data-info-main {
   padding-bottom: 20rpx;

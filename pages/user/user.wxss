@@ -9,7 +9,7 @@ page{
   display: flex;
   justify-content: space-between;
   padding: 30rpx 30rpx 10rpx;
-  border-bottom: 1rpx #f0f0f0 solid;
+  border-bottom: 1rpx #f2f2f2 solid;
 }
 
 .uerinfo {
@@ -85,11 +85,16 @@ page{
 
 .func-item {
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   font-size: 9pt;
   padding: 40rpx 0;
+}
+
+.func-item.clicked {
+    background-color: #f2f2f2;
 }
 
 .func-item .c-iconfont {

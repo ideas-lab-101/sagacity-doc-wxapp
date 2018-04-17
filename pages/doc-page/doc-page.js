@@ -1,4 +1,6 @@
 // doc-page.js
+import { $wuxButton } from '../../components/wux'
+
 Page({
 
   /**
@@ -14,7 +16,7 @@ Page({
     font_size: 28,
     isPlayingMusic: false,
     show_set_font: false,
-    show_back_music: false,
+    show_back_music: true,
     show_menu: false,
     menu: [], //用以展现目录
     list_menu: [] //列表数据，用以实现上一页、下一页
@@ -47,6 +49,49 @@ Page({
       title: '加载中',
     })
     this.get_data()
+    this.initButton()
+  },
+  initButton() {
+    const that = this
+    this.setData({
+      opened: !1,
+    })
+
+    this.button = $wuxButton.init('br', {
+      position: 'bottomRight',
+      buttons: [
+        {
+          label: '文档首页',
+          icon: "/assets/images/btn_doc.png"
+        },
+        {
+          label: '加入书签',
+          icon: "/assets/images/btn_fav.png"
+        },
+        {
+          label: '文档反馈',
+          icon: "/assets/images/btn_message.png"
+        }
+      ],
+      buttonClicked(index, item) {
+        index === 0 && wx.navigateTo({
+          url: '../doc-info/doc-info?doc_id=' + that.data.info.doc_id
+        })
+
+        index === 1 && that.collect()
+
+        index === 2 && wx.navigateTo({
+          url: '../doc-back/doc-back?page_id=' + that.data.page_id
+        })
+
+        return true
+      },
+      callback(vm, opened) {
+        vm.setData({
+          opened,
+        })
+      },
+    })
   },
   get_data() {
     wx.request({
@@ -181,7 +226,7 @@ Page({
   main_click() {
     this.setData({
       show_set_font: false,
-      show_back_music: false,
+      show_back_music: true,
       show_menu: false,
     })
   },
@@ -191,6 +236,9 @@ Page({
     })
   },
   get_back_music(){
+    this.setData({
+      show_back_music: true
+    })
     wx.request({
       url: getApp().api.get_back_music,
       data: {
@@ -333,34 +381,65 @@ Page({
   },
   //更多
   show_more() {
-    wx.showActionSheet({
-      itemList: ['文档页',  '加入书签', '报错/举报'],
-      success: (res) => {
-        switch (res.tapIndex) {
-          case 99:
-            wx.showToast({
-              title: '文档-邮箱功能！',
-            })
-            // wx.navigateTo({
-            //   url: '../wenda-post/wenda-post?source=page&source_id=' + this.data.page_id
-            // })  
-            break;
-          case 0:
-            wx.navigateTo({
-              url: '../doc-info/doc-info?doc_id=' + this.data.info.doc_id
-             })
-            break;
-          case 1:
-            this.collect()
-            break;
-          case 2:
-            wx.navigateTo({
-              url: '../doc-back/doc-back?page_id=' + this.data.page_id
-            })
-            break;
-        }
-      }
+    const self = this
+    $wuxActionSheet.show({
+      titleText: '请选择操作',
+      theme: 'wx',
+      buttons: [
+        {
+          text: '返回文档'
+        },
+        {
+          text: '加入书签'
+        },
+        {
+          text: '文档反馈'
+        },
+      ],
+      buttonClicked(index, item) {
+        index === 0 && wx.navigateTo({
+          url: '../doc-info/doc-info?doc_id=' + self.data.info.doc_id
+        })
+
+        index === 1 && self.collect()
+        
+        index === 2 && wx.navigateTo({
+          url: '../doc-back/doc-back?page_id=' + self.data.page_id
+        })
+
+        return true
+      },
+      cancelText: '取消',
+      cancel() { },
     })
+    // wx.showActionSheet({
+    //   itemList: ['文档页',  '加入书签', '报错/举报'],
+    //   success: (res) => {
+    //     switch (res.tapIndex) {
+    //       case 99:
+    //         wx.showToast({
+    //           title: '文档-邮箱功能！',
+    //         })
+    //         // wx.navigateTo({
+    //         //   url: '../wenda-post/wenda-post?source=page&source_id=' + this.data.page_id
+    //         // })  
+    //         break;
+    //       case 0:
+    //         wx.navigateTo({
+    //           url: '../doc-info/doc-info?doc_id=' + this.data.info.doc_id
+    //          })
+    //         break;
+    //       case 1:
+    //         this.collect()
+    //         break;
+    //       case 2:
+    //         wx.navigateTo({
+    //           url: '../doc-back/doc-back?page_id=' + this.data.page_id
+    //         })
+    //         break;
+    //     }
+    //   }
+    // })
   },
   collect() {
     getApp().user.isLogin(token => {

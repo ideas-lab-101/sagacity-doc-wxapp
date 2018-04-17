@@ -267,6 +267,12 @@ Page({
 
     },
 
+    do_comment: function () {
+      wx.navigateTo({
+        url: '../comment/comment?type=video&id=' + this.data.video.id,
+      })
+    },
+
     /**
      * 用户点击右上角分享
      */

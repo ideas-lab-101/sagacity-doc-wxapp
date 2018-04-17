@@ -20,7 +20,8 @@
     "pages/video-class/video-class",
     "pages/video-class-list/video-class-list",
     "pages/video/video",
-    "pages/pay/pay"
+    "pages/pay/pay",
+    "pages/comment/comment"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -3,7 +3,7 @@ const Towxml = require('/towxml/main');
 const User = require('/utils/user');
 const Pages = require('/utils/pages');
 const HOST = "https://docs.ideas-lab.cn";
-// const HOST = "http://test.ideas-lab.cn";
+// const HOST = "http://web.tunnel.cdqidi.cn";
 // const HOST = "http://127.0.0.1:8080";
 
 App({
@@ -25,6 +25,10 @@ App({
         no_data: true,
         no_more: false,
         more: false,
+      })
+    }else{
+      tis.setData({
+        no_data: false,
       })
     }
     if (pageData.lastPage || pageData.totalRow==0) {
@@ -105,5 +109,10 @@ App({
 
     //音乐相关
     get_back_music: HOST + "/wxss/music/getBackMusic",
+
+    //留言
+    v3_comment_index: HOST + "/wxss/comment/getCommentList",
+    v3_comment_post: HOST + "/wxss/comment/addComment",
+    v3_comment_del: HOST + "/wxss/comment/delComment",
   }
 })

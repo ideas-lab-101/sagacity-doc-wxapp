@@ -19,10 +19,10 @@
     </view>
 
     <view class="no_more" wx:if="{{more}}">{{more_data}}</view>
-    <view class="no_more" wx:if="{{no_more}}">{{more_data}}</view>
+    <view class="no_more" wx:if="{{no_more && !no_data}}">{{more_data}}</view>
     <view class="no_data" wx:if="{{no_data}}">
       <image class="no_data_icon" src="../../assets/images/no_data.png"></image>
-      <view class="no_data_text">抱歉，此分类暂未发布新视频！</view>
+      <view class="no_data_text">抱歉，此分类暂未发布视频！</view>
     </view>
   </view>
 </view>

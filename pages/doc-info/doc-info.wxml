@@ -6,7 +6,7 @@
     <image src="{{doc.cover_url}}" class="book-cover-blur"></image>
     <view class="info-top">
       <view class="top-main">
-        <image mode="aspectFill" class="info-pic" src="{{doc.cover}}"></image>
+        <image mode="aspectFill" class="info-pic" src="{{doc.cover}}" bindtap='previewImg'></image>
         <view class="main-r">
           <text class="info-title">{{doc.title}}</text>
           <text class="info-username">作者：{{doc.Caption}}</text>
@@ -17,7 +17,7 @@
       <view class="">
         <view class="top-btn-group">
           <button class="func-item" bindtap="go_menu" data-id="{{doc.id}}">
-            <image class="icon" src="../../assets/images/btn_do.png"></image>
+            <image class="icon" src="../../assets/images/btn_read.png"></image>
             <text>阅读</text>
           </button>
           <button class="func-item" bindtap="do_pay" data-id="{{doc.id}}">
@@ -26,7 +26,7 @@
           </button>
           <button class="func-item" bindtap="do_comment" data-id="{{doc.id}}">
             <image class="icon" src="../../assets/images/btn_chat.png"></image>
-            <text>讨论</text>
+            <text>留言</text>
           </button>
           <button class="func-item" open-type="share">
             <image class="icon" src="../../assets/images/btn_share.png"></image>

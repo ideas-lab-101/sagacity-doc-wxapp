@@ -87,6 +87,11 @@ Page({
       url: '../doc-menu/doc-menu?doc_id=' + doc_id
     })
   },
+  previewImg: function (event) {
+    wx.previewImage({
+      urls: [this.data.doc.cover],
+    })
+  },
   go_doc: function ( event){
     let id = event.currentTarget.dataset.id;
     wx.redirectTo({
@@ -145,7 +150,9 @@ Page({
 
   },
   do_comment: function () {
-    console.log('comment');
+    wx.navigateTo({
+      url: '../comment/comment?type=doc&id=' + this.data.doc.id,
+    })
   },
   onShareAppMessage: function () {
     return {

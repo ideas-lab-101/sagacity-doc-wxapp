@@ -50,7 +50,7 @@ Page({
       this.get_data()
     })
   },
-  getuserinfo(res) {
+  get_userInfo(res) {
     if (res.detail.errMsg == "getUserInfo:ok") {
       this.login()
     }
@@ -64,7 +64,6 @@ Page({
       data: {
         token: getApp().user.ckLogin()
       }, success: res => {
-        console.log(res)
         if (res.data.code == 1) {
           this.setData({
             page_show: true,
@@ -72,7 +71,6 @@ Page({
             user: res.data.user,
             user_data: res.data.user_data,
           })
-          console.log(this.data.user)
         }
 
       }, fail: error => {
@@ -82,6 +80,11 @@ Page({
         wx.stopPullDownRefresh()
       }
     })
+  },
+  subscribe_manage(){
+    getApp().user.isLogin(token => {
+
+    })  
   },
   scan_code() {
     getApp().user.isLogin(token => {
@@ -139,6 +142,7 @@ Page({
               if (res.data.code == 1) {
                 wx.showToast({
                   title: res.data.msg,
+                  icon: 'none',
                 })
               } else {
                 wx.showToast({

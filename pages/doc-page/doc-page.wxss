@@ -48,13 +48,6 @@
   height: 40rpx;
 }
 
-.iconfont.ask-btn {
-  width: 80rpx;
-  height: 80rpx;
-  background: rgba(255, 255, 255, 0.5);
-  color: #999;
-}
-
 .footer-bar {
   background: rgba(0, 0, 0, 0.8);
   position: fixed;
@@ -66,19 +59,18 @@
   z-index: 9;
 }
 
-.bar-item {
+.footer-bar .more {
+  width: 100rpx;
   height: 100rpx;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-  flex-grow: 1;
-  align-items: center;
-  justify-content: center;
 }
 
 .menu-box {
   flex-grow: 3;
   display: flex;
+}
+
+button.bar-item::after,button.go-btn::after{
+    border: none;
 }
 
 .menu-box .go-btn {
@@ -87,6 +79,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background: transparent;
+}
+
+.go-btn.clicked {
+  background-color: #000;
 }
 
 .go-btn .go-icon {
@@ -94,16 +91,35 @@
   font-size: 52rpx;
 }
 
-.bar-item text {
-  color: #fff;
-  font-size: 22rpx;
+.bar-item {
+  height: 100rpx;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  line-height: 0;
+}
+
+.bar-item.clicked {
+  background-color: #000;
 }
 
 .bar-item .c-iconfont {
   font-size: 40rpx;
-  margin-bottom: 8rpx;
+  line-height: 50rpx;
 }
 
+.bar-item text {
+  color: #fff;
+  font-size: 22rpx;
+  line-height: 30rpx;
+  display: block;
+}
+
+/* 字体设置区 */
 .set-font {
   position: fixed;
   bottom: 100rpx;
@@ -165,35 +181,53 @@ color: #ddd;
   color: #000000;
 }
 
+/* 背景音乐设置区 */
 .back-music {
   position: fixed;
-  bottom: 100rpx;
-  width: 100%;
-  height: 100rpx;
-  padding: 25rpx 0;
-  background: rgba(0, 0, 0, 0.8);
+  bottom: 120rpx;
+  left: 20rpx;
+  width: 220rpx;
+  height: 75rpx;
+  background: #fff;
+  border: solid 1px #000;
+  border-radius:25px;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 998;
+  z-index: 997;
 }
 
 .set-m-l {
-  text-align:center;
-  width: 100rpx;
+  text-align:left;
+  width: 75rpx;
 }
 .cover-img {
   width: 70rpx;
   height: 70rpx;
-  border-radius: 50%;
+  border-radius: 100%;
   position: absolute;
-  margin-top: -30rpx;
+  margin-left: 3rpx;
+  margin-top: -35rpx;
+}
+
+@-webkit-keyframes rotation{
+  from {-webkit-transform: rotate(0deg);}
+  to {-webkit-transform: rotate(360deg);}
+}
+
+.rotate{
+  -webkit-transform: rotate(360deg);
+  animation: rotation 8s linear infinite;
+  -moz-animation: rotation 8s linear infinite;
+  -webkit-animation: rotation 8s linear infinite;
+  -o-animation: rotation 8s linear infinite;
 }
 
 .set-m-body {
   flex-shrink: 0;
-  text-align: center;
   flex-grow: 1;
+  text-align: center;
 }
 .set-m-body .title {
   color: #fff;
@@ -201,11 +235,27 @@ color: #ddd;
 }
 
 .set-m-r {
-  width: 90rpx;
+  flex-shrink: 0;
+  flex-grow: 1;
   text-align: center;
 }
 
 .set-m-r .c-iconfont {
-  color: #fff;
-  font-size: 40rpx;
+  color: #000;
+  font-size: 44rpx;
+}
+
+/* button控件样式 */
+.wux-speed-dial--bottom-right {
+    right: 0;
+    bottom: 0;
+} 
+
+.wux-speed-dial__action{
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.wux-speed-dial__button image{
+  margin: 0 !important;
 }

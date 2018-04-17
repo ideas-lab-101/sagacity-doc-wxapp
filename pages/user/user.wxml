@@ -22,13 +22,17 @@
     </view>
   </view>
   <view class="no-login" wx:else>
-    <button class="login-btn" type="warn" open-type="getUserInfo" bindgetuserinfo="getuserinfo">立即登录</button>
+    <button class="login-btn" type="warn" open-type="getUserInfo" bindgetuserinfo="get_userInfo">立即登录</button>
   </view>
 
   <view class="func-grid">
-    <view class="func-item" bindtap="scan_code">
+    <view class="func-item" bindtap="scan_code" hover-class='clicked'>
       <view class="c-iconfont icon-scan"></view>
       <text>{{user_data.scan_code_title}}</text>
+    </view>
+    <view class="func-item" bindtap="subscribe_manage" hover-class='clicked'>
+      <view class="c-iconfont icon-icon_videoplay"></view>
+      <text>订阅频道</text>
     </view>
   </view>
 
