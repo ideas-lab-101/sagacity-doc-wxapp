@@ -190,6 +190,7 @@
 /**块元素**/
 .h2w__p {
     margin-bottom:40rpx;
+    text-indent: 2em;
     /*word-wrap:break-word;
     word-break:break-all;*/
     /*text-align:justify;*/
@@ -277,7 +278,11 @@
 image,video {
     width:100%; margin:0 auto 20rpx auto;
 }
-
+.h2w__p image,
+.h2w__p video{
+    display: block;
+    /* width: 80%; */
+}
 image {
 	height:auto;
 }
