@@ -1,4 +1,4 @@
-// doc-class-list.js
+// video-class-list.js
 Page({
 
   /**

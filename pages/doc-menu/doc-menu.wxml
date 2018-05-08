@@ -2,7 +2,8 @@
   <view class="menu-list">
     <view class="menu-item" wx:for="{{data}}" wx:key="{{item}}">
       <view hover-class="view-hover-class">
-        <text decode="true" class="menu-title border-b-s" data-id="{{item.id}}" bindtap="go_page">{{item.menu_title}}</text>
+        <text decode="true" class="menu-title border-b-s" data-id="{{item.id}}" bindtap="go_page">
+          <text class="c-iconfont icon-menu" />{{item.menu_title}}</text>
       </view>
       <template is="menu_son" data="{{...item}}" />
     </view>

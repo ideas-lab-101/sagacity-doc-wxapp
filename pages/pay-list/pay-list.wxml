@@ -1,0 +1,28 @@
+
+<view class="header">
+      <text class='title'>收入列表</text>
+      <view class="list_number">共{{ totalRow }}项</view>
+  </view>
+
+  <view class='list'>
+    <view class="comment" wx:for="{{ data }}" bindtap='goDetai' data-index="{{index}}">
+        <view class="comment_header">
+            <view class="c-iconfont icon-icon_videoplay" wx:if="{{ item.type === 'video' }}"></view>
+            <view class="c-iconfont icon-wendang" wx:if="{{ item.type === 'doc' }}"></view>
+        </view>
+        <view class="comment_content">
+            <view class="title">{{ item.title }}</view>
+            <view class="time">{{ item.created_at }}</view>
+        </view>
+        <view class="more_info">
+            <text>{{ item.cost }}元</text>
+        </view>
+    </view>
+
+    <view class="no_more" wx:if="{{more}}">{{more_data}}</view>
+    <view class="no_more" wx:if="{{no_more && !no_data}}">{{more_data}}</view>
+    <view class="no_data" wx:if="{{no_data}}">
+      <image class="no_data_icon" src="../../assets/images/no_data.png"></image>
+      <view class="no_data_text">还没有收入，快去发布文档视频吧！</view>
+    </view>
+  </view>

@@ -44,6 +44,27 @@
 
 .info-main {
     display: flex;
+    flex-direction: row;
+}
+
+.info-main .user-info {
+  text-align: center;
+  flex-direction: column;
+}
+
+.info-main .user-info .user-avatar {
+    width: 60rpx;
+    height: 60rpx;
+    border-radius: 50%;
+}
+
+.info-main .user-info .user-name {
+    font-size: 22rpx;
+    line-height: 1.8;
+}
+
+.info-content {
+    flex-grow: 1;
     flex-direction: column;
 }
 

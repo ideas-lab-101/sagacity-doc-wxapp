@@ -15,15 +15,15 @@
     <block wx:for="{{grid}}" wx:key="{{item}}">
       <navigator class="grid-item" url="{{item.page}}" open-type="{{item.open_type}}">
         <image class="grid-icon" src="{{item.cover}}"></image>
-        <text class="grid-title">{{item.title}}</text>
+        <text class="grid-title">{{item.name}}</text>
       </navigator>
     </block>
   </view>
 
-  <view class="search-view" wx:if="{{false}}" bindtap="go_search">
+  <!-- <view class="search-view" wx:if="{{false}}" bindtap="go_search">
     <text class="search-text">搜索文档</text>
     <icon class="search-icon" type="search" size="15" />
-  </view>
+  </view> -->
 
   <view class="class-doc" wx:for="{{doc_class_list}}" wx:key="{{item}}">
     <navigator class="class-title" url="../doc-class-list/doc-class-list?class_id={{item.id}}">
@@ -49,6 +49,6 @@
     </view>
   </view>
 
-  <view class="bottom-text" wx:if="{{doc_class_list.length>0}}">到底了，去看看文档库吧！</view>
+  <view class="bottom-text" wx:if="{{doc_class_list.length>0}}">到底了，去看看资料库吧！</view>
 
 </view>

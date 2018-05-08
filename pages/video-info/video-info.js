@@ -87,7 +87,7 @@ Page({
         ],
         buttonClicked(index, item) {
           index === 0 && wx.switchTab({
-            url: '../video/video',
+            url: '../index/index',
           })
           index === 1 && self.onGetShareCode()
           return true

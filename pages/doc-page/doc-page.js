@@ -7,16 +7,17 @@ Page({
    * 页面的初始数据
    */
   data: {
-    page_id: {},
+    page_id: 0,
     article: {},
     music: {},
     info: [],
+    likes: {},
     read_type: 'light',
     can_type: wx.canIUse('setNavigationBarColor'),
     font_size: 28,
     isPlayingMusic: false,
     show_set_font: false,
-    show_back_music: true,
+    show_back_music: false,
     show_menu: false,
     menu: [], //用以展现目录
     list_menu: [] //列表数据，用以实现上一页、下一页
@@ -61,28 +62,28 @@ Page({
       position: 'bottomRight',
       buttons: [
         {
+          label: '文档反馈',
+          icon: "/assets/images/btn_message.png"
+        },
+        {
           label: '文档首页',
           icon: "/assets/images/btn_doc.png"
         },
         {
           label: '加入书签',
           icon: "/assets/images/btn_fav.png"
-        },
-        {
-          label: '文档反馈',
-          icon: "/assets/images/btn_message.png"
         }
       ],
       buttonClicked(index, item) {
         index === 0 && wx.navigateTo({
-          url: '../doc-info/doc-info?doc_id=' + that.data.info.doc_id
-        })
-
-        index === 1 && that.collect()
-
-        index === 2 && wx.navigateTo({
           url: '../doc-back/doc-back?page_id=' + that.data.page_id
         })
+
+        index === 1 && wx.navigateTo({
+          url: '../doc-info/doc-info?doc_id=' + that.data.info.doc_id
+        })
+        
+        index === 2 && that.collect()
 
         return true
       },
@@ -95,7 +96,7 @@ Page({
   },
   get_data() {
     wx.request({
-      url: getApp().api.get_v2_page,
+      url: getApp().api.get_v3_page,
       data: {
         page_id: this.data.page_id
       },
@@ -110,6 +111,7 @@ Page({
           this.setData({
             article: data,
             info: res.data.page,
+            likes: res.data.likes,
             list_menu : res.data.menu
           });
           wx.setNavigationBarTitle({
@@ -150,6 +152,36 @@ Page({
       complete: () => {
 
       }
+    })
+  },
+  page_like() {
+    getApp().user.isLogin(token => {
+      wx.request({
+        url: getApp().api.v3_user_like,
+        header: {
+          'content-type': 'application/x-www-form-urlencoded'
+        },
+        data: {
+          token: token,
+          data_id: this.data.page_id,
+          type: 'page'
+        }, success: res => {
+          if (res.data.code == 1) {
+            wx.showToast({
+              title: res.data.msg,
+            })
+            //更新赞的人员列表
+            this.setData({
+              likes: res.data.likes
+            })
+          } else {
+            wx.showToast({
+              title: res.data.msg,
+            })
+          }
+        }, complete: () => {
+        }
+      })
     })
   },
   change_read_type() {
@@ -226,7 +258,6 @@ Page({
   main_click() {
     this.setData({
       show_set_font: false,
-      show_back_music: true,
       show_menu: false,
     })
   },
@@ -236,20 +267,27 @@ Page({
     })
   },
   get_back_music(){
-    this.setData({
-      show_back_music: true
-    })
     wx.request({
       url: getApp().api.get_back_music,
       data: {
-        doc_id: this.data.info.doc_id
+        doc_id: this.data.info.doc_id,
+        page_id: this.data.page_id
+
       },
       success: (res) => {
         wx.stopBackgroundAudio() //停掉之前的歌曲
-        this.setData({
-          music: res.data.data,
-          isPlayingMusic: false
-        })
+        if (res.data.data != null){
+          this.setData({
+            music: res.data.data,
+            show_back_music: true,
+            isPlayingMusic: false
+          })
+        }else{
+          this.setData({
+            show_back_music: false,
+            isPlayingMusic: false
+          })
+        }
       },
       complete: () => {
 
@@ -412,34 +450,6 @@ Page({
       cancelText: '取消',
       cancel() { },
     })
-    // wx.showActionSheet({
-    //   itemList: ['文档页',  '加入书签', '报错/举报'],
-    //   success: (res) => {
-    //     switch (res.tapIndex) {
-    //       case 99:
-    //         wx.showToast({
-    //           title: '文档-邮箱功能！',
-    //         })
-    //         // wx.navigateTo({
-    //         //   url: '../wenda-post/wenda-post?source=page&source_id=' + this.data.page_id
-    //         // })  
-    //         break;
-    //       case 0:
-    //         wx.navigateTo({
-    //           url: '../doc-info/doc-info?doc_id=' + this.data.info.doc_id
-    //          })
-    //         break;
-    //       case 1:
-    //         this.collect()
-    //         break;
-    //       case 2:
-    //         wx.navigateTo({
-    //           url: '../doc-back/doc-back?page_id=' + this.data.page_id
-    //         })
-    //         break;
-    //     }
-    //   }
-    // })
   },
   collect() {
     getApp().user.isLogin(token => {

@@ -1,0 +1,74 @@
+.page{
+  overflow-y: hidden;
+}
+
+/* swiper切换 */
+.swiper-tab{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #fff;
+  border-bottom: 1rpx solid #8f8f8f;  
+  text-align: center;
+  line-height: 80rpx;
+}  
+.swiper-tab-list{  
+  font-size: 30rpx;  
+  display: inline-block;  
+  width: 50%;  
+  color: #8f8f8f;  
+}  
+.swiper-tab-list.on{ 
+  color: #fc3154;  
+  border-bottom: 5rpx solid #fc3154;
+}  
+  
+.swiper-box{
+  padding-top: 98rpx;
+  height: 100%; 
+  width: 100%; 
+  overflow: hidden; 
+}  
+.swiper-box view{
+  text-align: center;  
+}
+
+/* 目录分类 */
+.class-list{
+  margin: 0;
+  padding: 0;
+  border-bottom: 10rpx solid #f7f7f7;
+}
+.class-title {
+  text-align: center;
+  line-height: 90rpx;
+  height: 90rpx;
+  padding: 0 30rpx;
+  font-size: 32rpx;
+  color: #666;
+  display: flex;
+  margin-bottom: 20rpx;
+  justify-content: space-between;
+}
+.class-son{
+  display: flex;
+  flex-wrap: wrap;
+}
+.class-son-item{
+  width: 250rpx;
+  flex-grow: 0;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: 24rpx;
+  padding: 20rpx 0 30rpx 0;
+}
+.class-icon{
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 5rpx;
+}
+.class-son-title{
+  line-height:1.5;
+  margin-top: 10rpx;
+  color: #333333;
+}

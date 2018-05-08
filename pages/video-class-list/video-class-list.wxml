@@ -11,8 +11,9 @@
           <view class="list-info">
             <text wx:if="{{item.view_count > 0}}">{{item.view_count}}点击</text>
             <text wx:else></text>
-            <text wx:if="{{item.is_live == 0}}">录播</text>
-            <text wx:if="{{item.is_live == 1}}">直播</text>
+            <!-- <text wx:if="{{item.is_live == 0}}">录播</text>
+            <text wx:if="{{item.is_live == 1}}">直播</text> -->
+            <text>{{item.Caption}}</text>
           </view>
         </view>
       </view>

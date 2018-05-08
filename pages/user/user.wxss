@@ -146,29 +146,6 @@ page{
   margin-top: 70rpx;
 }
 
-/*功能格子-3格*/
-
-/* .func-grid3 {
-  display: flex;
-  justify-content: space-around;
-}
-
-.func-item3 {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  font-size: 9pt;
-  padding: 40rpx;
-  border-bottom: 1rpx #f0f0f0 solid;
-  border-right: 1rpx #f0f0f0 solid;
-}
-
-.func-item3 .iconfont {
-  font-size: 18pt;
-  margin-bottom: 20rpx;
-} */
 .item-doc {
   display: flex;
   align-items: stretch;

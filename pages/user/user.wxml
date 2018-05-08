@@ -30,18 +30,15 @@
       <view class="c-iconfont icon-scan"></view>
       <text>{{user_data.scan_code_title}}</text>
     </view>
-    <view class="func-item" bindtap="subscribe_manage" hover-class='clicked'>
-      <view class="c-iconfont icon-icon_videoplay"></view>
-      <text>订阅频道</text>
+    <view class="func-item" bindtap="account_manage" hover-class='clicked'>
+      <view class="c-iconfont icon-guanlianbiaodanbiaogeguanxi"></view>
+      <text>收入账户</text>
     </view>
   </view>
 
   <view class="user-tab">
-    <view class="tab-item {{show_tab==1?'active':''}}" catchtap="set_tab" data-type="1">
-      <text>文档</text>
-    </view>
-    <view class="tab-item {{show_tab==0?'active':''}}" catchtap="set_tab" data-type="0">
-      <text>书签</text>
+    <view class="tab-item {{show_tab==1?'active':''}}" catchtap="set_tab" data-type="1">文档</view>
+    <view class="tab-item {{show_tab==0?'active':''}}" catchtap="set_tab" data-type="0">书签
     </view>
   </view>
 

@@ -81,9 +81,11 @@ Page({
       }
     })
   },
-  subscribe_manage(){
+  account_manage(){
     getApp().user.isLogin(token => {
-
+      wx.navigateTo({
+        url: '../pay-list/pay-list'
+      })
     })  
   },
   scan_code() {

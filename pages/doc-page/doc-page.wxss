@@ -76,6 +76,8 @@ button.bar-item::after,button.go-btn::after{
 .menu-box .go-btn {
   flex-shrink: 0;
   flex-grow: 1;
+  padding-left: 12rpx;
+  padding-right: 12rpx;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -167,8 +169,6 @@ button.bar-item::after,button.go-btn::after{
 .select {
   background: #ddd;
 }
-
-
 .dark {
   
   background-color: #000;
@@ -176,7 +176,6 @@ button.bar-item::after,button.go-btn::after{
 .dark .menu-title{
 color: #ddd;
 }
-
 .dark .select .menu-title{
   color: #000000;
 }
@@ -188,10 +187,10 @@ color: #ddd;
   left: 20rpx;
   width: 220rpx;
   height: 75rpx;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.6);
   border: solid 1px #000;
-  border-radius:25px;
-  box-sizing: border-box;
+  border-radius: 25px;
+  box-shadow:0px 0px 8px #2f2f2f;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -230,19 +229,24 @@ color: #ddd;
   text-align: center;
 }
 .set-m-body .title {
-  color: #fff;
+  color: #000;
   font-size: 26rpx;
 }
 
 .set-m-r {
   flex-shrink: 0;
   flex-grow: 1;
-  text-align: center;
+  display: flex;
+}
+
+.set-m-r .m-controll.clicked {
+  background: #f2f2f2;
 }
 
 .set-m-r .c-iconfont {
   color: #000;
   font-size: 44rpx;
+  padding: 0 10rpx;
 }
 
 /* button控件样式 */
@@ -254,6 +258,10 @@ color: #ddd;
 .wux-speed-dial__action{
     background-color: transparent;
     box-shadow: none;
+}
+
+.wux-speed-dial__button{
+  background: rgba(0, 0, 0, 0.8)
 }
 
 .wux-speed-dial__button image{

@@ -9,12 +9,21 @@ const HOST = "https://docs.ideas-lab.cn";
 App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
+    // var logs = wx.getStorageSync('logs') || []
+    // logs.unshift(Date.now())
+    // wx.setStorageSync('logs', logs)
+    var app = this
+    wx.getSystemInfo({
+      success: function (res) {
+        app.globalData.deviceHeight = res.windowHeight
+        app.globalData.deviceWidth = res.windowWidth
+      },
+    })
   },
   globalData: {
-    g_isPlayingMusic: false
+    g_isPlayingMusic: false,
+    deviceHeight: 0,
+    deviceWidth: 0
   },
   towxml: new Towxml(),
   user: new User(),
@@ -53,9 +62,11 @@ App({
     get_page: HOST + "/api/page",
     get_v2_index: HOST + "/api/v2/index",
     get_v2_class: HOST + "/wxss/doc/getClassList",
+    get_v3_class: HOST + "/wxss/system/getClassList",
     get_v2_class_doc: HOST + "/api/v2/list",
     get_v2_doc_menu: HOST + "/wxss/doc/getDocMenu",
     get_v2_page: HOST + "/wxss/doc/getPageDetail",
+    get_v3_page: HOST + "/wxss/v2/doc/getPageDetail",
     get_v2_my_doc: HOST + "/api/v2/get-my-doc",
     get_v2_search: HOST + "/wxss/doc/search",
     get_v2_search_index: HOST + "/wxss/doc/getHotSearch",
@@ -80,6 +91,7 @@ App({
     v3_user_like: HOST + "/wxss/user/userLike",
     v3_user_follow: HOST + "/wxss/user/userFollow",
     v3_user_favor_cancel: HOST + "/wxss/user/userFavorCancel",
+    v3_user_account: HOST + "/wxss/user/getPayList",
 
     login: HOST + "/wxss/system/accountLogin",
     v3_scan_code_login: HOST + "/wxss/system/scanLogin",
@@ -108,7 +120,7 @@ App({
     wx_pay: HOST + "/wxss/pay/wxPay",
 
     //音乐相关
-    get_back_music: HOST + "/wxss/music/getBackMusic",
+    get_back_music: HOST + "/wxss/music/getPageMusic",
 
     //留言
     v3_comment_index: HOST + "/wxss/comment/getCommentList",

@@ -190,7 +190,7 @@
 /**块元素**/
 .h2w__p {
     margin-bottom:40rpx;
-    text-indent: 2em;
+    text-indent: 1em;
     /*word-wrap:break-word;
     word-break:break-all;*/
     /*text-align:justify;*/

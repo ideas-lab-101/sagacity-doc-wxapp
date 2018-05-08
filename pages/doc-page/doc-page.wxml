@@ -25,9 +25,16 @@
       <view class="set-m-l">
         <image src="{{music.cover_url}}" class="cover-img rotate"></image>
       </view>
+      <!-- <view class='set-m-body'>
+        <text class='title'>{{music.title}}</text>
+      </view> -->
       <view class="set-m-r">
-        <text class="c-iconfont {{isPlayingMusic?'icon-pause' : 'icon-play'}}" bindtap="music_controll"></text>
-        <text class="c-iconfont icon-close" bindtap="on_music_tap"></text>
+        <view class="m-controll" hover-class='clicked' bindtap="music_controll">
+          <text class="c-iconfont {{isPlayingMusic?'icon-pause' : 'icon-play'}}"></text>
+        </view>
+        <view class="m-controll" hover-class='clicked' bindtap="on_music_tap">
+          <text class="c-iconfont icon-close" hover-class='clicked'></text>
+        </view>  
       </view>
     </view>
     <view class="footer-bar">
@@ -58,14 +65,14 @@
           <text>日间</text>
         </block>
       </button>
+      <button class='bar-item' hover-class='clicked' bindtap='page_like'>
+        <text class='c-iconfont icon-like'></text>
+        <text >{{likes == null ? 0 : likes.length}}</text>
+      </button>  
       <button class="bar-item" hover-class='clicked' open-type='share'>
         <text class="c-iconfont icon-share1"></text>
         <text>分享</text>
       </button>
-      <!-- <button class="bar-item" hover-class='clicked' catchtap="show_more">
-        <text class="c-iconfont icon-plus"></text>
-        <text>更多</text>
-      </button> -->
       <view class="more"> </view>
     </view>
 
@@ -74,7 +81,7 @@
         <view class="menu-list">
           <view class="menu-item" wx:for="{{menu}}" wx:key="{{item}}">
             <view hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
-              <text id="menu-{{item.id}}" decode="true" class="menu-title border-b-s " data-id="{{item.id}}" bindtap="go_page">{{item.title}}</text>
+              <text id="menu-{{item.id}}" decode="true" class="menu-title border-b-s " data-id="{{item.id}}" bindtap="go_page"><text class="c-iconfont icon-menu" />{{item.title}}</text>
             </view>
 
             <!--2-->
