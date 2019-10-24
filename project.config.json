@@ -1,7 +1,7 @@
 {
 	"description": "项目配置文件。",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -32,7 +32,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": -1,
+			"current": 8,
 			"list": [
 				{
 					"id": -1,
@@ -63,6 +63,36 @@
 					"name": "资料库",
 					"pathName": "pages/class-page/class-page",
 					"query": ""
+				},
+				{
+					"id": 5,
+					"name": "页面查看",
+					"pathName": "pages/doc-info/doc-info",
+					"query": "doc_id=124"
+				},
+				{
+					"id": 6,
+					"name": "阅读页",
+					"pathName": "pages/doc-page/doc-page",
+					"query": "page_id=10339"
+				},
+				{
+					"id": 7,
+					"name": "文档列表",
+					"pathName": "pages/doc-class-list/doc-class-list",
+					"query": "class_id=-1"
+				},
+				{
+					"id": 8,
+					"name": "视频详情",
+					"pathName": "pages/video-info/video-info",
+					"query": "video_id=89"
+				},
+				{
+					"id": -1,
+					"name": "文档详情",
+					"pathName": "pages/doc-info/doc-info",
+					"query": "doc_id=134"
 				}
 			]
 		}

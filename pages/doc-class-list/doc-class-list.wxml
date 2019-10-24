@@ -6,7 +6,9 @@
     <view class="item view-bg" wx:for="{{data}}" wx:key="{{item}}" bindtap="go_info" data-id="{{item.id}}">
       <view class="item-main border-b" hover-class="view-hover-class">
         <view class="item-l">
-          <image mode="aspectFill" class="list-image" src="{{item.cover}}"></image>
+          <view class="_book">
+            <image mode="aspectFill" src="{{item.cover}}"></image>
+          </view>  
         </view>
         <view class="item-r">
           <text class="list-title">{{item.title}}</text>
@@ -15,7 +17,7 @@
             <text wx:if="{{item.view_count > 0}}">{{item.view_count}}阅读</text>
             <text wx:else></text>
             <text wx:if="{{item.is_end == 0}}">更新中</text>
-            <text wx:if="{{item.is_end == 1}}">已完成</text>
+            <text wx:if="{{item.is_end == 1}}">已完结</text>
           </view>
         </view>
       </view>

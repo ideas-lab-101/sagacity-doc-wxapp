@@ -66,12 +66,16 @@ Page({
           icon: "/assets/images/btn_message.png"
         },
         {
-          label: '文档首页',
-          icon: "/assets/images/btn_doc.png"
-        },
-        {
           label: '加入书签',
           icon: "/assets/images/btn_fav.png"
+        },
+        {
+          label: '单页封面',
+          icon: "../../assets/images/btn_QR.png",
+        },
+        {
+          label: '文档首页',
+          icon: "/assets/images/btn_doc.png"
         }
       ],
       buttonClicked(index, item) {
@@ -79,11 +83,13 @@ Page({
           url: '../doc-back/doc-back?page_id=' + that.data.page_id
         })
 
-        index === 1 && wx.navigateTo({
+        index === 3 && wx.navigateTo({
           url: '../doc-info/doc-info?doc_id=' + that.data.info.doc_id
         })
-        
-        index === 2 && that.collect()
+
+        index === 2 && that.onGetShareCode()
+
+        index === 1 && that.collect()
 
         return true
       },
@@ -154,6 +160,29 @@ Page({
       }
     })
   },
+  onGetShareCode: function () {
+    wx.request({
+      url: getApp().api.get_share_code,
+      header: {
+        'content-type': 'application/x-www-form-urlencoded'
+      },
+      data: {
+        type: 'p',
+        data_id: this.data.page_id
+      },
+      success: res => {
+        if (res.data.code == 1) {
+          wx.previewImage({
+            urls: [res.data.qr_code],
+          })
+        } else {
+          wx.showToast({
+            title: res.data.msg,
+          })
+        }
+      }
+    })
+  },
   page_like() {
     getApp().user.isLogin(token => {
       wx.request({
@@ -177,6 +206,7 @@ Page({
           } else {
             wx.showToast({
               title: res.data.msg,
+              icon: 'none'
             })
           }
         }, complete: () => {
@@ -240,12 +270,23 @@ Page({
       path: "/pages/doc-page/doc-page?page_id="+this.data.page_id
     }
   },
-  previewImage: function (event) {
-    let src = event.currentTarget.dataset.src;
-    wx.previewImage({
-      current: src,
-      urls: [src]
-    })
+  // previewImage: function (event) {
+  //   let src = event.currentTarget.dataset.src;
+  //   wx.previewImage({
+  //     current: src,
+  //     urls: [src]
+  //   })
+  // },
+  eventRun_bind_tap: function (event) {
+    let obj = event.currentTarget.dataset._el
+    if(obj.tag === 'image'){
+      let src = obj.attr.src
+      wx.previewImage({
+        current: src,
+        urls: [src]
+      })
+    }
+    console.log(event)
   },
   sliderchange(event) {
     let value = event.detail.value
@@ -257,8 +298,7 @@ Page({
   },
   main_click() {
     this.setData({
-      show_set_font: false,
-      show_menu: false,
+      show_set_font: false
     })
   },
   set_font() {
@@ -272,7 +312,6 @@ Page({
       data: {
         doc_id: this.data.info.doc_id,
         page_id: this.data.page_id
-
       },
       success: (res) => {
         wx.stopBackgroundAudio() //停掉之前的歌曲
@@ -321,9 +360,12 @@ Page({
       })
     }
   },
-  show_menu() {
+  show_menu(e) {
     if (this.data.menu.length <= 0) {
       this.get_menu()
+    }
+    if (this.data.show_menu && e.target.dataset.itself !== 'toggle') {
+      return false
     }
     this.setData({
       show_menu: !this.data.show_menu
@@ -331,7 +373,7 @@ Page({
   },
   get_menu() {
     wx.request({
-      url: getApp().api.get_v2_doc_menu,
+      url: getApp().api.get_v3_doc_menu,
       data: {
         doc_id: this.data.info.doc_id
       },

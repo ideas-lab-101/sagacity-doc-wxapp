@@ -32,11 +32,15 @@ Page({
       title: '加载中',
     })
     var scene = decodeURIComponent(options.scene)
-    if (scene !== 'undefined' && scene.indexOf('d_') >= 0) {
+    if (scene !== 'undefined' && scene.indexOf('d_') >= 0) { //全本
       wx.navigateTo({
         url: `/pages/doc-info/doc-info?doc_id=${scene.slice(2)}`,
       })
-    } else if (scene !== 'undefined' && scene.indexOf('v_') >= 0) {
+    } else if (scene !== 'undefined' && scene.indexOf('p_') >= 0) { //单页
+      wx.navigateTo({
+        url: `/pages/doc-page/doc-page?page_id=${scene.slice(2)}`,
+      })
+    } else if (scene !== 'undefined' && scene.indexOf('v_') >= 0) { //视频
       wx.navigateTo({
         url: `/pages/video-info/video-info?video_id=${scene.slice(2)}`,
       })
@@ -60,23 +64,6 @@ Page({
           grid:res.data.grid,
           doc_class_list:res.data.doc
         })
-
-        /*if (res.data.current_page == 1) {
-          this.setData({
-            data: res.data
-          })
-        } else {
-          let o_data = this.data.data;
-          console.log(o_data)
-          for (var index in res.data.data) {
-            o_data.data.push(res.data.data[index])
-          }
-          this.setData({
-            data: o_data
-          })
-        }
-
-        getApp().set_page_more(this, res)*/
 
         wx.stopPullDownRefresh()
       }, complete: () => {
@@ -106,13 +93,6 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    /*if (this.data.more && !this.data.ls_load) {
-      this.setData({
-        page: this.data.page + 1,
-        more_data: "正在加载更多.."
-      })
-      this.get_data()
-    }*/
 
   },
   /**

@@ -12,19 +12,24 @@ Page({
         related_video: {},
         likes: {},
         is_follow: true,
-        add_text: "已订阅",
+        is_favor: false,
         liveStatus: {
             isControlsShow: false,
             isPlaying: true,
             isFullscreen: false
-        }
+        },
+        videoCurrentUrl: '',
+        videoCurrent: 0
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (option) {
-      let id = option.video_id
+
+        let id = option.video_id
+        //let id = 142
+
         this.setData({
           video_id: id
         })
@@ -32,10 +37,14 @@ Page({
         wx.showLoading({
             title: '加载中',
         })
-        this.get_data()
+        this.get_data({
+          success: (res) => {
+            this._initMedia()
+          }
+        })
         this.init_buttons()
     },
-    get_data() {
+    get_data(options) {
         wx.request({
             url: getApp().api.get_v3_video_page,
             header: {
@@ -46,26 +55,42 @@ Page({
                 video_id: this.data.video_id
             },
             success: (res) => {
-                if (!res.data.video.is_follow) {
-                    this.setData({
-                        is_follow: false,
-                        add_text: "订阅"
-                    })
-                }
+                console.log(res)
+                // if (!res.data.video.is_follow) {
+                //     this.setData({
+                //         is_follow: false
+                //     })
+                // }
                 wx.setNavigationBarTitle({
                     title: res.data.video.title
                 })
+
+                this.data.videoCurrentUrl = res.data.episodes[this.data.videoCurrent].source_url
                 this.setData({
                     video: res.data.video,
+                    is_follow: res.data.video.is_follow,
+                    is_favor: res.data.video.is_favor,
                     danmuList: res.data.danmus,
                     likes: res.data.likes,
-                    related_video: res.data.relatedVideos
+                    related_video: res.data.relatedVideos,
+                    episodes: res.data.episodes,
+                    videoCurrentUrl: this.data.videoCurrentUrl
                 })
+
                 wx.stopPullDownRefresh()
+                options.success && options.success(res)
             }, complete: () => {
                 wx.hideLoading()
             }
         })
+    },
+    videoChange(e) {
+      const { index } = e.currentTarget.dataset
+      this.data.videoCurrentUrl = this.data.episodes[index].source_url
+      this.setData({
+        videoCurrent: index,
+        videoCurrentUrl: this.data.videoCurrentUrl
+      })
     },
     init_buttons(position = 'bottomRight') {
       const self = this
@@ -99,11 +124,21 @@ Page({
         },
       })
     },
+    _initMedia(){
+      // console.log(this.data.video.is_live)
+      if(this.data.video.is_live === 1){
+        this.livePlayerContext = wx.createLivePlayerContext('live-player')
+      }else{
+        this.videoContext = wx.createVideoContext('video-player')
+      }
+      //监控屏幕
+      this.screenChangeManager()
+    },
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady() {
-        this.livePlayerContext = wx.createLivePlayerContext('live-player')
+
     },
     play() {
         this.livePlayerContext.play()
@@ -172,7 +207,7 @@ Page({
      * 生命周期函数--监听页面隐藏
      */
     onHide: function () {
-
+      wx.stopAccelerometer()
     },
 
     /**
@@ -185,6 +220,36 @@ Page({
       wx.navigateTo({
         url: '../pay/pay?type=video&id=' + this.data.video.id
         + '&title=' + this.data.video.title + '&cover=' + this.data.video.cover,
+      })
+    },
+    do_favor: function (event) {
+      getApp().user.isLogin(token => {
+        wx.showNavigationBarLoading()
+        wx.request({
+          url: getApp().api.v3_user_favor,
+          method: 'post',
+          header: {
+            'content-type': 'application/x-www-form-urlencoded'
+          },
+          data: {
+            token: token,
+            data_id: this.data.video_id,
+            type: 'video'
+          }, success: res => {
+            if (res.data.code == 1) {
+              this.setData({
+                is_favor: res.data.is_favor
+              })
+            } else {
+              wx.showToast({
+                title: res.data.msg,
+                icon: 'none',
+              })
+            }
+          }, complete: res => {
+            wx.hideNavigationBarLoading()
+          }
+        })
       })
     },
     add_my_video: function (event) {
@@ -203,8 +268,7 @@ Page({
                 }, success: res => {
                     if (res.data.code == 1) {
                         this.setData({
-                            is_follow: true,
-                            add_text: "已订阅"
+                            is_follow: true
                         })
                         wx.showToast({
                             title: res.data.msg
@@ -221,7 +285,7 @@ Page({
         })
     },
     onPullDownRefresh: function () {
-        this.get_data()
+
     },
 
     onShareAppMessage: function () {
@@ -253,6 +317,7 @@ Page({
                     } else {
                         wx.showToast({
                             title: res.data.msg,
+                            icon: 'none'
                         })
                     }
                 }, complete: () => {
@@ -273,13 +338,6 @@ Page({
       })
     },
 
-    /**
-     * 用户点击右上角分享
-     */
-    onShareAppMessage: function () {
-
-    },
-
     statechange(e) {
         console.log('live-player code:', e.detail.code)
     },
@@ -290,5 +348,81 @@ Page({
         this.setData({
             'liveStatus.isControlsShow': !this.data.liveStatus.isControlsShow
         })
+    },
+
+    screenChangeManager(){
+      let lastState = 0
+      let lastTime = Date.now()
+      const that = this
+
+      wx.onAccelerometerChange((res) => {
+        const now = Date.now();
+
+        // 500ms检测一次
+        if (now - lastTime < 500) {
+          return;
+        }
+        lastTime = now;
+
+        let nowState;
+
+        // 57.3 = 180 / Math.PI
+        const Roll = Math.atan2(-res.x, Math.sqrt(res.y * res.y + res.z * res.z)) * 57.3;
+        const Pitch = Math.atan2(res.y, res.z) * 57.3;
+
+        // console.log('Roll: ' + Roll, 'Pitch: ' + Pitch)
+
+        // 横屏状态
+        if (Roll > 50) {
+          if ((Pitch > -180 && Pitch < -60) || (Pitch > 130)) {
+            nowState = 1;
+          } else {
+            nowState = lastState;
+          }
+
+        } else if ((Roll > 0 && Roll < 30) || (Roll < 0 && Roll > -30)) {
+          let absPitch = Math.abs(Pitch);
+
+          // 如果手机平躺，保持原状态不变，40容错率
+          if ((absPitch > 140 || absPitch < 40)) {
+            nowState = lastState;
+          } else if (Pitch < 0) { /*收集竖向正立的情况*/
+            nowState = 0;
+          } else {
+            nowState = lastState;
+          }
+        }
+        else {
+          nowState = lastState;
+        }
+
+        // 状态变化时，触发
+        if (nowState !== lastState) {
+          lastState = nowState;
+          if (nowState === 1) {
+            // console.log('change:横屏');
+            if(that.data.video.is_live === 1){
+              console.log('live-h');
+              that.livePlayerContext.requestFullScreen({
+                direction: 90
+              });
+            }else{
+              console.log('video-h');
+              that.videoContext.requestFullScreen({
+                direction: 90
+              });
+            }
+          } else {
+            // console.log('change:竖屏');
+            if (that.data.video.is_live === 1) {
+              console.log('live-s');
+              that.livePlayerContext.exitFullScreen();
+            }else{
+              console.log('video-s');
+              that.videoContext.exitFullScreen();
+            }
+          }
+        }
+      });
     }
 })

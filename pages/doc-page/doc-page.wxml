@@ -23,7 +23,7 @@
     </view>
     <view class="back-music" wx:if="{{show_back_music}}">
       <view class="set-m-l">
-        <image src="{{music.cover_url}}" class="cover-img rotate"></image>
+        <image src="{{music.cover_url}}" class="cover-img {{isPlayingMusic?'rotate' : ''}}"></image>
       </view>
       <!-- <view class='set-m-body'>
         <text class='title'>{{music.title}}</text>
@@ -34,7 +34,7 @@
         </view>
         <view class="m-controll" hover-class='clicked' bindtap="on_music_tap">
           <text class="c-iconfont icon-close" hover-class='clicked'></text>
-        </view>  
+        </view>
       </view>
     </view>
     <view class="footer-bar">
@@ -67,83 +67,83 @@
       </button>
       <button class='bar-item' hover-class='clicked' bindtap='page_like'>
         <text class='c-iconfont icon-like'></text>
-        <text >{{likes == null ? 0 : likes.length}}</text>
-      </button>  
+        <text>{{likes == null ? 0 : likes.length}}</text>
+      </button>
       <button class="bar-item" hover-class='clicked' open-type='share'>
         <text class="c-iconfont icon-share1"></text>
         <text>分享</text>
       </button>
       <view class="more"> </view>
     </view>
-
-    <scroll-view scroll-y="true" class="page-menu {{read_type}}" wx:if="{{show_menu}}" scroll-into-view="menu-{{info.id}}">
-      <view class="">
-        <view class="menu-list">
-          <view class="menu-item" wx:for="{{menu}}" wx:key="{{item}}">
-            <view hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
-              <text id="menu-{{item.id}}" decode="true" class="menu-title border-b-s " data-id="{{item.id}}" bindtap="go_page"><text class="c-iconfont icon-menu" />{{item.title}}</text>
-            </view>
-
-            <!--2-->
-            <view class="item-son">
-              <view class="" wx:for="{{item.children}}" wx:key="{{item}}">
-                <view class="" hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
-                  <text id="menu-{{item.id}}" decode="true" data-id="{{item.id}}" bindtap="go_page" class="menu-title border-b-s son-title ">{{item.menu_title}}</text>
-                </view>
-                <!--3-->
-                <view class="item-son-2">
-                  <view class="" wx:for="{{item.children}}" wx:key="{{item}}">
-                    <view class="" hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
-                      <text id="menu-{{item.id}}" decode="true" data-id="{{item.id}}" bindtap="go_page" class="menu-title border-b-s son-title-2 ">{{item.menu_title}}</text>
-                    </view>
-                    <!--4-->
-                    <view class="item-son-3">
-                      <view class="" wx:for="{{item.children}}" wx:key="{{item}}">
-                        <view class="" hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
-                          <text id="menu-{{item.id}}" decode="true" data-id="{{item.id}}" bindtap="go_page" class="menu-title border-b-s son-title-3 ">{{item.menu_title}}</text>
-                        </view>
-                        <!--5-->
-                        <view class="item-son-4">
-                          <view class="" wx:for="{{item.children}}" wx:key="{{item}}">
-                            <view id="menu-{{item.id}}" hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
-                              <text decode="true" data-id="{{item.id}}" bindtap="go_page" class="menu-title border-b-s son-title-4 ">{{item.menu_title}}</text>
-                            </view>
-                            <!--6-->
-                            <view class="item-son-5">
-                              <view class="" wx:for="{{item.children}}" wx:key="{{item}}">
-                                <view class="" hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
-                                  <text id="menu-{{item.id}}" decode="true" data-id="{{item.id}}" bindtap="go_page" class="menu-title border-b-s son-title-5 ">{{item.menu_title}}</text>
-                                </view>
-                                <!--7-->
-                                <view class="item-son-6">
-                                  <view class="" wx:for="{{item.children}}" wx:key="{{item}}">
-                                    <view class="" hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
-                                      <text id="menu-{{item.id}}" decode="true" data-id="{{item.id}}" bindtap="go_page" class="menu-title border-b-s son-title-6 ">{{item.menu_title}}</text>
-                                    </view>
-                                    <template is="menu_son" data="{{...item}}" />
-                                  </view>
-                                </view>
-                                <!--7-->
-                              </view>
-                            </view>
-                            <!--6-->
-                          </view>
-                        </view>
-                        <!--5-->
-                      </view>
-                    </view>
-                    <!--4-->
-                  </view>
-                </view>
-                <!--3-->
-              </view>
-            </view>
-            <!--2-->
-
+  </view>
+</view>
+<view class="page-menu-box {{show_menu?'animation':''}}" catchtap="show_menu" style="display: {{show_menu?'block':'none'}}" data-itself="toggle">
+  <scroll-view scroll-y="true" class="page-menu {{read_type}}" scroll-into-view="menu-{{info.id}}">
+    <view class="">
+      <view class="menu-list">
+        <view class="menu-item" wx:for="{{menu}}" wx:key="{{item}}">
+          <view hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
+            <text id="menu-{{item.id}}" decode="true" class="menu-title border-b-s " data-id="{{item.id}}" catchtap="go_page"><text class="c-iconfont icon-menu" />{{item.title}}</text>
           </view>
+
+          <!--2-->
+          <view class="item-son">
+            <view class="" wx:for="{{item.children}}" wx:key="{{item}}">
+              <view class="" hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
+                <text id="menu-{{item.id}}" decode="true" data-id="{{item.id}}" catchtap="go_page" class="menu-title border-b-s son-title ">{{item.menu_title}}</text>
+              </view>
+              <!--3-->
+              <view class="item-son-2">
+                <view class="" wx:for="{{item.children}}" wx:key="{{item}}">
+                  <view class="" hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
+                    <text id="menu-{{item.id}}" decode="true" data-id="{{item.id}}" catchtap="go_page" class="menu-title border-b-s son-title-2 ">{{item.menu_title}}</text>
+                  </view>
+                  <!--4-->
+                  <view class="item-son-3">
+                    <view class="" wx:for="{{item.children}}" wx:key="{{item}}">
+                      <view class="" hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
+                        <text id="menu-{{item.id}}" decode="true" data-id="{{item.id}}" catchtap="go_page" class="menu-title border-b-s son-title-3 ">{{item.menu_title}}</text>
+                      </view>
+                      <!--5-->
+                      <view class="item-son-4">
+                        <view class="" wx:for="{{item.children}}" wx:key="{{item}}">
+                          <view id="menu-{{item.id}}" hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
+                            <text decode="true" data-id="{{item.id}}" catchtap="go_page" class="menu-title border-b-s son-title-4 ">{{item.menu_title}}</text>
+                          </view>
+                          <!--6-->
+                          <view class="item-son-5">
+                            <view class="" wx:for="{{item.children}}" wx:key="{{item}}">
+                              <view class="" hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
+                                <text id="menu-{{item.id}}" decode="true" data-id="{{item.id}}" catchtap="go_page" class="menu-title border-b-s son-title-5 ">{{item.menu_title}}</text>
+                              </view>
+                              <!--7-->
+                              <view class="item-son-6">
+                                <view class="" wx:for="{{item.children}}" wx:key="{{item}}">
+                                  <view class="" hover-class="view-hover-class" class="{{item.id==page_id?'select':''}}">
+                                    <text id="menu-{{item.id}}" decode="true" data-id="{{item.id}}" catchtap="go_page" class="menu-title border-b-s son-title-6 ">{{item.menu_title}}</text>
+                                  </view>
+                                  <template is="menu_son" data="{{...item}}" />
+                                </view>
+                              </view>
+                              <!--7-->
+                            </view>
+                          </view>
+                          <!--6-->
+                        </view>
+                      </view>
+                      <!--5-->
+                    </view>
+                  </view>
+                  <!--4-->
+                </view>
+              </view>
+              <!--3-->
+            </view>
+          </view>
+          <!--2-->
+
         </view>
       </view>
-    </scroll-view>
-
-  </view>
+    </view>
+  </scroll-view>
 </view>

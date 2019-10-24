@@ -155,9 +155,25 @@ button.bar-item::after,button.go-btn::after{
   font-size: 32rpx;
 }
 
-.page-menu {
+.page-menu-box {
   position: fixed;
-  width: 562rpx;
+  z-index: 999;
+  width: 100vw;
+  height: 100vh;
+  left: 100%;
+  top: 0;
+  transition: all 0.5s;
+  transition-timing-function: cubic-bezier(0, 0, 0.28, 1);
+}
+
+.page-menu-box.animation {
+  left: 0;
+}
+
+.page-menu {
+  position: absolute;
+  width: 80vw;
+  height: 100vh;
   background: #fff;
   top: 0;
   bottom: 0rpx;

@@ -1,4 +1,6 @@
 // article.js
+const utils = require('../../utils/util.js')
+
 Page({
 
   /**
@@ -70,7 +72,7 @@ Page({
           })
         }
 
-        getApp().set_page_more(this, res)
+        utils.set_page_more(this, res)
 
         wx.stopPullDownRefresh()
       }, complete: () => {

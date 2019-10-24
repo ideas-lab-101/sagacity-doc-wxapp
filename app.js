@@ -1,17 +1,14 @@
 //app.js
+const Version = '1.8.0';
 const Towxml = require('/towxml/main');
 const User = require('/utils/user');
 const Pages = require('/utils/pages');
 const HOST = "https://docs.ideas-lab.cn";
-// const HOST = "http://web.tunnel.cdqidi.cn";
-// const HOST = "http://127.0.0.1:8080";
+// const HOST = "http://dev.linestorm.ltd";
 
 App({
   onLaunch: function () {
     //调用API从本地缓存中获取数据
-    // var logs = wx.getStorageSync('logs') || []
-    // logs.unshift(Date.now())
-    // wx.setStorageSync('logs', logs)
     var app = this
     wx.getSystemInfo({
       success: function (res) {
@@ -28,33 +25,6 @@ App({
   towxml: new Towxml(),
   user: new User(),
   pages: new Pages(),
-  set_page_more(tis, pageData) {
-    if (pageData.totalRow <= 0) {
-      tis.setData({
-        no_data: true,
-        no_more: false,
-        more: false,
-      })
-    }else{
-      tis.setData({
-        no_data: false,
-      })
-    }
-    if (pageData.lastPage || pageData.totalRow==0) {
-      tis.setData({
-        no_more: true,
-        more: false,
-        more_data: "没有更多了"
-      })
-    } else {
-      tis.setData({
-        more: true,
-      })
-    }
-    tis.setData({
-      is_load: false
-    })
-  },
   api: {
     get_list: HOST + "/api/list",
     get_v3_info: HOST + "/api/v3/info",
@@ -66,7 +36,6 @@ App({
     get_v2_class_doc: HOST + "/api/v2/list",
     get_v2_doc_menu: HOST + "/wxss/doc/getDocMenu",
     get_v2_page: HOST + "/wxss/doc/getPageDetail",
-    get_v3_page: HOST + "/wxss/v2/doc/getPageDetail",
     get_v2_my_doc: HOST + "/api/v2/get-my-doc",
     get_v2_search: HOST + "/wxss/doc/search",
     get_v2_search_index: HOST + "/wxss/doc/getHotSearch",
@@ -77,14 +46,15 @@ App({
      */
     get_v3_index: HOST + "/wxss/doc/index",
     get_v3_2_doc_info: HOST + "/wxss/v2/doc/getDocInfo",
-    get_v3_doc_page: HOST + "/api/v3/doc-page",
+    get_v3_page: HOST + "/wxss/v2/doc/getPageDetail",
+    get_v3_doc_menu: HOST + "/wxss/v2/doc/getDocMenu",
 
     v3_doc_feedback: HOST +"/wxss/doc/docFeedback",//文档反馈
 
     get_v3_doc_page_menu: HOST + "/api/v3/doc-page-menu",
     get_v3_article_index: HOST + "/api/v3/article-index",
     get_v3_article_page: HOST + "/api/v3/article-page",
-    get_v3_class_doc: HOST + "/wxss/doc/getClassDocList",
+    get_v3_class_doc: HOST + "/wxss/v2/doc/getClassDocList",
     get_v3_user_index: HOST + "/wxss/user/getAccountInfo",
     get_share_code: HOST + '/wxss/system/getWXSSCode',
     v3_user_favor: HOST + "/wxss/user/userFavor",

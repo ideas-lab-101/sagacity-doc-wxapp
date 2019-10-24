@@ -22,8 +22,8 @@ page{
 }
 
 .avatar-img {
-  width: 180rpx;
-  height: 180rpx;
+  width: 160rpx;
+  height: 160rpx;
   border-radius: 50%;
 }
 
@@ -37,6 +37,11 @@ page{
   font-weight: bold;
   margin-bottom: 30rpx;
   font-family: microsoft yahei;
+}
+.nickname .c-iconfont{
+  font-size: 30rpx;
+  margin-left: 5rpx;
+  color: #fc3154;
 }
 
 .no-login{
@@ -90,11 +95,15 @@ page{
   justify-content: center;
   align-items: center;
   font-size: 9pt;
-  padding: 40rpx 0;
+  margin: 40rpx 0rpx;
+  border-right: #f7f7f7 solid 2px;
+}
+.func-item:last-child {
+  border-right: 0px;
 }
 
 .func-item.clicked {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
 
 .func-item .c-iconfont {

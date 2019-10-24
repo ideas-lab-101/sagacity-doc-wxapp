@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'c-iconfont';  /* project id 593200 */
-  src: url('//at.alicdn.com/t/font_593200_5lt0zlxuncj714i.eot');
-  src: url('//at.alicdn.com/t/font_593200_5lt0zlxuncj714i.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_593200_5lt0zlxuncj714i.woff') format('woff'),
-  url('//at.alicdn.com/t/font_593200_5lt0zlxuncj714i.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_593200_5lt0zlxuncj714i.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_593200_36llfjuqubs.eot');
+  src: url('//at.alicdn.com/t/font_593200_36llfjuqubs.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_593200_36llfjuqubs.woff') format('woff'),
+  url('//at.alicdn.com/t/font_593200_36llfjuqubs.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_593200_36llfjuqubs.svg#iconfont') format('svg');
 }
 
 .c-iconfont {
@@ -279,6 +279,12 @@
 
 .icon-skipprevious:before { content: "\ea9f"; }
 
+.icon-order:before { content: "\e60c"; }
+
+.icon-accountbox:before { content: "\e609"; }
+
+.icon-accountcircle:before { content: "\e60b"; }
+
 .icon-close:before { content: "\e64a"; }
 
 .icon-drivedocument:before { content: "\e674"; }
@@ -293,9 +299,15 @@
 
 .icon-home:before { content: "\e6c8"; }
 
+.icon-panorama:before { content: "\e70f"; }
+
 .icon-person:before { content: "\e718"; }
 
+.icon-receipt:before { content: "\e73a"; }
+
 .icon-sharealt:before { content: "\e75b"; }
+
+.icon-videoyoutube:before { content: "\e7a1"; }
 
 .icon-arrow-right:before { content: "\e606"; }
 
@@ -305,7 +317,17 @@
 
 .icon-arrow-up:before { content: "\e60a"; }
 
+.icon-vip1:before { content: "\e6dc"; }
+
+.icon-vip2:before { content: "\e6e1"; }
+
+.icon-vip3:before { content: "\e6e2"; }
+
 .icon-coupon:before { content: "\e74b"; }
+
+.icon-activity:before { content: "\e7a0"; }
+
+.icon-youhuiquan:before { content: "\e6ca"; }
 
 .icon-chat:before { content: "\e65f"; }
 
@@ -325,9 +347,15 @@
 
 .icon-bookmark:before { content: "\e65e"; }
 
+.icon-book-minus:before { content: "\e7d7"; }
+
+.icon-book-plus:before { content: "\e7da"; }
+
 .icon-border-color:before { content: "\e66c"; }
 
 .icon-calendar-clock:before { content: "\e67e"; }
+
+.icon-camcorder-box:before { content: "\e7f0"; }
 
 .icon-chart-bubble:before { content: "\e69d"; }
 
@@ -349,6 +377,8 @@
 
 .icon-share1:before { content: "\e89b"; }
 
+.icon-star1:before { content: "\e8c0"; }
+
 .icon-view-list:before { content: "\e91c"; }
 
 .icon-widgets:before { content: "\e939"; }
@@ -364,6 +394,8 @@
 .icon-liebiaorongqi:before { content: "\e699"; }
 
 .icon-zidingyilie:before { content: "\e6c3"; }
+
+.icon-dashang:before { content: "\e676"; }
 
 .icon-icon_airplay:before { content: "\e8e7"; }
 

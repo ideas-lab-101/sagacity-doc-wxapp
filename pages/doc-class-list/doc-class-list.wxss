@@ -14,16 +14,53 @@
   width: 180rpx;
 }
 
+.item-l ._book{
+    width: 180rpx;
+    height: 240rpx;
+    background-color: rgba(0,0,0, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 15px 20px -15px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+.item-l ._book::after{
+    width: 4px;
+    content: "";
+    position: absolute;
+    left: 1px;
+    top: 0px;
+    height: 100%;
+    z-index: 10;
+    background-image: linear-gradient(
+            to right,
+            rgba(255,255,255, 0) 0%,
+            rgba(255,255,255, 0.3) 50%,
+            rgba(255,255,255, 0) 100%)
+}
+.item-l ._book::before{
+    width: 12%;
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    z-index: 6;
+    background-image: linear-gradient(
+            to right,
+            rgba(0,0,0, 0.1) 0%,
+            rgba(0,0,0, 0.15) 50%,
+            rgba(0,0,0, 0) 100%)
+}
+
+.item-l ._book image{
+  width: 100%;
+  height: 100%;
+}
+
 .item-r {
   width: 550rpx;
   padding-left: 30rpx;
   position: relative;
-}
-
-.list-image {
-  width: 180rpx;
-  height: 240rpx;
-  border-radius: 10rpx;
 }
 
 .list-title {

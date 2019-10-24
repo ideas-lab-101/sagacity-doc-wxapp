@@ -1,4 +1,6 @@
 // doc-class-list.js
+const utils = require('../../utils/util.js')
+
 Page({
 
   /**
@@ -61,7 +63,7 @@ Page({
           })
         }
 
-        getApp().set_page_more(this, res.data)
+        utils.set_page_more(this, res.data)
         wx.stopPullDownRefresh()
       }, complete: () => {
         wx.hideLoading()

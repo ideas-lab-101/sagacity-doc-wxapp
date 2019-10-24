@@ -170,6 +170,7 @@ Page({
     if (this.data.key != null){ 
       this.setData({
         doc_list: {},
+        video_list: {},
         data: {},
         search_tip: {},
         is_search: false,

@@ -1,25 +1,5 @@
 @import '../wenda/wenda.wxss';
 
-img{
-  background: #f7f7f7;
-}
-.book-detail-x {
-  position: relative;
-  overflow: hidden;
-}
-
-.book-cover-blur {
-  position: absolute;
-  top: -13.2rem;
-  top: calc(50% - 87.5vw);
-  width: 100%;
-  height: 1312rpx;
-  opacity: 0.02;
-  opacity: calc(0.1 + 0.05);
-  -webkit-filter: blur(calc(17px + 1px));
-  filter: blur(calc(17px + 1px));
-}
-
 .info-top {
   position: relative;
   padding: 32rpx 32rpx 0 32rpx;
@@ -32,32 +12,62 @@ img{
   display: flex;
 }
 
-.info-pic {
-  width: 168rpx;
-  height: 224rpx;
-  border-radius: 4rpx;
-  flex-shrink: 0;
-  margin-right: 20rpx;
+.main-l.book{
+    width: 180rpx;
+    height: 240rpx;
+    background-color: rgba(0,0,0, 0.1);
+    border-radius: 5px;
+    box-shadow: 0 15px 20px -15px rgba(0, 0, 0, 0.3), 0 3px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+.main-l.book::after{
+    width: 4px;
+    content: "";
+    position: absolute;
+    left: 1px;
+    top: 0px;
+    height: 100%;
+    z-index: 10;
+    background-image: linear-gradient(
+            to right,
+            rgba(255,255,255, 0) 0%,
+            rgba(255,255,255, 0.3) 50%,
+            rgba(255,255,255, 0) 100%)
+}
+.main-l.book::before{
+    width: 12%;
+    content: "";
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    z-index: 6;
+    background-image: linear-gradient(
+            to right,
+            rgba(0,0,0, 0.1) 0%,
+            rgba(0,0,0, 0.15) 50%,
+            rgba(0,0,0, 0) 100%)
+}
+
+.main-l.book image{
+  width: 100%;
+  height: 100%;
 }
 
 .main-r {
   display: flex;
   flex-direction: column;
+  margin-left: 8px;
 }
 
 .info-title {
-  font-size: 40rpx;
-  height: 80rpx;
-  margin-bottom: 20rpx;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  font-weight: bold;
-  color: #33373d;
-  display: block;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
+    font-size: 40rpx;
+    min-height: 80rpx;
+    margin-bottom: 20rpx;
+    font-weight: bold;
+    color: #33373d;
+    display: block;
 }
 
 .info-username {
@@ -88,14 +98,19 @@ img{
   align-items: center;
   font-size: 9pt;
   width: 120rpx;
-  padding: 15rpx 0rpx;
+  padding: 10rpx 0rpx;
+  background: none;
+  line-height: 2.3em;
+  border: none !important;
 }
 
+.func-item::after, .func-item::before {
+  border: none !important;
+}
 
-.func-item .icon {
-  width: 45rpx;
-  height: 45rpx;
-  margin-bottom: 5rpx;
+.func-item .c-iconfont {
+  font-size: 50rpx;
+  margin-bottom: 2rpx;
 }
 
 .desc-main .border-b {
@@ -103,11 +118,19 @@ img{
 }
 
 .top-info-desc {
-  font-size: 24rpx;
-  line-height: 1.6;
-  padding: 32rpx;
-  color: #666;
-  background: #fff;
+    font-size: 24rpx;
+    text-indent: 2em;
+    line-height: 1.6;
+    padding: 32rpx;
+    color: #666;
+    background: #fff;
+    /* display: -webkit-box;
+    -webkit-box-orient: vertical;
+    word-break: break-all; 
+    -moz-box-orient: vertical;
+    -webkit-line-clamp:3;
+    overflow: hidden;
+    text-overflow:ellipsis;  */
 }
 
 .top-menu {

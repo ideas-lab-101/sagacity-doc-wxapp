@@ -1,5 +1,5 @@
-
 import { $wuxActionSheet } from '../../components/wux'
+const utils = require('../../utils/util.js')
 
 Page({
     /**
@@ -31,6 +31,7 @@ Page({
       })
       this._initData()
     },
+    
     _initData: function () {
       this.setData({
         is_load: true
@@ -61,7 +62,7 @@ Page({
               data: o_data
             })
           }
-          getApp().set_page_more(this, res.data)
+          utils.set_page_more(this, res.data)
           wx.stopPullDownRefresh()
         }, complete: () => {
           wx.hideLoading()

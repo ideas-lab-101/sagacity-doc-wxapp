@@ -102,14 +102,6 @@ text {
   background: #fff;
 }
 
-.no_more {
-  line-height: 90rpx;
-  text-align: center;
-  background: #f7f7f7;
-  font-size: 24rpx;
-  color: #999;
-}
-
 .border-b,.border-b-s {
   position: relative;
 }

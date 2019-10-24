@@ -1,4 +1,6 @@
 // video-class-list.js
+const utils = require('../../utils/util.js')
+
 Page({
 
   /**
@@ -7,6 +9,7 @@ Page({
   data: {
     data: {},
     class_id: 0,
+    user_id: '',
     page: 1,
     more_data: "加载更多中..",
     no_more: false,
@@ -18,11 +21,12 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (option) {
-    let id = option.class_id
-    this.setData({
-      class_id: id
-    })
+  onLoad: function (options) {
+    if(decodeURIComponent(options.class_id) !== 'undefined') {
+      this.data.class_id = options.class_id
+    }else if(decodeURIComponent(options.user_id) !== 'undefined') {
+      this.data.user_id = options.user_id
+    }
     wx.showLoading({
       title: '加载中',
     })
@@ -38,8 +42,9 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: {
+        page: this.data.page,
         class_id: this.data.class_id,
-        page: this.data.page
+        user_id: this.data.user_id,
       },
       success: (res) => {
         if (this.data.page == 1) {
@@ -56,7 +61,7 @@ Page({
           })
         }
 
-        getApp().set_page_more(this, res.data)
+        utils.set_page_more(this, res.data)
 
         wx.stopPullDownRefresh()
       }, complete: () => {

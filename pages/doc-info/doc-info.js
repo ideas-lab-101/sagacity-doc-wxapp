@@ -5,6 +5,7 @@ Page({
     doc: {},
     likes: {},
     related_doc: {},
+    is_favor: false,
     class_id: 0,
   },
   onLoad: function (option) {
@@ -32,20 +33,20 @@ Page({
           icon: "../../assets/images/btn_home.png",
         },
         {
-          label: '生成封面',
+          label: '全本封面',
           icon: "../../assets/images/btn_QR.png",
-        },
-        {
-          label: '收藏',
-          icon: "../../assets/images/btn_fav.png",
         }
+        // {
+        //   label: '收藏',
+        //   icon: "../../assets/images/btn_fav.png",
+        // }
       ],
       buttonClicked(index, item) {
         index === 0 && wx.switchTab({
           url: '../index/index',
         })
         index === 1 && self.onGetShareCode()
-        index === 2 && self.add_my_doc()
+        // index === 2 && self.add_my_doc()
         return true
       },
       callback(vm, opened) {
@@ -71,6 +72,7 @@ Page({
         })
         this.setData({
           doc: res.data.doc,
+          is_favor: res.data.doc.is_favor,
           likes: res.data.likes,
           related_doc: res.data.relatedDocs,
           show_page: true
@@ -104,7 +106,7 @@ Page({
       + '&title=' + this.data.doc.title + '&cover=' + this.data.doc.cover,
     })
   },
-  add_my_doc: function (event) {
+  do_favor: function (event) {
     getApp().user.isLogin(token => {
       wx.showNavigationBarLoading()
       wx.request({
@@ -119,12 +121,8 @@ Page({
           type: 'doc'
         }, success: res => {
           if (res.data.code == 1) {
-            // this.setData({
-            //   is_add: true,
-            //   add_text: "已加入"
-            // })
-            wx.showToast({
-              title: res.data.msg
+            this.setData({
+              is_favor: res.data.is_favor
             })
             try {
               getApp().pages.get('pages/user/user').get_data();
@@ -144,7 +142,7 @@ Page({
     })
   },
   onPullDownRefresh: function () {
-    this.get_data()
+    
   },
   onReachBottom: function () {
 
@@ -206,6 +204,7 @@ Page({
           } else {
             wx.showToast({
               title: res.data.msg,
+              icon: 'none'
             })
           }
         }, complete: () => {

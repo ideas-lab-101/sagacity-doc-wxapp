@@ -1,38 +1,37 @@
-<import src="../../components/button/button.wxml"/>
-<template is="button" data="{{ ...$wux.button.br }}"/> 
+<import src="../../components/button/button.wxml" />
+<template is="button" data="{{ ...$wux.button.br }}" />
 
 <view class="">
-  <view class="book-detail-x">
-    <image src="{{doc.cover_url}}" class="book-cover-blur"></image>
-    <view class="info-top">
-      <view class="top-main">
-        <image mode="aspectFill" class="info-pic" src="{{doc.cover}}" bindtap='previewImg'></image>
-        <view class="main-r">
-          <text class="info-title">{{doc.title}}</text>
-          <text class="info-username">作者：{{doc.Caption}}</text>
-          <text class="info-class">类别：{{doc.class_title}}</text>
-          <text class="info-from">来源：{{doc.source}}</text>
-        </view>
+  <view class="info-top">
+    <view class="top-main">
+      <view class="main-l book">
+        <image mode="aspectFill" src="{{doc.cover}}" bindtap='previewImg'></image>
       </view>
-      <view class="">
-        <view class="top-btn-group">
-          <button class="func-item" bindtap="go_menu" data-id="{{doc.id}}">
-            <image class="icon" src="../../assets/images/btn_read.png"></image>
-            <text>阅读</text>
-          </button>
-          <button class="func-item" bindtap="do_pay" data-id="{{doc.id}}">
-            <image class="icon" src="../../assets/images/btn_money.png"></image>
-            <text>打赏</text>
-          </button>
-          <button class="func-item" bindtap="do_comment" data-id="{{doc.id}}">
-            <image class="icon" src="../../assets/images/btn_chat.png"></image>
-            <text>留言</text>
-          </button>
-          <button class="func-item" open-type="share">
-            <image class="icon" src="../../assets/images/btn_share.png"></image>
-            <text>分享</text>
-          </button>
-        </view>
+      <view class="main-r">
+        <text class="info-title">{{doc.title}}</text>
+        <navigator url='/pages/doc-class-list/doc-class-list?user_id={{doc.user_id}}' class="info-username">作者：{{doc.Caption}}</navigator>
+        <text class="info-class">类别：{{doc.class_title}}</text>
+        <text class="info-from">来源：{{doc.source}}</text>
+      </view>
+    </view>
+    <view class="">
+      <view class="top-btn-group">
+        <button class="func-item" bindtap="go_menu" data-id="{{doc.id}}">
+          <text class='c-iconfont icon-receipt' />
+          <text>阅读</text>
+        </button>
+        <button class="func-item" bindtap="do_favor" data-id="{{doc.id}}">
+          <text class="c-iconfont {{is_favor?'icon-favorite':'icon-favoriteoutline'}}" />
+          <text>{{is_favor?'已收藏':'收藏'}}</text>
+        </button>
+        <button class="func-item" bindtap="do_comment" data-id="{{doc.id}}">
+          <text class='c-iconfont icon-chat' />
+          <text>留言</text>
+        </button>
+        <button class="func-item" open-type="share">
+          <text class='c-iconfont icon-sharealt' />
+          <text>分享</text>
+        </button>
       </view>
     </view>
   </view>
@@ -63,12 +62,12 @@
   </view>
   <!-- <view class="iconfont ask-btn" bindtap="show_menu" style='z-index:999'>更多</view> -->
 </view>
-
+<ad wx:if="{{doc.is_ad}}" unit-id="adunit-b4b0dc329970bf34"></ad>
 <view class="class-main">
   <navigator class="class-title" url="../doc-class-list/doc-class-list?class_id={{doc.doc_class_id}}">
-      <text>类似文档</text>
-      <text class="c-iconfont icon-ellipsis"></text>
-  </navigator>  
+    <text>推荐</text>
+    <text class="c-iconfont icon-ellipsis"></text>
+  </navigator>
   <view class="list">
     <view class="item view-bg" wx:for="{{related_doc}}" wx:key="{{item}}">
       <view class="item-main border-b" hover-class="view-hover-class" bindtap="go_doc" data-id="{{item.id}}">
@@ -89,6 +88,6 @@
     </view>
   </view>
   <view class="no_data" wx:if="{{related_doc.length==0}}">
-      <view class="no_data_text">/(ㄒoㄒ)/~~ 没有了 ~~/(ㄒoㄒ)/</view>
+    <view class="no_data_text">/(ㄒoㄒ)/~~ 没有了 ~~/(ㄒoㄒ)/</view>
   </view>
-</view>  
+</view>

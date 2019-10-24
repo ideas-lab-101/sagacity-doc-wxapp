@@ -3,7 +3,7 @@
 
 <view>
     <view class="section tc" wx:if="{{video.is_live == 1}}">
-        <live-player class='top-video' id='live-player' src="{{video.source_url}}" mode="live" autoplay min-cache="5" background-mute='true' bindstatechange="statechange" bindfullscreenchange="fullscreenchange">
+        <live-player class='top-video' id='live-player' src="{{videoCurrentUrl}}" mode="live" autoplay min-cache="5" background-mute='true' bindstatechange="statechange" bindfullscreenchange="fullscreenchange">
             <cover-view class="event-catcher" bindtap="toggleContrls">
                 <cover-view class="controls" hidden='{{!liveStatus.isControlsShow}}'>
                     <cover-view class="btn" bindtap="play" hidden="{{liveStatus.isPlaying}}">
@@ -23,7 +23,7 @@
         </live-player>
     </view>
     <view class="section tc" wx:if="{{video.is_live == 0}}">
-        <video class='top-video' src="{{video.source_url}}" danmu-list="{{danmuList}}" enable-danmu danmu-btn autoplay  binderror="videoErrorCallback" />
+        <video class='top-video' id="video-player" src="{{videoCurrentUrl}}" danmu-list="{{danmuList}}" enable-danmu danmu-btn autoplay  binderror="videoErrorCallback" />
     </view>
     <view class='info-top'>
         <view class='info-main'>
@@ -31,27 +31,42 @@
               <view class="info-title">{{video.title}}</view>
               <view class="info-source">{{video.source}}</view>
             </view>
-            <view class="user-info">
+            <navigator url='/pages/video-class-list/video-class-list?user_id={{video.user_id}}' class="user-info">
               <image class="user-avatar" src="{{video.AvatarURL}}"></image>
               <view class="user-name">{{video.Caption}}</view>
-            </view>  
+            </navigator>
         </view>
+
+        <view wx:if="{{episodes.length > 1}}">
+          <view class="vi-episodes-title">
+            <text class="_t">选集</text>
+            <text>共{{episodes.length}}集</text>
+          </view>
+          <scroll-view scroll-x class="vi-episodes-scroll">
+            <view class="vi-episodes">
+              <view class="item {{videoCurrent===index?'active':''}}" wx:for="{{episodes}}" wx:key="id" catchtap="videoChange" data-index="{{index}}">
+                {{item.episode_title}}
+              </view>
+            </view>
+          </scroll-view>
+        </view>
+
         <view class="">
-            <view class="top-btn-group">             
-              <button class="func-item" disabled="{{is_follow}}" bindtap="add_my_video" data-id="{{video.id}}">
-                <image class="icon" src="../../assets/images/btn_do.png"></image>
-                <text>{{add_text}}</text>
+            <view class="top-btn-group">
+              <button class="func-item" bindtap="add_my_video" data-id="{{video.id}}">
+                <text class='c-iconfont {{is_follow?"icon-book-minus":"icon-book-plus"}}' />
+                <text>{{is_follow?"已订阅":"订阅"}}</text>
               </button>
-              <button class="func-item" bindtap="do_pay" data-id="{{video.id}}">
-                <image class="icon" src="../../assets/images/btn_money.png"></image>
-                <text>打赏</text>
+              <button class="func-item" bindtap="do_favor" data-id="{{video.id}}">
+                <text class="c-iconfont {{is_favor?'icon-favorite':'icon-favoriteoutline'}}" />
+                <text>{{is_favor?'已收藏':'收藏'}}</text>
               </button>
               <button class="func-item" bindtap="do_comment" data-id="{{video.id}}">
-                <image class="icon" src="../../assets/images/btn_chat.png"></image>
+                <text class='c-iconfont icon-chat' />
                 <text>留言</text>
               </button>
               <button class="func-item" open-type="share">
-                <image class="icon" src="../../assets/images/btn_share.png"></image>
+                <text class='c-iconfont icon-sharealt' />
                 <text>分享</text>
               </button>
             </view>
@@ -80,11 +95,12 @@
         </view>
         <view class="text-12 zan-empty" wx:else>随手一赞，带你去浪</view>
     </view>
+    <ad wx:if="{{video.is_ad}}" unit-id="adunit-b4b0dc329970bf34"></ad>
     <view class="class-main">
       <navigator class="class-title" url="../video-class-list/video-class-list?class_id={{video.video_class_id}}">
-        <text>类似视频</text>
+        <text>推荐</text>
         <text class="c-iconfont icon-ellipsis"></text>
-      </navigator>  
+      </navigator>
       <view class="list">
         <view class="item view-bg" wx:for="{{related_video}}" wx:key="{{item}}">
           <view class="item-main border-b" hover-class="view-hover-class" bindtap="go_video" data-id="{{item.id}}">
@@ -108,5 +124,5 @@
       <view class="no_data" wx:if="{{related_course.length==0}}">
         <view class="no_data_text">/(ㄒoㄒ)/~~ 没有了 ~~/(ㄒoㄒ)/</view>
       </view>
-    </view>  
+    </view>
 </view>

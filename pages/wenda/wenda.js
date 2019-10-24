@@ -1,3 +1,5 @@
+const utils = require('../../utils/util.js')
+
 Page({
   data: {
     show_page: false,
@@ -44,7 +46,7 @@ Page({
             data: o_data
           })
         }
-        getApp().set_page_more(this, res.data)
+        utils.set_page_more(this, res.data)
         wx.stopPullDownRefresh()
       }, complete: res => {
         wx.hideLoading()

@@ -1,7 +1,9 @@
 <block wx:if="{{page_show}}">
   <view class="user-head" wx:if="{{is_login}}">
     <view class="uerinfo">
-      <text class="nickname">{{user.nick_name}}</text>
+      <view class="nickname">
+      {{user.nick_name}}<text class='c-iconfont icon-vip{{user.level_id}}' />
+      </view>
       <!-- <text>2017加入</text> -->
       <view class="userdata">
         <view class="dataone">

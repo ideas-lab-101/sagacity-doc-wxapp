@@ -1,4 +1,6 @@
 // doc-class-list.js
+const utils = require('../../utils/util.js')
+
 Page({
 
   /**
@@ -9,6 +11,7 @@ Page({
     tag_id:0,
     page: 1,
     class_id: 0,
+    user_id: '',
     more_data: "加载更多中..",
     no_more: false,
     no_data: false,
@@ -19,11 +22,12 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (option) {
-    let id = option.class_id
-    this.setData({
-      class_id: id
-    })
+  onLoad: function (options) {
+    if(decodeURIComponent(options.class_id) !== 'undefined') {
+      this.data.class_id = options.class_id
+    }else if(decodeURIComponent(options.user_id) !== 'undefined') {
+      this.data.user_id = options.user_id
+    }
     wx.showLoading({
       title: '加载中',
     })
@@ -40,7 +44,8 @@ Page({
       },
       data: {
         page: this.data.page,
-        class_id: this.data.class_id
+        class_id: this.data.class_id,
+        user_id: this.data.user_id
       },
       success: (res) => {
         if (this.data.page == 1) {
@@ -57,7 +62,7 @@ Page({
           })
         }
 
-        getApp().set_page_more(this, res.data)
+        utils.set_page_more(this, res.data)
 
         wx.stopPullDownRefresh()
       }, complete: () => {

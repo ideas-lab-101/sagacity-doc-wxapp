@@ -24,7 +24,7 @@ Page({
   },
   get_data() {
     wx.request({
-      url: getApp().api.get_v2_doc_menu,
+      url: getApp().api.get_v3_doc_menu,
       data: { doc_id: this.data.doc_id },
       success: (res) => {
         this.setData({
@@ -39,7 +39,7 @@ Page({
   },
   go_page: function (event) {
     let page_id = event.currentTarget.dataset.id;
-    console.log(page_id)
+    //console.log(page_id)
     wx.navigateTo({
       url: '../doc-page/doc-page?page_id=' + page_id
     })
