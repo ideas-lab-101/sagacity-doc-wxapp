@@ -2,32 +2,36 @@
   <view class="user-head" wx:if="{{is_login}}">
     <view class="uerinfo">
       <view class="nickname">
-      {{user.nick_name}}<text class='c-iconfont icon-vip{{user.level_id}}' />
+      {{user_data.user.nick_name}}<text class='c-iconfont icon-vip{{user_data.user.level}}' />
       </view>
       <!-- <text>2017加入</text> -->
       <view class="userdata">
-        <view class="dataone">
+        <navigator class="dataone" url="../doc-class-list/doc-class-list?user_id={{user_data.user.user_id}}">
             <text class="user-num">{{user_data.docCount}}</text>
             <text>文档</text>
-        </view>
-        <view class="dataone">
-            <text class="user-num">{{user_data.courseCount}}</text>
+        </navigator>
+        <navigator class="dataone" url="../video-class-list/video-class-list?user_id={{user_data.user.user_id}}">
+            <text class="user-num">{{user_data.videoCount}}</text>
             <text>视频</text>
-        </view>
+        </navigator>
          <view class="edit">
             <text>个人资料</text>
           </view> 
       </view>
     </view>
     <view class="avatar">
-      <image src="{{user.avatar_url}}" class="avatar-img"></image>
+      <image src="{{user_data.user.avatar_url}}" class="avatar-img"></image>
     </view>
   </view>
   <view class="no-login" wx:else>
-    <button class="login-btn" type="warn" open-type="getUserInfo" bindgetuserinfo="get_userInfo">立即登录</button>
+    <view class="mine-info">
+      <open-data class="avatar" type="userAvatarUrl"></open-data>
+    </view>
+    <button wx:if="{{canIUse}}" class="login-btn" type="warn"  bindtap="get_userInfo">立即登录</button>
+    <view wx:else>请升级微信版本</view>
   </view>
 
-  <view class="func-grid">
+  <view class="func-grid" wx:if="{{is_login}}">
     <view class="func-item" bindtap="scan_code" hover-class='clicked'>
       <view class="c-iconfont icon-scan"></view>
       <text>{{user_data.scan_code_title}}</text>
@@ -89,7 +93,7 @@
             <text class="doc-desc">{{item.doc_title}}</text>
           </navigator>
           <view class="doc-btn">
-            <view class="mini-btn" data-id="{{item.id}}" bindtap="un_collect">删除</view>
+            <view class="mini-btn" data-id="{{item.id}}" bindtap="del_my_page">删除</view>
           </view>
         </view>
         <view class="border-b"></view>

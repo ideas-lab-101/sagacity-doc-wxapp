@@ -1,5 +1,6 @@
 // doc-page.js
 import { $wuxButton } from '../../components/wux'
+import {fetch} from "../../axios/fetch"
 
 Page({
 
@@ -10,7 +11,7 @@ Page({
     page_id: 0,
     article: {},
     music: {},
-    info: [],
+    page_info: [],
     likes: {},
     read_type: 'light',
     can_type: wx.canIUse('setNavigationBarColor'),
@@ -71,7 +72,7 @@ Page({
         },
         {
           label: '单页封面',
-          icon: "../../assets/images/btn_QR.png",
+          icon: "/assets/images/btn_QR.png",
         },
         {
           label: '文档首页',
@@ -101,116 +102,96 @@ Page({
     })
   },
   get_data() {
-    wx.request({
-      url: getApp().api.get_v3_page,
+    fetch({
+      url: "/wxss/doc/v2/getPageDetail",
       data: {
-        page_id: this.data.page_id
+        pageId: this.data.page_id
       },
-      header: {
-        'content-type': 'application/json'
-      },
-      success: (res) => {
-        try {
-          let data = getApp().towxml.toJson(res.data.page.content, 'markdown');
-          data.theme = this.data.read_type;
-          this.set_nav_type(this.data.read_type)
-          this.setData({
-            article: data,
-            info: res.data.page,
-            likes: res.data.likes,
-            list_menu : res.data.menu
-          });
-          wx.setNavigationBarTitle({
-            title: res.data.page.title,
-          })
-          wx.updateShareMenu({
-
-          })
-          wx.hideLoading()
-          this.get_back_music()
-          // if (this.data.menu.length <= 0) {
-          //   this.get_menu()
-          // }
-          /*wx.pageScrollTo({
-            scrollTop: 0
-          })*/
-
-
-        } catch (error) {
-          console.log(error)
-          wx.hideLoading()
-          wx.showModal({
-            title: '提示',
-            content: '文档解析失败',
-            showCancel: false,
-            success: function (res) {
-              if (res.confirm) {
-                console.log('用户点击确定')
-                wx.navigateBack()
-              }
+      method: 'GET'
+    }).then(res=>{
+      try {
+        let data = getApp().towxml.toJson(res.data.page.content, 'markdown');
+        data.theme = this.data.read_type;
+        this.set_nav_type(this.data.read_type)
+        this.setData({
+          article: data,
+          page_info: res.data.page,
+          likes: res.data.likes,
+          list_menu : res.data.menu
+        });
+        wx.setNavigationBarTitle({
+          title: res.data.page.title,
+        })
+        //获取背景音
+        this.set_back_music()
+        wx.updateShareMenu({})
+      } catch (error) {
+        wx.showModal({
+          title: '提示',
+          content: '文档解析失败',
+          showCancel: false,
+          success: function (res) {
+            if (res.confirm) {
+              console.log('用户点击确定')
+              wx.navigateBack()
             }
-          })
-        }
-      },
-      fail: (error) => {
-        wx.hideLoading()
-      },
-      complete: () => {
-
+          }
+        })
       }
+    }).finally(()=>{
+      wx.stopPullDownRefresh()
+      wx.hideLoading()
     })
   },
   onGetShareCode: function () {
-    wx.request({
-      url: getApp().api.get_share_code,
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: {
-        type: 'p',
-        data_id: this.data.page_id
-      },
-      success: res => {
-        if (res.data.code == 1) {
+    getApp().user.getLogin().then(rest=>{
+      fetch({
+        url: "/wxss/system/getWXSSCode",
+        data: {
+          type: 'p',
+          dataId: this.data.page_id
+        },
+        method: 'POST'
+      }).then(res=>{
+        if (res.code == 1) {
           wx.previewImage({
             urls: [res.data.qr_code],
           })
-        } else {
+        }else{
           wx.showToast({
-            title: res.data.msg,
+            title: res.msg,
+            icon: 'none',
           })
         }
-      }
+      }).finally(()=>{
+      })  
     })
   },
   page_like() {
-    getApp().user.isLogin(token => {
-      wx.request({
-        url: getApp().api.v3_user_like,
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
+    getApp().user.getLogin().then(rest=>{
+      fetch({
+        url: "/wxss/user/userLike",
         data: {
-          token: token,
-          data_id: this.data.page_id,
+          dataId: this.data.page_id,
           type: 'page'
-        }, success: res => {
-          if (res.data.code == 1) {
-            wx.showToast({
-              title: res.data.msg,
-            })
-            //更新赞的人员列表
-            this.setData({
-              likes: res.data.likes
-            })
-          } else {
-            wx.showToast({
-              title: res.data.msg,
-              icon: 'none'
-            })
-          }
-        }, complete: () => {
+        },
+        method: 'POST'
+      }).then(res=>{
+        if (res.code == 1) {
+          wx.showToast({
+            title: res.msg,
+          })
+          //更新赞的人员列表
+          this.setData({
+            likes: res.data.likes
+          })
+        }else{
+          wx.showToast({
+            title: res.msg,
+            icon: 'none',
+          })
         }
+      }).finally(()=>{
       })
     })
   },
@@ -221,7 +202,6 @@ Page({
       })
       return;
     }
-
     let data = this.data.article
     if (data.theme == 'dark') {
       data.theme = 'light'
@@ -266,7 +246,7 @@ Page({
   },
   onShareAppMessage: function () {
     return {
-      title: this.data.info.title,
+      title: this.data.page_info.title,
       path: "/pages/doc-page/doc-page?page_id="+this.data.page_id
     }
   },
@@ -306,18 +286,21 @@ Page({
       show_set_font: !this.data.show_set_font
     })
   },
-  get_back_music(){
-    wx.request({
-      url: getApp().api.get_back_music,
+  set_back_music(){
+    fetch({
+      url: "/wxss/music/getPageMusic",
       data: {
-        doc_id: this.data.info.doc_id,
-        page_id: this.data.page_id
+        pageId: this.data.page_id
       },
-      success: (res) => {
-        wx.stopBackgroundAudio() //停掉之前的歌曲
-        if (res.data.data != null){
+      method: 'GET'
+    }).then(res=>{
+      try{
+        wx.stopBackgroundAudio({
+          fail: (res) => {},
+        }) //停掉之前的歌曲
+        if (res.data != null){
           this.setData({
-            music: res.data.data,
+            music: res.data,
             show_back_music: true,
             isPlayingMusic: false
           })
@@ -327,10 +310,9 @@ Page({
             isPlayingMusic: false
           })
         }
-      },
-      complete: () => {
-
-      }
+      }catch(err){}
+    }).finally(()=>{
+      wx.hideLoading()
     })
   },
   on_music_tap() {
@@ -372,20 +354,19 @@ Page({
     })
   },
   get_menu() {
-    wx.request({
-      url: getApp().api.get_v3_doc_menu,
+    fetch({
+      url: "/wxss/doc/v2/getDocMenu",
       data: {
-        doc_id: this.data.info.doc_id
+        docId: this.data.doc_id
       },
-      success: (res) => {
-        this.setData({
-          menu: res.data.data
-        })
-        wx.stopPullDownRefresh()
-      },
-      complete: () => {
-        wx.hideLoading();
-      }
+      method: 'GET'
+    }).then(res=>{
+      this.setData({
+        menu: res.data.list,
+      })
+    }).finally(()=>{
+      wx.stopPullDownRefresh()
+      wx.hideLoading()
     })
   },
   go_page: function (event) {
@@ -493,38 +474,32 @@ Page({
       cancel() { },
     })
   },
+  //收藏
   collect() {
-    getApp().user.isLogin(token => {
-      wx.showLoading({
-        title: '正在收藏',
-      })
-      wx.request({
-        url: getApp().api.v3_user_favor,
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
+    getApp().user.getLogin().then(rest=>{
+      fetch({
+        url: "/wxss/user/userFavor",
         data: {
-          token: token,
-          data_id: this.data.page_id,
+          dataId: this.data.page_id,
           type: 'page'
-        }, success: res => {
-          if (res.data.code == 1) {
-            wx.showToast({
-              title: res.data.msg,
-            })
-            try {
-              getApp().pages.get('pages/user/user').get_data();
-            } catch (e) {
-
-            }
-          } else {
-            wx.showToast({
-              title: res.data.msg,
-              icon: 'none',
-            })
+        },
+        method: 'POST'
+      }).then(res=>{
+        if (res.code == 1) {
+          // this.setData({
+          //   is_favor: res.data.is_favor
+          // })
+          try {
+            //更新用户中心的数据
+            getApp().pages.get('pages/user/user').get_data();
+          } catch (e) {
           }
-        }, complete: () => {
         }
+        wx.showToast({
+          title: res.msg,
+          icon: 'none',
+        })
+      }).finally(()=>{
       })
     })
   }

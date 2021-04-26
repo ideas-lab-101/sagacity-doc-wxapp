@@ -56,5 +56,6 @@
         "selectedIconPath": "/assets/images/mine_fill.png"
       }
     ]
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

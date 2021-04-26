@@ -32,8 +32,8 @@
               <view class="info-source">{{video.source}}</view>
             </view>
             <navigator url='/pages/video-class-list/video-class-list?user_id={{video.user_id}}' class="user-info">
-              <image class="user-avatar" src="{{video.AvatarURL}}"></image>
-              <view class="user-name">{{video.Caption}}</view>
+              <image class="user-avatar" src="{{video.avatar_url}}"></image>
+              <view class="user-name">{{video.caption}}</view>
             </navigator>
         </view>
 
@@ -53,7 +53,7 @@
 
         <view class="">
             <view class="top-btn-group">
-              <button class="func-item" bindtap="add_my_video" data-id="{{video.id}}">
+              <button class="func-item" bindtap="user_follow" data-id="{{video.id}}">
                 <text class='c-iconfont {{is_follow?"icon-book-minus":"icon-book-plus"}}' />
                 <text>{{is_follow?"已订阅":"订阅"}}</text>
               </button>

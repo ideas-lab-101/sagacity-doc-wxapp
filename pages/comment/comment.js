@@ -1,4 +1,5 @@
 import { $wuxActionSheet } from '../../components/wux'
+import {fetch} from "../../axios/fetch"
 const utils = require('../../utils/util.js')
 
 Page({
@@ -36,37 +37,32 @@ Page({
       this.setData({
         is_load: true
       })
-      wx.request({
-        url: getApp().api.v3_comment_index,
-        method: 'GET',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
+      fetch({
+        url: "/wxss/comment/getCommentList",
         data: {
-          data_id: this.data.source_id,
+          dataId: this.data.source_id,
           type: this.data.source,
           page: this.data.page
         },
-        success: res => {
-          wx.hideLoading()
-          if (this.data.page == 1) {
-            this.setData({
-              data: res.data.list,
-            })
-          } else {
-            let o_data = this.data.data;
-            for (var index in res.data.list) {
-              o_data.push(res.data.list[index])
-            }
-            this.setData({
-              data: o_data
-            })
+        method: 'GET'
+      }).then(res=>{
+        if (this.data.page == 1) {
+          this.setData({
+            data: res.data.list,
+          })
+        } else {
+          let o_data = this.data.data;
+          for (var index in res.data.list) {
+            o_data.push(res.data.list[index])
           }
-          utils.set_page_more(this, res.data)
-          wx.stopPullDownRefresh()
-        }, complete: () => {
-          wx.hideLoading()
+          this.setData({
+            data: o_data
+          })
         }
+        utils.set_page_more(this, res.data)
+      }).finally(()=>{
+        wx.hideLoading()
+        wx.stopPullDownRefresh()
       })
     },
     onPullDownRefresh: function () {
@@ -96,45 +92,38 @@ Page({
         if (e.detail.value.comment === '') {
             return
         }
-        wx.showLoading({
-            title: '发送中...',
-        })
-        wx.request({
-            url: getApp().api.v3_comment_post,
-            method: 'POST',
-            header: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
+        getApp().user.getLogin().then(rest=>{
+          wx.showNavigationBarLoading()
+          fetch({
+            url: "/wxss/comment/addComment",
             data: {
-                data_id: this.data.source_id,
-                type: this.data.source,
-                refer_id: this.data.refer_id,
-                form_id: e.detail.formId,
-                token: getApp().user.ckLogin(),
-                content: e.detail.value.comment
+              dataId: this.data.source_id,
+              type: this.data.source,
+              referId: this.data.refer_id,
+              formId: e.detail.formId,
+              content: e.detail.value.comment
             },
-            success: res => {
-                wx.hideLoading()
-                if (res.data.code == 1) {
-                    that._initData();
-                    this.setData({
-                        taContent: '',
-                        isTaFocused: false
-                    })
-                } else {
-                    wx.showToast({
-                      title: res.data.msg,
-                      duration: 2000
-                    })
-                }
-            },
-            fail: error => {
-                wx.hideLoading()
-            }
+            method: 'POST'
+          }).then(res=>{
+            if (res.code == 1) {
+              that._initData();
+              this.setData({
+                  taContent: '',
+                  isTaFocused: false
+              })
+          } else {
+              wx.showToast({
+                title: res.msg,
+                duration: 2000
+              })
+          }
+          }).finally(()=>{
+            wx.hideNavigationBarLoading()
+          })
         })
     },
     commentOnActivity() {
-      getApp().user.isLogin(token => {
+      getApp().user.getLogin().then(rest=> {
         this.setData({
           taPlaceholder: '用户留言',
           isTaFocused: true
@@ -143,7 +132,7 @@ Page({
       })
     },
     commentOnComment(commentIndex) {
-        getApp().user.isLogin(token => {
+      getApp().user.getLogin().then(rest=> {
           this.setData({
             taPlaceholder: `回复 ${this.data.data[commentIndex].nick_name}:`,
             isTaFocused: true
@@ -158,31 +147,28 @@ Page({
             className: 'cancel-action',
             buttons: [{ text: '删除' }],
             buttonClicked(index, item) {
-                wx.request({
-                    url: getApp().api.v3_comment_del,
-                    method: 'POST',
-                    header: {
-                        'content-type': 'application/x-www-form-urlencoded'
-                    },
-                    data: {
-                        data_id: that.data.data[commentIndex].id,
-                        token: getApp().user.ckLogin()
-                    },
-                    success: res => {
-                        if (res.data.code == 1) {
-                            that._initData();
-                        } else {
-                            wx.showToast({
-                              title: res.data.msg,
-                              duration: 2000
-                            })
-                        }
-                    },
-                    fail: error => {
-
-                    }
+              getApp().user.getLogin().then(rest=>{
+                wx.showNavigationBarLoading()
+                fetch({
+                  url: "/wxss/comment/delComment",
+                  data: {
+                    dataId: that.data.data[commentIndex].id,
+                  },
+                  method: 'POST'
+                }).then(res=>{
+                  if (res.code == 1) {
+                    that._initData();
+                  } else {
+                    wx.showToast({
+                      title: res.msg,
+                      duration: 2000
+                    })
+                  }
+                }).finally(()=>{
+                  wx.hideNavigationBarLoading()
                 })
-                return true
+              })
+              return true
             },
             cancelText: '取消',
             cancel() { }
@@ -202,7 +188,9 @@ Page({
             cancel() {
             }
         };
-        if (that.data.data[commentIndex].open_id === getApp().user.ckLogin()) {
+        let userInfo = getApp().user.getUserInfo;
+        if (that.data.data[commentIndex].user_id === 
+          userInfo.user_id) {
             actionConfig.destructiveText = '删除';
             actionConfig.destructiveButtonClicked = function () {
                 that.deleteComment(commentIndex);

@@ -1,4 +1,5 @@
 import { $wuxButton } from '../../components/wux'
+import {fetch} from "../../axios/fetch"
 Page({
   data: {
     doc_id: 0,
@@ -57,30 +58,23 @@ Page({
     })
   },
   get_data() {
-    wx.request({
-      url: getApp().api.get_v3_2_doc_info,
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
+    fetch({
+      url: "/wxss/doc/v2/getDocInfo",
       data: {
-        token: getApp().user.ckLogin(),
-        doc_id: this.data.doc_id
+        docId: this.data.doc_id
       },
-      success: (res) => {
-        wx.setNavigationBarTitle({
-          title: res.data.doc.title
-        })
-        this.setData({
-          doc: res.data.doc,
-          is_favor: res.data.doc.is_favor,
-          likes: res.data.likes,
-          related_doc: res.data.relatedDocs,
-          show_page: true
-        })
-        wx.stopPullDownRefresh()
-      }, complete: () => {
-        wx.hideLoading()
-      }
+      method: 'GET'
+    }).then(res=>{
+      this.setData({
+        doc: res.data.doc,
+        is_favor: res.data.is_favor,
+        likes: res.data.likes,
+        related_doc: res.data.relatedDocs,
+        show_page: true
+      })
+    }).finally(()=>{
+      wx.stopPullDownRefresh()
+      wx.hideLoading()
     })
   },
   go_menu: function (event) {
@@ -107,37 +101,33 @@ Page({
     })
   },
   do_favor: function (event) {
-    getApp().user.isLogin(token => {
+      getApp().user.getLogin().then(rest=>{
       wx.showNavigationBarLoading()
-      wx.request({
-        url: getApp().api.v3_user_favor,
-        method: 'post',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
+      fetch({
+        url: "/wxss/user/userFavor",
         data: {
-          token: token,
-          data_id: this.data.doc_id,
+          dataId: this.data.doc_id,
           type: 'doc'
-        }, success: res => {
-          if (res.data.code == 1) {
-            this.setData({
-              is_favor: res.data.is_favor
-            })
-            try {
-              getApp().pages.get('pages/user/user').get_data();
-            } catch (e) {
-
-            }
-          }else{
-            wx.showToast({
-              title: res.data.msg,
-              icon: 'none',
-            })
+        },
+        method: 'POST'
+      }).then(res=>{
+        if (res.code == 1) {
+          this.setData({
+            is_favor: res.data.is_favor
+          })
+          try {
+            //更新用户中心的数据
+            getApp().pages.get('pages/user/user').get_data();
+          } catch (e) {
           }
-        }, complete: res => {
-          wx.hideNavigationBarLoading()
+        }else{
+          wx.showToast({
+            title: res.msg,
+            icon: 'none',
+          })
         }
+      }).finally(()=>{
+        wx.hideNavigationBarLoading()
       })
     })
   },
@@ -158,57 +148,57 @@ Page({
     }
   },
   onGetShareCode: function() {
-    wx.request({
-      url: getApp().api.get_share_code,
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: {
-        type: 'd',
-        data_id: this.data.doc_id
-      },
-      success: res => {
-        if (res.data.code == 1) {
+    getApp().user.getLogin().then(rest=>{
+      fetch({
+        url: "/wxss/system/getWXSSCode",
+        data: {
+          type: 'd',
+          dataId: this.data.doc_id
+        },
+        method: 'POST'
+      }).then(res=>{
+        if (res.code == 1) {
           wx.previewImage({
             urls: [res.data.qr_code],
           })
-        } else {
+        }else{
           wx.showToast({
-            title: res.data.msg,
+            title: res.msg,
+            icon: 'none',
           })
         }
-      }
+      }).finally(()=>{
+      })  
     })
   },
   doc_like(event) {
     let doc_id = event.currentTarget.dataset.id;
-    getApp().user.isLogin(token => {
-      wx.request({
-        url: getApp().api.v3_user_like,
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
+    getApp().user.getLogin().then(rest=>{
+      wx.showNavigationBarLoading()
+      fetch({
+        url: "/wxss/user/userLike",
         data: {
-          token: token,
-          data_id: doc_id,
+          dataId: doc_id,
           type: 'doc'
-        }, success: res => {
-          if (res.data.code == 1) {
-            wx.showToast({
-              title: res.data.msg,
-            })
-            //更新赞的人员列表
-            this.setData({
-              likes: res.data.likes
-            })
-          } else {
-            wx.showToast({
-              title: res.data.msg,
-              icon: 'none'
-            })
-          }
-        }, complete: () => {
+        },
+        method: 'POST'
+      }).then(res=>{
+        if (res.code == 1) {
+          wx.showToast({
+            title: res.msg,
+          })
+          //更新赞的人员列表
+          this.setData({
+            likes: res.data.likes
+          })
+        }else{
+          wx.showToast({
+            title: res.msg,
+            icon: 'none',
+          })
         }
+      }).finally(()=>{
+        wx.hideNavigationBarLoading()
       })
     })
   }

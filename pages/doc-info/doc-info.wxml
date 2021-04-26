@@ -9,7 +9,7 @@
       </view>
       <view class="main-r">
         <text class="info-title">{{doc.title}}</text>
-        <navigator url='/pages/doc-class-list/doc-class-list?user_id={{doc.user_id}}' class="info-username">作者：{{doc.Caption}}</navigator>
+        <navigator url='/pages/doc-class-list/doc-class-list?user_id={{doc.user_id}}' class="info-username">作者：{{doc.nick_name}}</navigator>
         <text class="info-class">类别：{{doc.class_title}}</text>
         <text class="info-from">来源：{{doc.source}}</text>
       </view>

@@ -1,4 +1,5 @@
 // doc-class.js
+import {fetch} from "../../axios/fetch"
 Page({
 
   /**
@@ -40,21 +41,19 @@ Page({
     }
   },
   get_data() {
-    wx.request({
-      url: getApp().api.get_v3_class,
+    fetch({
+      url: "/wxss/system/getClassList",
       data: {
-        token: getApp().user.ckLogin()
       },
-      success: (res) => {
-        this.setData({
-          doc: res.data.doc,
-          video: res.data.video
-        })
-      },
-      complete: () => {
-        wx.hideLoading()
-        wx.stopPullDownRefresh()
-      }
+      method: 'GET'
+    }).then(res=>{
+      this.setData({
+        doc: res.data.doc,
+        video: res.data.video
+      })
+    }).finally(()=>{
+      wx.hideLoading()
+      wx.stopPullDownRefresh()
     })
   },
   go_doc_list(event){

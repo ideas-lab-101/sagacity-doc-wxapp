@@ -1,4 +1,5 @@
 const utils = require('../../utils/util.js')
+import {fetch} from "../../axios/fetch"
 
 Page({
     /**
@@ -24,39 +25,30 @@ Page({
       this.setData({
         is_load: true
       })
-      wx.request({
-        url: getApp().api.v3_user_account,
-        method: 'GET',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
+      fetch({
+        url: "/wxss/user/getPayList",
         data: {
-          token: getApp().user.ckLogin(),
           page: this.data.page
         },
-        success: res => {
-          wx.hideLoading()
+        method: 'GET'
+      }).then(res=>{
+        if (this.data.page == 1) {
           this.setData({
-            totalRow: res.data.totalRow,
+            data: res.data.list,
           })
-          if (this.data.page == 1) {
-            this.setData({
-              data: res.data.list,
-            })
-          } else {
-            let o_data = this.data.data;
-            for (var index in res.data.list) {
-              o_data.push(res.data.list[index])
-            }
-            this.setData({
-              data: o_data
-            })
+        } else {
+          let o_data = this.data.data;
+          for (var index in res.data.list) {
+            o_data.push(res.data.list[index])
           }
-          utils.set_page_more(this, res.data)
-          wx.stopPullDownRefresh()
-        }, complete: () => {
-          wx.hideLoading()
+          this.setData({
+            data: o_data
+          })
         }
+        utils.set_page_more(this, res.data)
+      }).finally(()=>{
+        wx.hideLoading()
+        wx.stopPullDownRefresh()
       })
     },
 

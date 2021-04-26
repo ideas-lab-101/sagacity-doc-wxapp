@@ -1,4 +1,5 @@
 // video-class-list.js
+import {fetch} from "../../axios/fetch"
 const utils = require('../../utils/util.js')
 
 Page({
@@ -36,37 +37,32 @@ Page({
     this.setData({
       is_load: true
     })
-    wx.request({
-      url: getApp().api.get_v3_class_video,
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
+    fetch({
+      url: "/wxss/video/getClassVideoList",
       data: {
         page: this.data.page,
-        class_id: this.data.class_id,
-        user_id: this.data.user_id,
+        classId: this.data.class_id,
+        userId: this.data.user_id
       },
-      success: (res) => {
-        if (this.data.page == 1) {
-          this.setData({
-            data: res.data.list,
-          })
-        } else {
-          let o_data = this.data.data;
-          for (var index in res.data.list) {
-            o_data.push(res.data.list[index])
-          }
-          this.setData({
-            data: o_data
-          })
+      method: 'GET'
+    }).then(res=>{
+      if (this.data.page == 1) {
+        this.setData({
+          data: res.data.list,
+        })
+      } else {
+        let o_data = this.data.data;
+        for (var index in res.data.list) {
+          o_data.push(res.data.list[index])
         }
-
-        utils.set_page_more(this, res.data)
-
-        wx.stopPullDownRefresh()
-      }, complete: () => {
-        wx.hideLoading()
+        this.setData({
+          data: o_data
+        })
       }
+      utils.set_page_more(this, res.data)
+    }).finally(()=>{
+      wx.hideLoading()
+      wx.stopPullDownRefresh()
     })
   },
   class_video: function (event) {

@@ -1,10 +1,10 @@
 //app.js
-const Version = '1.8.0';
+const Version = '1.8.2';
 const Towxml = require('/towxml/main');
 const User = require('/utils/user');
 const Pages = require('/utils/pages');
-const HOST = "https://docs.ideas-lab.cn";
-// const HOST = "http://dev.linestorm.ltd";
+// const HOST = "https://docs.ideas-lab.cn";
+const HOST = "http://dev.linestorm.ltd";
 
 App({
   onLaunch: function () {
@@ -32,7 +32,7 @@ App({
     get_page: HOST + "/api/page",
     get_v2_index: HOST + "/api/v2/index",
     get_v2_class: HOST + "/wxss/doc/getClassList",
-    get_v3_class: HOST + "/wxss/system/getClassList",
+    get_class: HOST + "/wxss/system/getClassList",
     get_v2_class_doc: HOST + "/api/v2/list",
     get_v2_doc_menu: HOST + "/wxss/doc/getDocMenu",
     get_v2_page: HOST + "/wxss/doc/getPageDetail",
@@ -44,27 +44,27 @@ App({
     /**
      * V3版本接口
      */
-    get_v3_index: HOST + "/wxss/doc/index",
-    get_v3_2_doc_info: HOST + "/wxss/v2/doc/getDocInfo",
-    get_v3_page: HOST + "/wxss/v2/doc/getPageDetail",
-    get_v3_doc_menu: HOST + "/wxss/v2/doc/getDocMenu",
+    get_index: HOST + "/wxss/doc/v2/index",
+    get_doc_info: HOST + "/wxss/doc/v2/getDocInfo",
+    get_page_info: HOST + "/wxss/doc/v2/getPageDetail",
+    get_doc_menu: HOST + "/wxss/doc/v2/getDocMenu",
 
     v3_doc_feedback: HOST +"/wxss/doc/docFeedback",//文档反馈
 
     get_v3_doc_page_menu: HOST + "/api/v3/doc-page-menu",
     get_v3_article_index: HOST + "/api/v3/article-index",
     get_v3_article_page: HOST + "/api/v3/article-page",
-    get_v3_class_doc: HOST + "/wxss/v2/doc/getClassDocList",
-    get_v3_user_index: HOST + "/wxss/user/getAccountInfo",
+    get_class_doc: HOST + "/wxss/doc/v2/getClassDocList",
+    get_user_index: HOST + "/wxss/user/getAccountInfo",
     get_share_code: HOST + '/wxss/system/getWXSSCode',
-    v3_user_favor: HOST + "/wxss/user/userFavor",
-    v3_user_like: HOST + "/wxss/user/userLike",
-    v3_user_follow: HOST + "/wxss/user/userFollow",
+    do_user_favor: HOST + "/wxss/user/userFavor",
+    do_user_like: HOST + "/wxss/user/userLike",
+    do_user_follow: HOST + "/wxss/user/userFollow",
     v3_user_favor_cancel: HOST + "/wxss/user/userFavorCancel",
     v3_user_account: HOST + "/wxss/user/getPayList",
 
     login: HOST + "/wxss/system/accountLogin",
-    v3_scan_code_login: HOST + "/wxss/system/scanLogin",
+    scan_login: HOST + "/wxss/system/scanLogin",
 
     //问答
     v3_wenda_index: HOST + "/wxss/question/index",
@@ -75,9 +75,9 @@ App({
 
     //视频
     get_video_class: HOST + "/wxss/video/getVideoClass",
-    get_v3_video: HOST + "/wxss/video/getVideoList",
-    get_v3_class_video: HOST + "/wxss/video/getClassVideoList",
-    get_v3_video_page: HOST + "/wxss/video/getVideoInfo",
+    get_video_list: HOST + "/wxss/video/getVideoList",
+    get_class_video: HOST + "/wxss/video/getClassVideoList",
+    get_video_info: HOST + "/wxss/video/getVideoInfo",
 
     //搜索的新接口，包括文档和视频
     get_v3_search: HOST + "/wxss/system/search",

@@ -78,7 +78,7 @@
   </view>
 </view>
 <view class="page-menu-box {{show_menu?'animation':''}}" catchtap="show_menu" style="display: {{show_menu?'block':'none'}}" data-itself="toggle">
-  <scroll-view scroll-y="true" class="page-menu {{read_type}}" scroll-into-view="menu-{{info.id}}">
+  <scroll-view scroll-y="true" class="page-menu {{read_type}}" scroll-into-view="menu-{{page_info.id}}">
     <view class="">
       <view class="menu-list">
         <view class="menu-item" wx:for="{{menu}}" wx:key="{{item}}">

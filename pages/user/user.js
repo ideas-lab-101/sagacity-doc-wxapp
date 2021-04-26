@@ -1,10 +1,11 @@
 // user.js
+import {fetch} from "../../axios/fetch"
 Page({
-
   /**
    * 页面的初始数据
    */
   data: {
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
     page_show: false,
     is_login: false,
     token: getApp().user.ckLogin(),
@@ -24,9 +25,6 @@ Page({
    */
   onReady: function () {
     if (getApp().user.ckLogin()) {
-      wx.showLoading({
-        title: '加载中',
-      })
       this.get_data()
     } else {
       this.setData({
@@ -39,60 +37,47 @@ Page({
       is_login: getApp().user.ckLogin()
     })
   },
-  login() {
-    getApp().user.isLogin(token => {
-      this.setData({
-        token: token
+  get_userInfo(e) {
+    getApp().user.authUser()
+      .then(rest =>{
+        wx.showLoading({
+          title: '加载中',
+        })
+        this.get_data()
+      }).catch((ret)=>{
+        wx.showModal({
+          content: '如你需要使用魔灯知库，请重新授权！',
+          showCancel: false,
+          success: function (res) {
+          }
+        })
       })
-      wx.showLoading({
-        title: '加载中',
-      })
-      this.get_data()
-    })
-  },
-  get_userInfo(res) {
-    if (res.detail.errMsg == "getUserInfo:ok") {
-      this.login()
-    }
   },
   get_data() {
-    wx.request({
-      url: getApp().api.get_v3_user_index,
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
+    fetch({
+      url: "/wxss/user/getAccountInfo",
       data: {
-        token: getApp().user.ckLogin()
-      }, success: res => {
-        if (res.data.code == 1) {
-          this.setData({
-            page_show: true,
-            is_login: true,
-            user: res.data.user,
-            user_data: res.data.user_data,
-          })
-        }
-
-      }, fail: error => {
-      }
-      , complete: res => {
-        wx.hideLoading()
-        wx.stopPullDownRefresh()
-      }
+      },
+      method: 'GET'
+    }).then(res=>{
+      this.setData({
+        page_show: true,
+        is_login: true,
+        user_data: res.data
+      })
+    }).finally(()=>{
+      wx.hideLoading()
     })
   },
   account_manage(){
-    getApp().user.isLogin(token => {
+    getApp().user.getLogin().then(rest=>{
       wx.navigateTo({
         url: '../pay-list/pay-list'
       })
-    })  
+    })
   },
   scan_code() {
-    getApp().user.isLogin(token => {
-      if (this.data.user.length <= 0) {
-        this.get_data()
-      }
+    getApp().user.getLogin().then(rest=>{
       wx.scanCode({
         onlyFromCamera: false,
         success: res => {
@@ -131,64 +116,61 @@ Page({
           wx.showLoading({
             title: '正在登录',
           })
-          wx.request({
-            url: getApp().api.v3_scan_code_login,
-            method: 'post',
-            header: {
-              'content-type': 'application/x-www-form-urlencoded'
-            },
+          fetch({
+            url: "/wxss/system/scanLogin",
             data: {
-              token: this.data.token,
               key: key
-            }, success: res => {
-              if (res.data.code == 1) {
-                wx.showToast({
-                  title: res.data.msg,
-                  icon: 'none',
-                })
-              } else {
-                wx.showToast({
-                  title: res.data.msg,
-                  icon: 'none',
-                })
-              }
-            }, complete: res => {
-
+            },
+            method: 'POST'
+          }).then(res=>{
+            if (res.code == 1) {
+              wx.showToast({
+                title: res.msg,
+                icon: 'success',
+                duration: 3000,
+              })
+            }else{
+              wx.showToast({
+                title: res.msg,
+                icon: 'none',
+              })
             }
+          }).finally(()=>{
+            wx.hideLoading()
           })
+        
         }
       }
     })
   },
   del_my_doc: function (event) {
     let id = event.currentTarget.dataset.id;
-    getApp().user.isLogin(token => {
-      wx.showLoading({
-        title: '',
-      })
-      wx.request({
-        url: getApp().api.v3_user_favor_cancel,
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
+    getApp().user.getLogin().then(rest=>{
+      wx.showNavigationBarLoading()
+      fetch({
+        url: "/wxss/user/userFavorCancel",
         data: {
-          token: token,
-          data_id: id,
+          dataId: id,
           type: 'doc'
-        }, success: res => {
-          if (res.data.code == 1) {
-            this.get_data() //重新刷新
-          } else {
-            wx.showToast({
-              title: res.data.msg,
-            })
-          }
-        }, complete: res => {
-          wx.hideLoading()
+        },
+        method: 'POST'
+      }).then(res=>{
+        if (res.code == 1) {
+          wx.showToast({
+            title: res.msg,
+            icon: 'none',
+          })
+          this.get_data()
+        }else{
+          wx.showToast({
+            title: res.msg,
+            icon: 'none',
+          })
         }
+      }).finally(()=>{
+        wx.hideNavigationBarLoading()
       })
     })
-
   },
   edit_show: function () {
     this.setData({
@@ -200,34 +182,32 @@ Page({
       show_tab: event.currentTarget.dataset.type
     })
   },
-  un_collect(event) {
+  del_my_page(event) {
     let id = event.currentTarget.dataset.id
-    getApp().user.isLogin(token => {
-      wx.showLoading({
-        title: '正在删除',
-      })
-      wx.request({
-        url: getApp().api.v3_user_favor_cancel,
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
+    getApp().user.getLogin().then(rest=>{
+      wx.showNavigationBarLoading()
+      fetch({
+        url: "/wxss/user/userFavorCancel",
         data: {
-          token: token,
-          data_id: id,
+          dataId: id,
           type: 'page'
-        }, success: res => {
-          if (res.data.code == 1) {
-            wx.showToast({
-              title: res.data.msg,
-            })
-            this.get_data()
-          } else {
-            wx.showToast({
-              title: res.data.msg,
-            })
-          }
-        }, complete: () => {
+        },
+        method: 'POST'
+      }).then(res=>{
+        if (res.code == 1) {
+          wx.showToast({
+            title: res.msg,
+            icon: 'none',
+          })
+          this.get_data()
+        }else{
+          wx.showToast({
+            title: res.msg,
+            icon: 'none',
+          })
         }
+      }).finally(()=>{
+        wx.hideNavigationBarLoading()
       })
     })
   }

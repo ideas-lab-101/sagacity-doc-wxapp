@@ -1,4 +1,4 @@
-
+import {fetch} from "../../axios/fetch"
 Page({
   data: {
     id: null,
@@ -33,39 +33,33 @@ Page({
   },
   bindFormSubmit: function (e) {
     var content = e.detail.value.textarea;
-    getApp().user.isLogin(token => {
-      wx.showLoading({
-        title: '提交中',
-      })
-      wx.request({
-        url: getApp().api.v3_doc_feedback,
-        method: 'post',
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
+    getApp().user.getLogin().then(rest=>{
+      wx.showNavigationBarLoading()
+      fetch({
+        url: "/wxss/system/userFeedback",
         data: {
-          token: token,
-          id: this.data.id,
+          dataId: this.data.id,
           content: content,
           type: this.data.d_type
-        }, success: res => {
+        },
+        method: 'POST'
+      }).then(res=>{
+        if (res.code == 1) {
           wx.showToast({
-            title: res.data.msg
+            title: res.msg
           })
           setTimeout(() => {
             wx.navigateBack()
           }, 1500);
-        }, fail: error => {
+        }else{
           wx.showToast({
-            title: '请求失败'
+            title: res.msg,
+            icon: 'none',
           })
-          setTimeout(() => {
-            wx.navigateBack()
-          }, 1500);
-        }, complete: () => {
-
         }
-      })
+      }).finally(()=>{
+        wx.hideNavigationBarLoading()
+      })    
     })
-  }
+  }  
 })

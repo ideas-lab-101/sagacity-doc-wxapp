@@ -1,12 +1,48 @@
+import {fetch} from "../axios/fetch"
 class user {
+
+  constructor() {
+    try {
+        let authToken = wx.getStorageSync('AuthToken')
+        if (authToken) {
+            this.authToken = authToken
+        } else {
+            throw false
+        }
+    } catch (e) {
+        this.authToken = false
+    }
+    try {
+      let userInfo = wx.getStorageSync('UserInfo')
+      if (userInfo) {
+          this.userInfo = userInfo
+      } else {
+          throw false
+      }
+  } catch (e) {
+      this.authInfo = null
+      this.userInfo = null
+  }
+  }
+
+  get getToken() {
+    let authToken = wx.getStorageSync('AuthToken')
+    return authToken
+  }
+
+  get getUserInfo() {
+    let userInfo = wx.getStorageSync('UserInfo')
+    return userInfo
+  }
   /**
    * 检测是否登录 无操作
    */
   ckLogin() {
     try {
-      let AuthToken = wx.getStorageSync('AuthToken')
-      if (AuthToken) {
-        return AuthToken
+      let authToken = wx.getStorageSync('AuthToken')
+      let userInfo = wx.getStorageSync('UserInfo')
+      if (authToken && userInfo) {
+        return authToken
       } else {
         throw false;
       }
@@ -14,14 +50,110 @@ class user {
       return false
     }
   }
+
+  getLogin(){
+    return new Promise((resolve, reject) => {
+        try {
+          let authToken = wx.getStorageSync('AuthToken')
+          let userInfo = wx.getStorageSync('UserInfo')
+          if (authToken && userInfo) {
+            resolve()
+          } else {
+            this.authUser()
+                .then(res => {
+                    resolve()
+                }, ret => {
+                    reject(ret)
+                })
+          }
+        }catch(e) {}
+    })
+}
+
+  authUser() {
+    return new Promise((resolve, reject) => {
+      this.__getUserProfile()
+      .then(res => {
+        this.goLogin(res.userInfo)
+        .then((token)=>{
+          resolve(token)
+        },ret=>{
+          reject(ret)
+        })
+      },ret =>{
+        reject(ret)
+      })
+    })
+  }
+
+  goLogin(authInfo) {
+    const FormatUserInfo = JSON.stringify(authInfo) || '';
+    return new Promise((resolve, reject) => {
+        this.__getWxLogin()
+            .then( code => {
+              fetch({
+                url: '/wxss/system/accountLogin',
+                data: {
+                  userData: FormatUserInfo,
+                  code: code
+                },
+                method: 'POST'
+              }).then(res=>{
+                wx.setStorageSync('UserInfo', res.data.user_info)
+                wx.setStorageSync('AuthToken', res.data.token)
+                resolve(res.data.token)
+              }, ret => {
+                reject(ret)
+              })
+            })    
+      })
+  }
+
+  /**
+     * 获取微信用户信息
+     * @returns {Promise<unknown>}
+     */
+    __getWxLogin() {
+      return new Promise((resolve, reject) => {
+          wx.login({
+              success: res => {
+                  resolve(res.code)
+              },
+              fail: ret => {
+                  reject(ret)
+              }
+          })
+      })
+  }
+
+  __getUserProfile() {
+    return new Promise((resolve, reject) => {
+      wx.getUserProfile({
+          desc: "魔灯知库申请获取你的头像及昵称",
+          success: res => {
+              resolve(res)
+          },
+          fail: ret => {
+              reject(ret)
+          }
+      })
+    })
+  }
+
+
+
+
+
+
   /**
    * 检测用户是否登录，未登录进行登录操作
    */
   isLogin(cb) {
     try {
-      let AuthToken = wx.getStorageSync('AuthToken')
-      if (AuthToken) {
-        typeof cb == "function" && cb(AuthToken)
+      let authToken = wx.getStorageSync('AuthToken')
+      let userInfo = wx.getStorageSync('UserInfo')
+      if (authToken && userInfo) {
+        typeof cb == "function" && cb(authToken)
       } else {
         throw false;
       }
@@ -40,48 +172,17 @@ class user {
       });
     });
   }
-
-  goLogin(code, res, cb) {
-    wx.showNavigationBarLoading()
-    wx.request({
-      url: getApp().api.login,
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: {
-        userInfo: JSON.stringify(res.userInfo),
-        code: code
-      },
-      method: 'POST',
-      success: function (re) {
-        if (re.data.code == 1) {
-          wx.setStorageSync('UserInfo', re.data.user)
-          wx.setStorageSync('AuthToken', re.data.token)
-          typeof cb == "function" && cb(re.data.token)
-        } else {
-          wx.showModal({
-            content: '登录失败',
-          })
-        }
-      },
-      complete: function () {
-        wx.hideNavigationBarLoading();
-        wx.hideLoading();
-      }
-    })
-  }
+  
   /**
    * 获取微信用户信息
    */
   getUserInfo(cb) {
     var that = this
-
-    console.log("getUserInfo")
     //调用登录接口
     wx.login({
       success: function (res) {
         var code = res.code;
-        wx.getUserInfo({
+        wx.getUserProfile({
           success: function (res) {
             typeof cb == "function" && cb(res, code)
           },
@@ -103,5 +204,8 @@ class user {
       }
     })
   }
+
 }
+
+
 module.exports = user;

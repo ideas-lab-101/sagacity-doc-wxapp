@@ -1,4 +1,4 @@
-//index.js
+import {fetch} from "../../axios/fetch"
 //获取应用实例
 var app = getApp()
 Page({
@@ -52,23 +52,21 @@ Page({
     this.setData({
       is_load: true
     })
-    wx.request({
-      url: getApp().api.get_v3_index,
+    fetch({
+      url: "/wxss/doc/v2/index",
       data: {
         page: this.data.page
       },
-      success: (res) => {
-
-        this.setData({
-          swiper: res.data.swiper,
-          grid:res.data.grid,
-          doc_class_list:res.data.doc
-        })
-
-        wx.stopPullDownRefresh()
-      }, complete: () => {
-        wx.hideLoading()
-      }
+      method: 'GET'
+    }).then(res=>{
+      this.setData({
+        swiper: res.data.swiper,
+        grid:res.data.grid,
+        doc_class_list:res.data.doc
+      })
+    }).finally(()=>{
+      wx.hideLoading()
+      wx.stopPullDownRefresh()
     })
   },
   go_search() {

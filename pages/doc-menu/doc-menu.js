@@ -1,4 +1,5 @@
 // doc-menu.js
+import {fetch} from "../../axios/fetch"
 Page({
 
   /**
@@ -23,18 +24,19 @@ Page({
     this.get_data()
   },
   get_data() {
-    wx.request({
-      url: getApp().api.get_v3_doc_menu,
-      data: { doc_id: this.data.doc_id },
-      success: (res) => {
-        this.setData({
-          data: res.data.data
-        })
-        wx.stopPullDownRefresh()
+    fetch({
+      url: "/wxss/doc/v2/getDocMenu",
+      data: {
+        docId: this.data.doc_id
       },
-      complete:()=>{
-        wx.hideLoading();
-      }
+      method: 'GET'
+    }).then(res=>{
+      this.setData({
+        data: res.data.list,
+      })
+    }).finally(()=>{
+      wx.stopPullDownRefresh()
+      wx.hideLoading()
     })
   },
   go_page: function (event) {

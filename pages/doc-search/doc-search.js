@@ -1,4 +1,5 @@
 // doc-search.js
+import {fetch} from "../../axios/fetch"
 let ArrayList = require("../../utils/arrayList.js");
 Page({
 
@@ -34,14 +35,19 @@ Page({
       my_search: list,
       my_search_arr: list.toArray()
     })
-
-    wx.request({
-      url: getApp().api.get_v2_search_index,
-      success: (res) => {
-        this.setData({
-          hot_tag: res.data.list
-        })
-      }
+    this.get_hostSearch();
+  },
+  get_hostSearch(){
+    fetch({
+      url: "/wxss/system/getHotSearch",
+      data: {
+      },
+      method: 'GET'
+    }).then(res=>{
+      this.setData({
+        hot_tag: res.data.list
+      })
+    }).finally(()=>{
     })
   },
   get_data() {
@@ -97,8 +103,6 @@ Page({
         this.data.my_search.add(key)
 
         wx.setStorageSync("my_search", this.data.my_search)
-
-        
         wx.hideLoading();
         this.setData({
           is_load: false

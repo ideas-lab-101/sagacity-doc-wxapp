@@ -47,6 +47,18 @@ page{
 .no-login{
   padding: 100rpx 160rpx;
 }
+.mine-info{
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20rpx;
+}
+
+.mine-info .avatar{
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  overflow: hidden;
+}
 
 /*数据栏*/
 

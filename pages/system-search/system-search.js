@@ -1,4 +1,5 @@
 // doc-search.js
+import {fetch} from "../../axios/fetch"
 let ArrayList = require("../../utils/arrayList.js");
 Page({
 
@@ -35,31 +36,33 @@ Page({
       my_search: list,
       my_search_arr: list.toArray()
     })
-
-    wx.request({
-      url: getApp().api.get_v3_search_index,
-      success: (res) => {
-        this.setData({
-          hot_tag: res.data.list
-        })
-      }
+    this.get_hostSearch()
+  },
+  get_hostSearch(){
+    fetch({
+      url: "/wxss/system/getHotSearch",
+      data: {
+      },
+      method: 'GET'
+    }).then(res=>{
+      this.setData({
+        hot_tag: res.data.list
+      })
+    }).finally(()=>{
     })
   },
-  get_data() {
+  get_result() {
     this.setData({
       is_load: true
     })
-    wx.request({
-      url: getApp().api.get_v3_search,
-      method: 'post',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
+    fetch({
+      url: "/wxss/system/search",
       data: {
         key: this.data.key,
         page: this.data.page
       },
-      success: (res) => {
+      method: 'POST'
+    }).then(res=>{
         if (this.data.page <= 1) {
           this.setData({
             doc_list: res.data.doc,
@@ -97,22 +100,17 @@ Page({
           this.data.my_search.remove(key)
         }
         this.data.my_search.add(key)
-
         wx.setStorageSync("my_search", this.data.my_search)
-
         
+        this.setData({
+          is_load: false
+        })
+      }).finally(()=>{
         wx.hideLoading();
         this.setData({
           is_load: false
         })
-      },
-      complete: () => {
-        wx.hideLoading();
-        this.setData({
-          is_load: false
-        })
-      }
-    })
+      })
   },
   clear_my_search(event) {
     let key = event.currentTarget.dataset.name;
@@ -140,7 +138,7 @@ Page({
     wx.showLoading({
       title: '搜索中',
     })
-    this.get_data()
+    this.get_result()
   },
   search_tip(e) {
     let key = e.detail.value;
@@ -150,20 +148,17 @@ Page({
       })
       return false;
     }
-    wx.request({
-      url: getApp().api.get_v3_search_tip,
-      method: 'post',
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
+    fetch({
+      url: "/wxss/system/tipSearch",
       data: {
         key: key
       },
-      success: (res) => {
-        this.setData({
-          search_tip: res.data
-        })
-      }
+      method: 'GET'
+    }).then(res=>{
+      this.setData({
+        search_tip: res.data
+      })
+    }).finally(()=>{
     })
   },
   cancel() {
@@ -211,7 +206,7 @@ Page({
     wx.showLoading({
       title: '搜索中',
     })
-    this.get_data()
+    this.get_result()
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

@@ -1,5 +1,6 @@
 // pages/course-info/course-info.js
 import { $wuxButton } from '../../components/wux'
+import {fetch} from "../../axios/fetch"
 Page({
 
     /**
@@ -44,45 +45,36 @@ Page({
         })
         this.init_buttons()
     },
+    onUnload() {
+        wx.stopAccelerometer()
+    },
     get_data(options) {
-        wx.request({
-            url: getApp().api.get_v3_video_page,
-            header: {
-                'content-type': 'application/x-www-form-urlencoded'
-            },
-            data: {
-                token: getApp().user.ckLogin(),
-                video_id: this.data.video_id
-            },
-            success: (res) => {
-                console.log(res)
-                // if (!res.data.video.is_follow) {
-                //     this.setData({
-                //         is_follow: false
-                //     })
-                // }
-                wx.setNavigationBarTitle({
-                    title: res.data.video.title
-                })
-
-                this.data.videoCurrentUrl = res.data.episodes[this.data.videoCurrent].source_url
-                this.setData({
-                    video: res.data.video,
-                    is_follow: res.data.video.is_follow,
-                    is_favor: res.data.video.is_favor,
-                    danmuList: res.data.danmus,
-                    likes: res.data.likes,
-                    related_video: res.data.relatedVideos,
-                    episodes: res.data.episodes,
-                    videoCurrentUrl: this.data.videoCurrentUrl
-                })
-
-                wx.stopPullDownRefresh()
-                options.success && options.success(res)
-            }, complete: () => {
-                wx.hideLoading()
-            }
+      fetch({
+        url: "/wxss/video/getVideoInfo",
+        data: {
+          videoId: this.data.video_id
+        },
+        method: 'GET'
+      }).then(res=>{
+        wx.setNavigationBarTitle({
+          title: res.data.video.title
         })
+        this.data.videoCurrentUrl = res.data.episodes[this.data.videoCurrent].source_url
+        this.setData({
+            video: res.data.video,
+            is_follow: res.data.is_follow,
+            is_favor: res.data.is_favor,
+            danmuList: res.data.danmus,
+            likes: res.data.likes,
+            related_video: res.data.relatedVideos,
+            episodes: res.data.episodes,
+            videoCurrentUrl: this.data.videoCurrentUrl
+        })
+        options.success && options.success(res)
+      }).finally(()=>{
+        wx.stopPullDownRefresh()
+        wx.hideLoading()
+      })
     },
     videoChange(e) {
       const { index } = e.currentTarget.dataset
@@ -138,7 +130,7 @@ Page({
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady() {
-
+        wx.startAccelerometer()
     },
     play() {
         this.livePlayerContext.play()
@@ -174,26 +166,27 @@ Page({
       })
     },
     onGetShareCode: function () {
-      wx.request({
-        url: getApp().api.get_share_code,
-        header: {
-          'content-type': 'application/x-www-form-urlencoded'
-        },
-        data: {
-          type: 'v',
-          data_id: this.data.video_id
-        },
-        success: res => {
-          if (res.data.code == 1) {
+      getApp().user.getLogin().then(rest=>{
+        fetch({
+          url: "/wxss/system/getWXSSCode",
+          data: {
+            type: 'v',
+            dataId: this.data.video_id
+          },
+          method: 'POST'
+        }).then(res=>{
+          if (res.code == 1) {
             wx.previewImage({
               urls: [res.data.qr_code],
             })
-          } else {
+          }else{
             wx.showToast({
-              title: res.data.msg,
+              title: res.msg,
+              icon: 'none',
             })
           }
-        }
+        }).finally(()=>{
+        })  
       })
     },
     /**
@@ -210,12 +203,6 @@ Page({
       wx.stopAccelerometer()
     },
 
-    /**
-     * 生命周期函数--监听页面卸载
-     */
-    onUnload: function () {
-
-    },
     do_pay: function (event) {
       wx.navigateTo({
         url: '../pay/pay?type=video&id=' + this.data.video.id
@@ -223,65 +210,59 @@ Page({
       })
     },
     do_favor: function (event) {
-      getApp().user.isLogin(token => {
+      getApp().user.getLogin().then(rest=>{
         wx.showNavigationBarLoading()
-        wx.request({
-          url: getApp().api.v3_user_favor,
-          method: 'post',
-          header: {
-            'content-type': 'application/x-www-form-urlencoded'
-          },
+        fetch({
+          url: "/wxss/user/userFavor",
           data: {
-            token: token,
-            data_id: this.data.video_id,
+            dataId: this.data.video_id,
             type: 'video'
-          }, success: res => {
-            if (res.data.code == 1) {
-              this.setData({
-                is_favor: res.data.is_favor
-              })
-            } else {
-              wx.showToast({
-                title: res.data.msg,
-                icon: 'none',
-              })
-            }
-          }, complete: res => {
-            wx.hideNavigationBarLoading()
+          },
+          method: 'POST'
+        }).then(res=>{
+          if (res.code == 1) {
+            this.setData({
+              is_favor: res.data.is_favor
+            })
+          }else{
+            wx.showToast({
+              title: res.msg,
+              icon: 'none',
+            })
           }
+        }).finally(()=>{
+          wx.hideNavigationBarLoading()
         })
       })
     },
-    add_my_video: function (event) {
+    user_follow: function (event) {
         let video_id = event.currentTarget.dataset.id;
-        getApp().user.isLogin(token => {
-            wx.showNavigationBarLoading()
-            wx.request({
-                url: getApp().api.v3_user_follow,
-                method: 'post',
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
-                data: {
-                    token: token,
-                    data_id: video_id
-                }, success: res => {
-                    if (res.data.code == 1) {
-                        this.setData({
-                            is_follow: true
-                        })
-                        wx.showToast({
-                            title: res.data.msg
-                        })
-                    } else {
-                        wx.showToast({
-                            title: res.data.msg,
-                        })
-                    }
-                }, complete: res => {
-                    wx.hideNavigationBarLoading()
-                }
-            })
+        getApp().user.getLogin().then(rest=>{
+          wx.showNavigationBarLoading()
+          fetch({
+            url: "/wxss/user/userFollow",
+            data: {
+              dataId: this.data.video_id,
+            },
+            method: 'POST'
+          }).then(res=>{
+            if (res.code == 1) {
+              this.setData({
+                is_follow: true
+              })
+              wx.showToast({
+                title: res.msg,
+                icon: 'none',
+              })
+            }else{
+              wx.showToast({
+                title: res.msg,
+                icon: 'none',
+              })
+            }
+          }).finally(()=>{
+            wx.hideNavigationBarLoading()
+          })
         })
     },
     onPullDownRefresh: function () {
@@ -294,35 +275,32 @@ Page({
         }
     },
     video_like(event) {
-        let doc_id = event.currentTarget.dataset.id;
-        getApp().user.isLogin(token => {
-            wx.request({
-                url: getApp().api.v3_user_like,
-                header: {
-                    'content-type': 'application/x-www-form-urlencoded'
-                },
-                data: {
-                    token: token,
-                    data_id: doc_id,
-                    type: 'video'
-                }, success: res => {
-                    if (res.data.code == 1) {
-                        wx.showToast({
-                            title: res.data.msg,
-                        })
-                        //更新赞的人员列表
-                        this.setData({
-                            likes: res.data.likes
-                        })
-                    } else {
-                        wx.showToast({
-                            title: res.data.msg,
-                            icon: 'none'
-                        })
-                    }
-                }, complete: () => {
-                }
-            })
+        let video_id = event.currentTarget.dataset.id;
+        getApp().user.getLogin().then(rest=>{
+          fetch({
+            url: "/wxss/user/userLike",
+            data: {
+              dataId: video_id,
+              type: 'video'
+            },
+            method: 'POST'
+          }).then(res=>{
+            if (res.code == 1) {
+              wx.showToast({
+                title: res.msg,
+              })
+              //更新赞的人员列表
+              this.setData({
+                likes: res.data.likes
+              })
+            }else{
+              wx.showToast({
+                title: res.msg,
+                icon: 'none',
+              })
+            }
+          }).finally(()=>{
+          })
         })
     },
     /**

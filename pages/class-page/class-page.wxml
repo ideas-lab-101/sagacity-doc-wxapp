@@ -13,7 +13,8 @@
             </navigator>
             <view class="class-son">
               <view class="class-son-item" wx:for="{{item.son}}" wx:key="{{item}}" hover-class="view-hover-class" data-id="{{item.id}}" bindtap="go_doc_list">
-                <image class="class-icon" src="{{item.icon}}"></image>
+                <text class="class-icon l-iconfont {{item.css===''?'icon-socialbuffer':item.css}}"></text>
+                <!-- <image class="class-icon" src="{{item.icon}}"></image> -->
                 <view class="class-son-title">
                   <text>{{item.title}}</text>
                 </view>
@@ -27,7 +28,8 @@
           <view class="class-list view-bg">
             <view class="class-son">
               <view class="class-son-item" wx:for="{{video}}" wx:key="{{item}}" hover-class="view-hover-class" data-id="{{item.id}}" bindtap="go_video_list">
-                <image class="class-icon" src="{{item.icon}}"></image>
+                <text class="class-icon l-iconfont {{item.css===''?'icon-socialbuffer':item.css}}"></text>
+                <!-- <image class="class-icon" src="{{item.icon}}"></image> -->
                 <view class="class-son-title">
                   <text>{{item.title}}</text>
                 </view>
